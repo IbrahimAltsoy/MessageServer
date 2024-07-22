@@ -1,0 +1,27 @@
+﻿using Application.Features.Auth.Dtos;
+using Core.Application.Responses;
+using Core.Security.JWT;
+using Domain.Enums;
+
+namespace Application.Features.Auth.Commands.Login;
+
+public class LoggedResponse : IResponse
+{
+    public AccessToken? AccessToken { get; set; }
+    public LoginUserDto? User { get; set; }
+    public AuthenticatorType? RequiredAuthenticatorType { get; set; }
+
+    public LoggedHttpResponse ToHttpResponse() =>
+        new() { 
+            AccessToken = AccessToken, 
+            User = User,
+            RequiredAuthenticatorType = RequiredAuthenticatorType,
+        };
+
+    public class LoggedHttpResponse
+    {
+        public AccessToken? AccessToken { get; set; }
+        public LoginUserDto? User { get; set; }
+        public AuthenticatorType? RequiredAuthenticatorType { get; set; }
+    }
+}
