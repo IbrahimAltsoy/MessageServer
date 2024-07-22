@@ -14,7 +14,7 @@ using Application.Features.Auth.Commands.VerifyPhoneSmsSendRequest;
 using Core.Application.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-
+//Merhaba nasılsın
 namespace WebAPI.Controllers;
 
 [Route("api/[controller]")]
