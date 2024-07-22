@@ -19,7 +19,7 @@ using WebAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container. fsfghtyjyukuy false 
+// Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddApplicationServices();
