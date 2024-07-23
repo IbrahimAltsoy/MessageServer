@@ -22,7 +22,14 @@ public class BaseDbContext : DbContext
     public DbSet<PhoneVerificationToken> PhoneVerificationTokens { get; set; }
     #region
     
-
+    public DbSet<Customer> Customers { get; set; }
+    public DbSet<Visit> Visits { get; set; }
+    public DbSet<Employee> Employees { get; set; }
+    public DbSet<Feedback> Feedbacks { get; set; }
+    public DbSet<NotificationSettings> NotificationSettings { get; set; }
+    public DbSet<SmsTemplate> SmsTemplates { get; set; }
+    public DbSet<Report> Reports { get; set; }
+    public DbSet<VisitHistory> VisitHistories { get; set; }
     #endregion
 
     public BaseDbContext(DbContextOptions<BaseDbContext> dbContextOptions, IConfiguration configuration) : base(dbContextOptions)

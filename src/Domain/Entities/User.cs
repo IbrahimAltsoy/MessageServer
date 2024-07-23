@@ -11,6 +11,7 @@ public class User : Entity<Guid>
     public string Email { get; set; }
     public string? IbanNumber { get; set; }
     public string? Adress { get; set; }
+    public string? LogoUrl { get; set; }
     public DateTime? EmailVerified { get; set; }
     public string? Phone { get; set; }
     public DateTime? PhoneVerified { get; set; }
@@ -19,13 +20,17 @@ public class User : Entity<Guid>
     public AuthenticatorType AuthenticatorType { get; set; } = AuthenticatorType.None;
     public UserStatus UserStatus { get; set; } = UserStatus.Passive;
 
-    //public Guid? PersonalInformationId { get; set; }
-
     public virtual ICollection<UserOperationClaim> UserOperationClaims { get; set; } = null!;
     public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = null!;
     public virtual ICollection<Notification> Notifications { get; set; } = null!;
 
-   
+
+    public ICollection<Employee> Employees { get; set; }
+    public ICollection<Visit> Visits { get; set; }
+    public ICollection<Feedback> Feedbacks { get; set; }
+    public NotificationSettings NotificationSettings { get; set; }
+    public ICollection<SmsTemplate> SmsTemplates { get; set; }
+
     // TODO: abonelik
 
     public User()

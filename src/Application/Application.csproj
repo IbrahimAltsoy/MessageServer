@@ -19,4 +19,21 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\VisitHistories\Commands\" />
+    <Folder Include="Features\VisitHistories\Queries\" />
+    <Folder Include="Features\Visits\Commands\" />
+    <Folder Include="Features\Visits\Queries\" />
+    <Folder Include="Features\NotificationSettingies\Commands\" />
+    <Folder Include="Features\NotificationSettingies\Queries\" />
+    <Folder Include="Features\Reports\Commands\" />
+    <Folder Include="Features\Reports\Queries\" />
+    <Folder Include="Features\SmsTemplates\Commands\" />
+    <Folder Include="Features\SmsTemplates\Queries\" />
+    <Folder Include="Features\Feedbacks\Commands\" />
+    <Folder Include="Features\Feedbacks\Queries\" />
+    <Folder Include="Features\Customers\Commands\" />
+    <Folder Include="Features\Customers\Queries\" />
+  </ItemGroup>
+
 </Project>

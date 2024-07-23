@@ -19,7 +19,7 @@ public static class PersistenceServiceRegistration
         services.AddDbContext<BaseDbContext>((sp, options) =>
         {
           options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>()); // CuurentUser ı Claimler üzerinden bul sonra burayı aç
-            options.UseNpgsql(configuration.GetConnectionString("YikaAsistanDb"));
+            options.UseNpgsql(configuration.GetConnectionString("Default"));
         });
         services.AddSingleton(TimeProvider.System);// CureentUser için eklendi
        
