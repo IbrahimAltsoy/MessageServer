@@ -1,8 +1,9 @@
 ﻿using Core.Persistence.Repositories;
+using Domain.Common;
 
 namespace Domain.Entities
 {
-    public class NotificationSettings:Entity<Guid>
+    public class NotificationSettings: BaseEntity<Guid>
     {
        
         public Guid? UserId { get; set; }

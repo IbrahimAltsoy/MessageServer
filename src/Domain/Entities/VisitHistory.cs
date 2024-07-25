@@ -1,8 +1,9 @@
 ﻿using Core.Persistence.Repositories;
+using Domain.Common;
 
 namespace Domain.Entities
 {
-    public class VisitHistory:Entity<Guid>
+    public class VisitHistory: BaseEntity<Guid>
     {
        
         public Guid? VisitId { get; set; }

@@ -12,8 +12,8 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20240723143609_mig_2")]
-    partial class mig_2
+    [Migration("20240724211917_mig_initial")]
+    partial class mig_initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -81,6 +81,11 @@ namespace Persistence.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
@@ -104,7 +109,12 @@ namespace Persistence.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Customers");
                 });
@@ -622,6 +632,9 @@ namespace Persistence.Migrations
                     b.Property<string>("Adress")
                         .HasColumnType("text");
 
+                    b.Property<int?>("AmountOfSms")
+                        .HasColumnType("integer");
+
                     b.Property<int>("AuthenticatorType")
                         .HasColumnType("integer");
 
@@ -687,7 +700,10 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", t =>
+                        {
+                            t.HasCheckConstraint("CK_AmountOfSms", "\"AmountOfSms\" >= 0");
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.UserOperationClaim", b =>
@@ -821,6 +837,17 @@ namespace Persistence.Migrations
                     b.HasIndex("VisitId");
 
                     b.ToTable("VisitHistories");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Customer", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("Customers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Employee", b =>
@@ -959,6 +986,8 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
+                    b.Navigation("Customers");
+
                     b.Navigation("Employees");
 
                     b.Navigation("Feedbacks");

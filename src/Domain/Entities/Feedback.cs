@@ -1,9 +1,10 @@
 ﻿
 using Core.Persistence.Repositories;
+using Domain.Common;
 
 namespace Domain.Entities
 {
-    public class Feedback:Entity<Guid>
+    public class Feedback:BaseEntity<Guid>
     {
        
         public Guid? CustomerId { get; set; }

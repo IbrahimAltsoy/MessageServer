@@ -12,6 +12,7 @@ public class User : Entity<Guid>
     public string? IbanNumber { get; set; }
     public string? Adress { get; set; }
     public string? LogoUrl { get; set; }
+    public int? AmountOfSms { get; set; }
     public DateTime? EmailVerified { get; set; }
     public string? Phone { get; set; }
     public DateTime? PhoneVerified { get; set; }
@@ -30,6 +31,7 @@ public class User : Entity<Guid>
     public ICollection<Feedback> Feedbacks { get; set; }
     public NotificationSettings NotificationSettings { get; set; }
     public ICollection<SmsTemplate> SmsTemplates { get; set; }
+    public ICollection<Customer> Customers { get; set; }
 
     // TODO: abonelik
 

@@ -1,8 +1,9 @@
 ﻿using Core.Persistence.Repositories;
+using Domain.Common;
 
 namespace Domain.Entities
 {
-    public class SmsTemplate:Entity<Guid>
+    public class SmsTemplate: BaseEntity<Guid>
     {
        
         public Guid? UserId { get; set; }

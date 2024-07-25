@@ -11,8 +11,9 @@ namespace Persistence.Configurations
             builder.Property(e => e.FirstName).IsRequired();
             builder.Property(e=>e.LastName).IsRequired();
             builder.Property(e=>e.Phone).IsRequired();
+            builder.HasCheckConstraint("CK_AmountOfSms", "\"AmountOfSms\" >= 0");
 
-           // builder.HasQueryFilter(p => p.DeletedDate == null);
+            // builder.HasQueryFilter(p => p.DeletedDate == null);
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using Core.Persistence.Repositories;
+using Domain.Common;
 
 namespace Domain.Entities
 {
-    public class Report:Entity<Guid>
+    public class Report: BaseEntity<Guid>
     {
        
         public Guid? UserId { get; set; }

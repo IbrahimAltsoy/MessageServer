@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using Application.Features.Customers.Commands.Create;
+using AutoMapper;
+using Domain.Entities;
 
 namespace Application.Features.Customers
 {
@@ -6,7 +8,7 @@ namespace Application.Features.Customers
     {
         public MappingProfile()
         {
-
+            CreateMap<Customer, CreateCustomerRequest>().ReverseMap();
         }
     }
 }
