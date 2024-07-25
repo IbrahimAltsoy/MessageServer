@@ -25,7 +25,7 @@ public static class PersistenceServiceRegistration
        
 
        
-        //services.AddScoped<IVehicleRepository, VehicleRepository>();
+        //services.AddScoped<IVisitRepository, VisitRepository>();
         var assembly = Assembly.GetExecutingAssembly();
        
 
