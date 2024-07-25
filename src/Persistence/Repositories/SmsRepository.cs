@@ -5,9 +5,9 @@ using Persistence.Contexts;
 
 namespace Persistence.Repositories
 {
-    public class SmsTemplateRepository : EfRepositoryBase<SmsTemplate, Guid, BaseDbContext>, ISmsTemplateRepository
+    public class SmsRepository : EfRepositoryBase<Sms, Guid, BaseDbContext>, ISmsRepository
     {
-        public SmsTemplateRepository(BaseDbContext context) : base(context)
+        public SmsRepository(BaseDbContext context) : base(context)
         {
         }
     }

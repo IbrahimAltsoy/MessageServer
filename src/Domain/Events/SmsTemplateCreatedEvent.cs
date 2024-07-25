@@ -5,7 +5,7 @@ namespace Domain.Events
 {
     public class SmsTemplateCreatedEvent:BaseEvent
     {
-        public SmsTemplate SmsTemplate { get; }
-        public SmsTemplateCreatedEvent(SmsTemplate smsTemplate) { SmsTemplate = smsTemplate; }
+        public SmsDefaultTemplate SmsTemplate { get; }
+        public SmsTemplateCreatedEvent(SmsDefaultTemplate smsTemplate) { SmsTemplate = smsTemplate; }
     }
 }

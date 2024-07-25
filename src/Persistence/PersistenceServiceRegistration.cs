@@ -1,4 +1,5 @@
 ﻿using Application.Services.Repositories;
+using Application.Services.SmsSettings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Persistence.Contexts;
 using Persistence.Interceptors;
 using Persistence.Repositories;
+using Persistence.SmsSettings;
 using System.Reflection;
 
 namespace Persistence;
@@ -24,7 +26,7 @@ public static class PersistenceServiceRegistration
         services.AddSingleton(TimeProvider.System);// CureentUser için eklendi
        
 
-       
+       services.AddScoped<ISmsSettingsService, SmsSettingsService>();
         //services.AddScoped<IVisitRepository, VisitRepository>();
         var assembly = Assembly.GetExecutingAssembly();
        

@@ -26,12 +26,13 @@ public class User : Entity<Guid>
     public virtual ICollection<Notification> Notifications { get; set; } = null!;
 
 
-    public ICollection<Employee> Employees { get; set; }
-    public ICollection<Visit> Visits { get; set; }
-    public ICollection<Feedback> Feedbacks { get; set; }
-    public NotificationSettings NotificationSettings { get; set; }
-    public ICollection<SmsTemplate> SmsTemplates { get; set; }
-    public ICollection<Customer> Customers { get; set; }
+    public ICollection<Employee>? Visits { get; set; }
+    public ICollection<Feedback>? Feedbacks { get; set; }
+    public NotificationSettings? NotificationSettings { get; set; }   
+    public ICollection<Customer>? Customers { get; set; }
+    public ICollection<SmsSettings>? SmsSettingies { get; set; }
+    public ICollection<SmsCustomTemplate>? SmsCustomTemplates { get; set; }
+    public ICollection<Sms>? Smses { get; set; }
 
     // TODO: abonelik
 

@@ -1,6 +1,7 @@
 ﻿using Core.Persistence.Repositories;
 using Core.Security.Entities;
 using Domain.Entities;
+using S=Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
@@ -27,7 +28,10 @@ public class BaseDbContext : DbContext
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Feedback> Feedbacks { get; set; }
     public DbSet<NotificationSettings> NotificationSettings { get; set; }
-    public DbSet<SmsTemplate> SmsTemplates { get; set; }
+    public DbSet<Sms> Smses { get; set; }
+    public DbSet<S.SmsSettings> SmsSettingies { get; set; }
+    public DbSet<SmsDefaultTemplate> SmsDefaultTemplates { get; set; }
+    public DbSet<SmsCustomTemplate> SmsCustomTemplates { get; set; }
     public DbSet<Report> Reports { get; set; }
     public DbSet<VisitHistory> VisitHistories { get; set; }
     #endregion

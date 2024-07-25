@@ -578,7 +578,128 @@ namespace Persistence.Migrations
                     b.ToTable("Reports");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SmsTemplate", b =>
+            modelBuilder.Entity("Domain.Entities.Sms", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Smses");
+                });
+
+            modelBuilder.Entity("Domain.Entities.SmsCustomTemplate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SmsCustomTemplates");
+                });
+
+            modelBuilder.Entity("Domain.Entities.SmsDefaultTemplate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<int>("SmsEventType")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SmsDefaultTemplates");
+                });
+
+            modelBuilder.Entity("Domain.Entities.SmsSettings", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -599,13 +720,11 @@ namespace Persistence.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
-                    b.Property<string>("MessageTemplate")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<bool>("ProductIsReady")
+                        .HasColumnType("boolean");
 
-                    b.Property<string>("TemplateType")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<bool>("ProductReceived")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
@@ -617,7 +736,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("SmsTemplates");
+                    b.ToTable("SmsSettingies");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -850,7 +969,7 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Employee", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
-                        .WithMany("Employees")
+                        .WithMany("Visits")
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
@@ -917,10 +1036,34 @@ namespace Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SmsTemplate", b =>
+            modelBuilder.Entity("Domain.Entities.Sms", b =>
+                {
+                    b.HasOne("Domain.Entities.Customer", "Customer")
+                        .WithMany("Smses")
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("Smses")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.SmsCustomTemplate", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
-                        .WithMany("SmsTemplates")
+                        .WithMany("SmsCustomTemplates")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.SmsSettings", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("SmsSettingies")
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
@@ -952,7 +1095,7 @@ namespace Persistence.Migrations
                         .HasForeignKey("CustomerId");
 
                     b.HasOne("Domain.Entities.User", "User")
-                        .WithMany("Visits")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("Customer");
@@ -973,6 +1116,8 @@ namespace Persistence.Migrations
                 {
                     b.Navigation("Feedbacks");
 
+                    b.Navigation("Smses");
+
                     b.Navigation("Visits");
                 });
 
@@ -985,18 +1130,19 @@ namespace Persistence.Migrations
                 {
                     b.Navigation("Customers");
 
-                    b.Navigation("Employees");
-
                     b.Navigation("Feedbacks");
 
-                    b.Navigation("NotificationSettings")
-                        .IsRequired();
+                    b.Navigation("NotificationSettings");
 
                     b.Navigation("Notifications");
 
                     b.Navigation("RefreshTokens");
 
-                    b.Navigation("SmsTemplates");
+                    b.Navigation("SmsCustomTemplates");
+
+                    b.Navigation("SmsSettingies");
+
+                    b.Navigation("Smses");
 
                     b.Navigation("UserOperationClaims");
 

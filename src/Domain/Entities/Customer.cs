@@ -14,6 +14,7 @@ namespace Domain.Entities
         public ICollection<Visit> Visits { get; set; }
         public ICollection<Feedback> Feedbacks { get; set; }
         public User User { get; set; }
+        public ICollection<Sms>? Smses { get; set; }
 
     }
 }
