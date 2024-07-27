@@ -20,6 +20,7 @@ namespace Persistence.Authentication
         public string? Id => _httpContextAccessor.HttpContext?.User?.FindFirst("uid")?.Value ?? "Unknown";
         public string? LastName => _httpContextAccessor.HttpContext?.User?.FindFirst("sname")?.Value ?? "Unknown";
         public string? Email => _httpContextAccessor.HttpContext?.User?.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value ?? "Unknown";
+        public string? CompnanyName => _httpContextAccessor.HttpContext?.User?.FindFirst("companyName")?.Value ?? "Unknown";
 
         public IEnumerable<Claim>? Claims
         {

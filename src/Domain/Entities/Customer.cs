@@ -6,8 +6,8 @@ namespace Domain.Entities
     public class Customer: BaseEntity<Guid>
     {
        public Guid UserId { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
+        public string NameSurname { get; set; }
+        public string ProductName { get; set; }
         public string Phone { get; set; }
         public string Description { get; set; }
 

@@ -2,7 +2,6 @@
 using Core.Persistence.Repositories;
 using Domain.Dtos.SmsTemplate;
 using Domain.Entities;
-using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
 

@@ -78,6 +78,7 @@ public class JwtHelper : ITokenHelper
         //claims.AddName($"{user.FirstName} {user.LastName}");
         claims.Add(new Claim("fname", user.FirstName));
         claims.Add(new Claim("sname", user.LastName));
+        claims.Add(new Claim("companyName", user.CompanyName ?? "Unknown"));
         //claims.AddRoles(operationClaims.Select(c => c.Name).ToArray());
         if (operationClaims != null)
         {

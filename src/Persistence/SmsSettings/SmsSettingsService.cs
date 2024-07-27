@@ -3,6 +3,7 @@ using Application.Services.Repositories;
 using Application.Services.SmsService;
 using Application.Services.SmsSettings;
 using AutoMapper;
+using Domain.Entities;
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
@@ -13,21 +14,21 @@ namespace Persistence.SmsSettings
     public class SmsSettingsService : ISmsSettingsService
     {
         readonly BaseDbContext _context;
-        readonly IMapper _mapper;
+       
         readonly ISmsDefaultTemplateRepository _smsDefaulttemplateRepository;
         readonly ISmsCustomTemplateRepository _customTemplateRepository;
         readonly IUser _currentUser;
         readonly ISmsService _smsService;
-        
-
-        public SmsSettingsService(BaseDbContext context, IMapper mapper, ISmsDefaultTemplateRepository smsDefaulttemplateRepository, ISmsCustomTemplateRepository customTemplateRepository, ISmsService smsService, IUser currentUser)
+        readonly ISmsRepository _smsRepository;
+       
+        public SmsSettingsService(BaseDbContext context, ISmsDefaultTemplateRepository smsDefaulttemplateRepository, ISmsCustomTemplateRepository customTemplateRepository, IUser currentUser, ISmsService smsService, ISmsRepository smsRepository)
         {
-            _context = context;
-            _mapper = mapper;
+            _context = context;           
             _smsDefaulttemplateRepository = smsDefaulttemplateRepository;
-            _customTemplateRepository = customTemplateRepository;
-            _smsService = smsService;
+            _customTemplateRepository = customTemplateRepository;            
             _currentUser = currentUser;
+            _smsService = smsService;
+            _smsRepository = smsRepository;
         }
 
         public async Task<bool> SMSSettingsControlAsync(Guid? userId, SmsEventType eventType)
@@ -50,10 +51,8 @@ namespace Persistence.SmsSettings
                     sendSms = smsSettings.ProductIsReady;
                     break;
             }
-            if (!sendSms) return false;
-            //int eventTypeValue = (int)eventType; // buraya göre ayarla 
+            if (!sendSms) return false;           
             var template = await _customTemplateRepository.GetTemplateByUserIdAndNameAsync(userId, eventType.ToString()) ?? await _smsDefaulttemplateRepository.GetTemplateByNameAsync(eventType);
-            await _smsService.SendSms("5375092791",$"{template.Content} templati yakaladık.");
             return sendSms;
         }
     }
