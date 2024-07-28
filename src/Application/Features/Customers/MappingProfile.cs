@@ -1,5 +1,7 @@
 ﻿using Application.Features.Customers.Commands.Create;
+using Application.Features.Customers.Queries.CustomerGetAllByUser;
 using AutoMapper;
+using Core.Persistence.Paging;
 using Domain.Entities;
 
 namespace Application.Features.Customers
@@ -9,6 +11,8 @@ namespace Application.Features.Customers
         public MappingProfile()
         {
             CreateMap<Customer, CreateCustomerRequest>().ReverseMap();
+            CreateMap<Customer, CustomerGetAllByUserQueryResponse>().ReverseMap();
+
         }
     }
 }

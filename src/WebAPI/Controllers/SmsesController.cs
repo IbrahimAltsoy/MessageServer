@@ -1,4 +1,6 @@
 ﻿using Application.Features.Smses.Commands.CreatedSmsDelivery;
+using Application.Features.Smses.Queries.GetAll;
+using Application.Features.Smses.Queries.GetByCustomer;
 using Application.Features.Smses.Queries.GetByUser;
 using Domain.Dtos.Smses;
 using Microsoft.AspNetCore.Http;
@@ -17,19 +19,21 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
         [HttpGet("getAllSmsesByCustomerId")]
-        public async Task<IActionResult> GetAllSmsesByCustomerId()
+        public async Task<IActionResult> GetAllSmsesByCustomerId([FromQuery] GetSmsByCustomerQueryRequest request)
         {
-            return Ok();
+            IList<SmsGetDto> response = await Mediator.Send(request);
+            return Ok(response);
         }
         [HttpGet("getAllSmsesByTimePeriod")]
         public async Task<IActionResult> GetAllSmsesByTimePeriod()
         {
             return Ok();
         }
-        [HttpGet("getSms")]
-        public async Task<IActionResult> GetSms()
+        [HttpGet("getSms")]// burası sadece uygulama sahibine açılacak yani admin panelde olacak bu mobilde olmayacak
+        public async Task<IActionResult> GetSms([FromQuery]SmsGetAllQueryRequest request)
         {
-            return Ok();
+            IList<SmsGetDto> response = await Mediator.Send(request);
+            return Ok(response);
         }
         [HttpPost("createdSmsDelivery")]
         public async Task<IActionResult> CreatedSmsDelivery(CreatedSmsDeliveryCommandRequest request)

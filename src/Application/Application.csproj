@@ -22,7 +22,6 @@
   <ItemGroup>
     <Folder Include="Features\Employies\Commands\" />
     <Folder Include="Features\Employies\Queries\" />
-    <Folder Include="Features\Smses\Queries\GetByCustomer\" />
     <Folder Include="Features\VisitHistories\Commands\" />
     <Folder Include="Features\VisitHistories\Queries\" />
     <Folder Include="Features\Visits\Commands\" />
@@ -35,7 +34,6 @@
     <Folder Include="Features\SmsTemplates\Queries\" />
     <Folder Include="Features\Feedbacks\Commands\" />
     <Folder Include="Features\Feedbacks\Queries\" />
-    <Folder Include="Features\Customers\Queries\" />
   </ItemGroup>
 
 </Project>
