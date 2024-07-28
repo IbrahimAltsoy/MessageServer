@@ -1,4 +1,6 @@
 ﻿using Application.Features.Smses.Commands.CreatedSmsDelivery;
+using Application.Features.Smses.Queries.GetByUser;
+using Domain.Dtos.Smses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +11,10 @@ namespace WebAPI.Controllers
     public class SmsesController : BaseController
     {
         [HttpGet("getAllSmsesByUserId")]
-        public async Task<IActionResult> GetAllSmsesByUserId()
+        public async Task<IActionResult> GetAllSmsesByUserId([FromQuery]GetSmsByUserQueryRequest request)
         {
-            return Ok();
+            IList<SmsGetDto> response = await Mediator.Send(request);
+            return Ok(response);
         }
         [HttpGet("getAllSmsesByCustomerId")]
         public async Task<IActionResult> GetAllSmsesByCustomerId()

@@ -22,8 +22,7 @@
   <ItemGroup>
     <Folder Include="Features\Employies\Commands\" />
     <Folder Include="Features\Employies\Queries\" />
-    <Folder Include="Features\Smses\EventHandler\" />
-    <Folder Include="Features\Smses\Queries\" />
+    <Folder Include="Features\Smses\Queries\GetByCustomer\" />
     <Folder Include="Features\VisitHistories\Commands\" />
     <Folder Include="Features\VisitHistories\Queries\" />
     <Folder Include="Features\Visits\Commands\" />
