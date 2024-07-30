@@ -42,7 +42,7 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
         [HttpPost("createdSmsPrivateDays")]
-        public async Task<IActionResult> createdSmsPrivateDays()
+        public async Task<IActionResult> CreatedSmsPrivateDays()
         {
             return Ok();
         }

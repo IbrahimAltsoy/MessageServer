@@ -6,7 +6,7 @@ namespace Application.Features.Reports
     {
         public MappingProfile()
         {
-
+            
         }
     }
 }

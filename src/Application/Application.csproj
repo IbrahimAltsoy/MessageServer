@@ -29,7 +29,6 @@
     <Folder Include="Features\NotificationSettingies\Commands\" />
     <Folder Include="Features\NotificationSettingies\Queries\" />
     <Folder Include="Features\Reports\Commands\" />
-    <Folder Include="Features\Reports\Queries\" />
     <Folder Include="Features\SmsTemplates\Commands\" />
     <Folder Include="Features\SmsTemplates\Queries\" />
     <Folder Include="Features\Feedbacks\Commands\" />

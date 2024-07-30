@@ -105,7 +105,7 @@ app.UseSwagger(u =>
 app.UseSwaggerUI(opt =>
 {
     opt.DocExpansion(DocExpansion.None);
-    opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Yaser Mazlum");
+    opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Ibrahim Altsoy");
     opt.InjectStylesheet("/swagger-ui/SwaggerDark.css");
 });
 //}
