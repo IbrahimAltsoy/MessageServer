@@ -14,7 +14,6 @@ namespace Domain.Entities
         public string? Comments { get; set; }
         public Customer? Customer { get; set; }
         public User? User { get; set; }
-        public Visit? Visit { get; set; }
 
     }
 }

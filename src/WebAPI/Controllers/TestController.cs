@@ -53,12 +53,6 @@ namespace WebAPI.Controllers
             new SmsDefaultTemplate { SmsEventType = SmsEventType.ProductIsReady, Content = "Ürününüz teslim edilmek için hazırdır." },
         });
 
-            //Firma için özel SMS şablonları ekle
-            //    _dbContext.SmsCustomTemplates.AddRange(new List<SmsCustomTemplate>
-            //{
-            //    new SmsTemplate {  TemplateName = "ProductReceived", TemplateContent = "Firmamız ürünlerinizi teslim almıştır." },
-            //    new SmsTemplate {TemplateName = "AddedToDeliveryList", TemplateContent = "Ürünleriniz teslimat listesine eklenmiştir." }
-            //});
 
             await _dbContext.SaveChangesAsync();
 
@@ -72,13 +66,11 @@ namespace WebAPI.Controllers
             {
                 var smsSetting = new SmsSettings
                 {
-                    UserId = Guid.Parse("0fa73515-bc2d-46da-93ca-efb61eaee7b0"),
+                    UserId =(Guid)getUserIdFromRequest(),
                     ProductReceived = true,
                     ProductIsReady = true
                     
                 };
-
-                
 
                await _dbContext.SmsSettingies.AddAsync(smsSetting);
                 await _dbContext.SaveChangesAsync();

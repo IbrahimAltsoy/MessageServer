@@ -167,8 +167,8 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Surname = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    NameSurname = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    ProductName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Phone = table.Column<string>(type: "character varying(11)", maxLength: 11, nullable: false),
                     Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -309,9 +309,11 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: true),
-                    ReportType = table.Column<string>(type: "text", nullable: false),
-                    GeneratedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
+                    Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    CustomerListJson = table.Column<string>(type: "text", nullable: false),
+                    SmsCount = table.Column<int>(type: "integer", nullable: true),
+                    CustomerCount = table.Column<int>(type: "integer", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -324,31 +326,6 @@ namespace Persistence.Migrations
                     table.PrimaryKey("PK_Reports", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Reports_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SmsCustomTemplates",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Title = table.Column<string>(type: "text", nullable: false),
-                    Content = table.Column<string>(type: "text", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: true),
-                    DeletedBy = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SmsCustomTemplates", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SmsCustomTemplates_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id");
@@ -411,68 +388,6 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Smses",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Content = table.Column<string>(type: "text", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uuid", nullable: true),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: true),
-                    DeletedBy = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Smses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Smses_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Smses_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Visits",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uuid", nullable: true),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: true),
-                    NameSurname = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    Phone = table.Column<string>(type: "character varying(11)", maxLength: 11, nullable: false),
-                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: true),
-                    DeletedBy = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Visits", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Visits_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Visits_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Feedbacks",
                 columns: table => new
                 {
@@ -502,21 +417,16 @@ namespace Persistence.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Feedbacks_Visits_VisitId",
-                        column: x => x.VisitId,
-                        principalTable: "Visits",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "VisitHistories",
+                name: "Smses",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    VisitId = table.Column<Guid>(type: "uuid", nullable: true),
-                    StatusChangeTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    NewStatus = table.Column<string>(type: "text", nullable: false),
+                    Content = table.Column<string>(type: "text", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uuid", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -526,11 +436,16 @@ namespace Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VisitHistories", x => x.Id);
+                    table.PrimaryKey("PK_Smses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_VisitHistories_Visits_VisitId",
-                        column: x => x.VisitId,
-                        principalTable: "Visits",
+                        name: "FK_Smses_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Smses_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id");
                 });
 
@@ -555,11 +470,6 @@ namespace Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Feedbacks_VisitId",
-                table: "Feedbacks",
-                column: "VisitId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_NotificationSettings_UserId",
                 table: "NotificationSettings",
                 column: "UserId",
@@ -578,11 +488,6 @@ namespace Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Reports_UserId",
                 table: "Reports",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SmsCustomTemplates_UserId",
-                table: "SmsCustomTemplates",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -608,21 +513,6 @@ namespace Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_UserOperationClaims_UserId",
                 table: "UserOperationClaims",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_VisitHistories_VisitId",
-                table: "VisitHistories",
-                column: "VisitId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Visits_CustomerId",
-                table: "Visits",
-                column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Visits_UserId",
-                table: "Visits",
                 column: "UserId");
         }
 
@@ -660,9 +550,6 @@ namespace Persistence.Migrations
                 name: "Reports");
 
             migrationBuilder.DropTable(
-                name: "SmsCustomTemplates");
-
-            migrationBuilder.DropTable(
                 name: "SmsDefaultTemplates");
 
             migrationBuilder.DropTable(
@@ -675,16 +562,10 @@ namespace Persistence.Migrations
                 name: "UserOperationClaims");
 
             migrationBuilder.DropTable(
-                name: "VisitHistories");
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "OperationClaims");
-
-            migrationBuilder.DropTable(
-                name: "Visits");
-
-            migrationBuilder.DropTable(
-                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "Users");

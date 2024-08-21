@@ -22,10 +22,6 @@
   <ItemGroup>
     <Folder Include="Features\Employies\Commands\" />
     <Folder Include="Features\Employies\Queries\" />
-    <Folder Include="Features\VisitHistories\Commands\" />
-    <Folder Include="Features\VisitHistories\Queries\" />
-    <Folder Include="Features\Visits\Commands\" />
-    <Folder Include="Features\Visits\Queries\" />
     <Folder Include="Features\NotificationSettingies\Commands\" />
     <Folder Include="Features\NotificationSettingies\Queries\" />
     <Folder Include="Features\Reports\Commands\" />

@@ -30,8 +30,7 @@ public class User : Entity<Guid>
     public ICollection<Feedback>? Feedbacks { get; set; }
     public NotificationSettings? NotificationSettings { get; set; }   
     public ICollection<Customer>? Customers { get; set; }
-    public ICollection<SmsSettings>? SmsSettingies { get; set; }
-    public ICollection<SmsCustomTemplate>? SmsCustomTemplates { get; set; }
+    public ICollection<SmsSettings>? SmsSettingies { get; set; }    
     public ICollection<Sms>? Smses { get; set; }
 
     // TODO: abonelik

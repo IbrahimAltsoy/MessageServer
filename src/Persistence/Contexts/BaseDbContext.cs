@@ -24,16 +24,13 @@ public class BaseDbContext : DbContext
     #region
     
     public DbSet<Customer> Customers { get; set; }
-    public DbSet<Visit> Visits { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Feedback> Feedbacks { get; set; }
     public DbSet<NotificationSettings> NotificationSettings { get; set; }
     public DbSet<Sms> Smses { get; set; }
     public DbSet<S.SmsSettings> SmsSettingies { get; set; }
     public DbSet<SmsDefaultTemplate> SmsDefaultTemplates { get; set; }
-    public DbSet<SmsCustomTemplate> SmsCustomTemplates { get; set; }
     public DbSet<Report> Reports { get; set; }
-    public DbSet<VisitHistory> VisitHistories { get; set; }
     #endregion
 
     public BaseDbContext(DbContextOptions<BaseDbContext> dbContextOptions, IConfiguration configuration) : base(dbContextOptions)

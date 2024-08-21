@@ -15,17 +15,15 @@ namespace Persistence.SmsSettings
     {
         readonly BaseDbContext _context;
        
-        readonly ISmsDefaultTemplateRepository _smsDefaulttemplateRepository;
-        readonly ISmsCustomTemplateRepository _customTemplateRepository;
+        readonly ISmsDefaultTemplateRepository _smsDefaulttemplateRepository;       
         readonly IUser _currentUser;
         readonly ISmsService _smsService;
         readonly ISmsRepository _smsRepository;
        
-        public SmsSettingsService(BaseDbContext context, ISmsDefaultTemplateRepository smsDefaulttemplateRepository, ISmsCustomTemplateRepository customTemplateRepository, IUser currentUser, ISmsService smsService, ISmsRepository smsRepository)
+        public SmsSettingsService(BaseDbContext context, ISmsDefaultTemplateRepository smsDefaulttemplateRepository,  IUser currentUser, ISmsService smsService, ISmsRepository smsRepository)
         {
             _context = context;           
-            _smsDefaulttemplateRepository = smsDefaulttemplateRepository;
-            _customTemplateRepository = customTemplateRepository;            
+            _smsDefaulttemplateRepository = smsDefaulttemplateRepository; 
             _currentUser = currentUser;
             _smsService = smsService;
             _smsRepository = smsRepository;
@@ -52,7 +50,7 @@ namespace Persistence.SmsSettings
                     break;
             }
             if (!sendSms) return false;           
-            var template = await _customTemplateRepository.GetTemplateByUserIdAndNameAsync(userId, eventType.ToString()) ?? await _smsDefaulttemplateRepository.GetTemplateByNameAsync(eventType);
+            var template = await _smsDefaulttemplateRepository.GetTemplateByNameAsync(eventType);
             return sendSms;
         }
     }

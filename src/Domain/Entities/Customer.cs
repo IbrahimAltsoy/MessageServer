@@ -10,8 +10,7 @@ namespace Domain.Entities
         public string ProductName { get; set; }
         public string Phone { get; set; }
         public string Description { get; set; }
-
-        public ICollection<Visit> Visits { get; set; }
+       
         public ICollection<Feedback> Feedbacks { get; set; }
         public User User { get; set; }
         public ICollection<Sms>? Smses { get; set; }

@@ -258,8 +258,6 @@ namespace Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.HasIndex("VisitId");
-
                     b.ToTable("Feedbacks");
                 });
 
@@ -628,48 +626,6 @@ namespace Persistence.Migrations
                     b.ToTable("Smses");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SmsCustomTemplate", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("SmsCustomTemplates");
-                });
-
             modelBuilder.Entity("Domain.Entities.SmsDefaultTemplate", b =>
                 {
                     b.Property<Guid>("Id")
@@ -868,100 +824,6 @@ namespace Persistence.Migrations
                     b.ToTable("UserOperationClaims");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Visit", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("CustomerId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<string>("NameSurname")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("character varying(11)")
-                        .HasAnnotation("MinLength", 10);
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Visits");
-                });
-
-            modelBuilder.Entity("Domain.Entities.VisitHistory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<string>("NewStatus")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("StatusChangeTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("VisitId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VisitId");
-
-                    b.ToTable("VisitHistories");
-                });
-
             modelBuilder.Entity("Domain.Entities.Customer", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
@@ -992,15 +854,9 @@ namespace Persistence.Migrations
                         .WithMany("Feedbacks")
                         .HasForeignKey("UserId");
 
-                    b.HasOne("Domain.Entities.Visit", "Visit")
-                        .WithMany()
-                        .HasForeignKey("VisitId");
-
                     b.Navigation("Customer");
 
                     b.Navigation("User");
-
-                    b.Navigation("Visit");
                 });
 
             modelBuilder.Entity("Domain.Entities.Notification", b =>
@@ -1058,15 +914,6 @@ namespace Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SmsCustomTemplate", b =>
-                {
-                    b.HasOne("Domain.Entities.User", "User")
-                        .WithMany("SmsCustomTemplates")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Domain.Entities.SmsSettings", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
@@ -1095,37 +942,11 @@ namespace Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Visit", b =>
-                {
-                    b.HasOne("Domain.Entities.Customer", "Customer")
-                        .WithMany("Visits")
-                        .HasForeignKey("CustomerId");
-
-                    b.HasOne("Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.VisitHistory", b =>
-                {
-                    b.HasOne("Domain.Entities.Visit", "Visit")
-                        .WithMany("VisitHistories")
-                        .HasForeignKey("VisitId");
-
-                    b.Navigation("Visit");
-                });
-
             modelBuilder.Entity("Domain.Entities.Customer", b =>
                 {
                     b.Navigation("Feedbacks");
 
                     b.Navigation("Smses");
-
-                    b.Navigation("Visits");
                 });
 
             modelBuilder.Entity("Domain.Entities.OperationClaim", b =>
@@ -1145,8 +966,6 @@ namespace Persistence.Migrations
 
                     b.Navigation("RefreshTokens");
 
-                    b.Navigation("SmsCustomTemplates");
-
                     b.Navigation("SmsSettingies");
 
                     b.Navigation("Smses");
@@ -1154,11 +973,6 @@ namespace Persistence.Migrations
                     b.Navigation("UserOperationClaims");
 
                     b.Navigation("Visits");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Visit", b =>
-                {
-                    b.Navigation("VisitHistories");
                 });
 #pragma warning restore 612, 618
         }
