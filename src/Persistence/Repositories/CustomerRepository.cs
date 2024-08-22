@@ -13,10 +13,6 @@ namespace Persistence.Repositories
         {
         }
 
-        public async Task<Customer?> GetByPhoneNumberAsync(string phone)
-        {
-            var data = await Context.Customers.FirstOrDefaultAsync(x => x.Phone == phone);
-            return data;
-        }
+        
     }
 }

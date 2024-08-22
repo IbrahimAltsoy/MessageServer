@@ -41,7 +41,7 @@ namespace Application.Features.Customers.Commands.Create
                 throw new ArgumentException("Current user ID is not a valid GUID.");
             }
 
-            var existingCustomer = await _customerRepository.GetByPhoneNumberAsync(request.Phone);
+            var existingCustomer = await _settingsService.GetByPhoneNumberAsync(userId, request.Phone);
             if (existingCustomer != null)
             {
                 existingCustomer.NameSurname = request.NameSurname;
@@ -49,13 +49,34 @@ namespace Application.Features.Customers.Commands.Create
                 existingCustomer.Phone = request.Phone;
                 existingCustomer.Description = request.Description;
                 existingCustomer.UserId = userId;
+                
+                if (existingCustomer.Pointed==10)
+                {
+                    existingCustomer.Pointed = 0;
+                    bool sm = await _settingsService.SMSSettingsControlAsync(userId, Domain.Enums.SmsEventType.ProductReceived);
+                    if (sm)
+                    {
+                        string message = $"{request.ProductName} ürününüz indirimden yapaılacaktır. {_currentUser.CompnanyName}";
+                        await _smsService.SendSms(request.Phone, message);
+                        var sms = new Sms
+                        {
+                            Content = message,
+                            UserId = userId,
+                            CustomerId = existingCustomer.Id
+                        };
+                        await _smsRepository.AddAsync(sms);
+                    }
+
+
+                }
+                existingCustomer.Pointed += 1;
                 await _customerRepository.UpdateAsync(existingCustomer);
                
                bool sendSms = await _settingsService.SMSSettingsControlAsync(userId, Domain.Enums.SmsEventType.ProductReceived);
                 if(sendSms)
                 {
                     string message = $"{request.ProductName} ürünü teslim alınmıştır. {_currentUser.CompnanyName}";
-                    await _smsService.SendSms(request.Phone, message);
+                   // await _smsService.SendSms(request.Phone, message);
                     var sms = new Sms
                     {
                         Content = message,

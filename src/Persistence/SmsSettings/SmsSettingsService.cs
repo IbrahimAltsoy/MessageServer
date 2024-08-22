@@ -29,6 +29,12 @@ namespace Persistence.SmsSettings
             _smsRepository = smsRepository;
         }
 
+        public async Task<Customer?> GetByPhoneNumberAsync(Guid? userId, string phone)
+        {
+            var data = await _context.Customers.Include(x=>x.User).FirstOrDefaultAsync(x => x.Phone == phone && x.UserId==userId);
+            return data;
+        }
+
         public async Task<bool> SMSSettingsControlAsync(Guid? userId, SmsEventType eventType)
         {
             if (!Guid.TryParse(_currentUser.Id, out Guid id))

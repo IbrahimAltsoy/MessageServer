@@ -10,5 +10,6 @@ namespace Application.Features.Customers.Commands.Create
         public string ProductName { get; set; }
         public string Phone { get; set; }
         public string Description { get; set; }
+        
     }
 }

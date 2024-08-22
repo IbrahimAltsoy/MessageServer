@@ -10,6 +10,8 @@ namespace Domain.Entities
         public string ProductName { get; set; }
         public string Phone { get; set; }
         public string Description { get; set; }
+
+        public int? Pointed { get; set; } = 1;
        
         public ICollection<Feedback> Feedbacks { get; set; }
         public User User { get; set; }
