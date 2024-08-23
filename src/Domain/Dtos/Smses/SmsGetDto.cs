@@ -8,6 +8,7 @@ namespace Domain.Dtos.Smses
 {
     public class SmsGetDto
     {
+        public Guid? Id { get; set; }
         public string NameSurname { get; set; }
         public string ProductName { get; set; }
         public string Description { get; set; }

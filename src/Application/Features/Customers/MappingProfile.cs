@@ -1,5 +1,6 @@
 ﻿using Application.Features.Customers.Commands.Create;
 using Application.Features.Customers.Commands.Delete;
+using Application.Features.Customers.Commands.Update;
 using Application.Features.Customers.Queries.CustomerGetAllByUser;
 using Application.Features.Customers.Queries.CustomerGetById;
 using AutoMapper;
@@ -15,6 +16,8 @@ namespace Application.Features.Customers
             CreateMap<Customer, CustomerGetByIdQueryResponse>().ReverseMap();
             CreateMap<Customer, CustomerGetAllByUserQueryResponse>().ReverseMap();
             CreateMap<Customer, CreateCustomerRequest>().ReverseMap();
+            CreateMap<Customer, CustomerUpdateCommandRequest>().ReverseMap();
+            CreateMap<Customer, CustomerUpdateCommandResponse>().ReverseMap();
             CreateMap<Customer, CustomerDeleteCommandResponse>().ReverseMap();
            
 

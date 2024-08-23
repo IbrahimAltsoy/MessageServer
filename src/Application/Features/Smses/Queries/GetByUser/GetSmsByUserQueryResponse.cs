@@ -2,6 +2,7 @@
 {
     public class GetSmsByUserQueryResponse
     {
+        public Guid Id { get; set; }
         public string NameSurname { get; set; }
         public string ProductName { get; set; }
         public string Description { get; set; }

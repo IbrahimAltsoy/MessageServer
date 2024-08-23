@@ -12,13 +12,13 @@ namespace WebAPI.Controllers
     [ApiController]
     public class SmsesController : BaseController
     {
-        [HttpGet("getAllSmsesByUserId")]
+        [HttpGet("GetAllSmsesByUserId")]
         public async Task<IActionResult> GetAllSmsesByUserId([FromQuery]GetSmsByUserQueryRequest request)
         {
             IList<SmsGetDto> response = await Mediator.Send(request);
             return Ok(response);
         }
-        [HttpGet("getAllSmsesByCustomerId")]
+        [HttpGet("GetAllSmsesByCustomerId")]
         public async Task<IActionResult> GetAllSmsesByCustomerId([FromQuery] GetSmsByCustomerQueryRequest request)
         {
             IList<SmsGetDto> response = await Mediator.Send(request);
@@ -29,24 +29,24 @@ namespace WebAPI.Controllers
         {
             return Ok();
         }
-        [HttpGet("getSms")]// burası sadece uygulama sahibine açılacak yani admin panelde olacak bu mobilde olmayacak
+        [HttpGet("GetSms")]// burası sadece uygulama sahibine açılacak yani admin panelde olacak bu mobilde olmayacak
         public async Task<IActionResult> GetSms([FromQuery]SmsGetAllQueryRequest request)
         {
             IList<SmsGetDto> response = await Mediator.Send(request);
             return Ok(response);
         }
-        [HttpPost("createdSmsDelivery")]
+        [HttpPost("CreatedSmsDelivery")]
         public async Task<IActionResult> CreatedSmsDelivery(CreatedSmsDeliveryCommandRequest request)
         {
             CreatedSmsDeliveryCommandResponse response = await Mediator.Send(request);
             return Ok(response);
         }
-        [HttpPost("createdSmsPrivateDays")]
+        [HttpPost("CreatedSmsPrivateDays")]
         public async Task<IActionResult> CreatedSmsPrivateDays()
         {
             return Ok();
         }
-        [HttpPost("createdSmsHolidayDays")]
+        [HttpPost("CreatedSmsHolidayDays")]
         public async Task<IActionResult> CreatedSmsHolidayDays()
         {
             return Ok();

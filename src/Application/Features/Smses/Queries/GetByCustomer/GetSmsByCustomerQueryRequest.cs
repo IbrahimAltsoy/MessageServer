@@ -9,6 +9,6 @@ namespace Application.Features.Smses.Queries.GetByCustomer
     {
         public Guid CustomerId { get; set; }
         public TimePeriodType? TimePeriod { get; set; } = TimePeriodType.Daily;
-        public PageRequest PageRequest { get; set; }
+        public PageRequest? PageRequest { get; set; }
     }
 }

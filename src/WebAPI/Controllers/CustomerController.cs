@@ -1,5 +1,6 @@
 ﻿using Application.Features.Customers.Commands.Create;
 using Application.Features.Customers.Commands.Delete;
+using Application.Features.Customers.Commands.Update;
 using Application.Features.Customers.Queries.CustomerGetAllByUser;
 using Application.Features.Customers.Queries.CustomerGetById;
 using Application.Features.Customers.Queries.DeleteCustomerById;
@@ -38,10 +39,16 @@ namespace WebAPI.Controllers
             IList<CustomerGetAllByUserQueryResponse> response = await Mediator.Send(request);
             return Ok(response);
         }
-        [HttpPost("createCustomer")]
-        public async Task<IActionResult> Create(CreateCustomerRequest request)
+        [HttpPost("Create")]
+        public async Task<IActionResult> Create([FromBody]CreateCustomerRequest request)
         {
             CreateCustomerResponse response = await Mediator.Send(request);
+            return Ok(response);
+        }
+        [HttpPost("Update")]
+        public async Task<IActionResult> Update([FromBody]CustomerUpdateCommandRequest request)
+        {
+            CustomerUpdateCommandResponse response = await Mediator.Send(request);
             return Ok(response);
         }
         [HttpDelete("Delete")]

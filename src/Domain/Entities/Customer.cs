@@ -15,7 +15,7 @@ namespace Domain.Entities
        
         public ICollection<Feedback> Feedbacks { get; set; }
         public User User { get; set; }
-        public ICollection<Sms>? Smses { get; set; }
+        public ICollection<Sms>? Smses { get; set; } = new List<Sms>();
 
     }
 }
