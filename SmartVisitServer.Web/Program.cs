@@ -5,18 +5,17 @@ using Infrastructure;
 using Application.Abstract.Common;
 using Persistence.Authentication;
 using Core.Security;
+using SmartVisitServer.Web;
+using WebAPI;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IUser, CurrentUser>();
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddHttpClient();
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddADomainServices();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddSecurityServices();
+builder.Services.AddWebMvcServices(builder.Configuration);
 
 
 
@@ -30,15 +29,17 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=privacy}/{id?}");
 
+app.UseCors();
 app.Run();

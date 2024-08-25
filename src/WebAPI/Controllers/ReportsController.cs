@@ -6,24 +6,24 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]")]// silinen müşterileri de ekle ayrı olsun 
     [ApiController]
     public class ReportsController : BaseController
     {
-        [HttpGet("smsReports")]
+        [HttpGet("SmsReports")]
         public async Task<IActionResult> SmsReports([FromQuery]ReportSmsQueryRequest request)
         {
             ReportSmsQueryResponse response = await Mediator.Send(request);
             return Ok(response);
         }
-        [HttpGet("customerReports")]
+        [HttpGet("CustomerReports")]
         public async Task<IActionResult> CustomerReports([FromQuery]ReportCustomerQueryRequest request)
         {
             ReportCustomerQueryResponse response = await Mediator.Send(request);
 
             return Ok(response);
         }
-        [HttpPost("reportCustomerDetail")]
+        [HttpPost("ReportCustomerDetail")]
         public async Task<IActionResult> ReportCustomerDetail([FromQuery]ReportCustomerDetailQueryRequest request)
         {
             ReportCustomerDetailQueryResponse resposne = await Mediator.Send(request);
