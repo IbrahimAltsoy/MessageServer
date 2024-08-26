@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using Persistence.Authentication;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 
@@ -70,6 +71,16 @@ namespace SmartVisitServer.Web
             {
                 httpClient.BaseAddress = new Uri(configuration["APIs:SmartVisit"]);
                 httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+            })
+            .ConfigureHttpClient((serviceProvider, client) =>
+            {
+                var contextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
+                var token = contextAccessor.HttpContext?.Request.Cookies["JwtToken"];
+
+                if (!string.IsNullOrEmpty(token))
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
             });
 
             return services;

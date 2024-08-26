@@ -1,0 +1,49 @@
+﻿@model SmartVisitServer.Web.Models.Paginate.PagedList<Application.Features.Customers.Queries.CustomerGetAllByUser.CustomerGetAllByUserQueryResponse>
+
+@{
+    ViewBag.Title = "Müşteri Listesi";
+}
+
+<h2>Müşteri Listesi</h2>
+
+@if (Model.Items != null && Model.Items.Count > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Ad Soyad</th>
+                <th>Telefon</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in Model.Items)
+            {
+                <tr>
+                    <td>@customer.NameSurname</td>
+                    <td>@customer.Phone</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+       
+    <div class="pagination">
+        @if (Model.CurrentPage > 1)
+        {
+            <a href="@Url.Action("Customers", new { page = Model.CurrentPage - 1, pageSize = Model.PageSize })">Önceki</a>
+        }
+
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <a href="@Url.Action("Customers", new { page = i, pageSize = Model.PageSize })" class="@(Model.CurrentPage == i ? "active" : "")">@i</a>
+        }
+
+        @if (Model.CurrentPage < Model.TotalPages)
+        {
+            <a href="@Url.Action("Customers", new { page = Model.CurrentPage + 1, pageSize = Model.PageSize })">Sonraki</a>
+        }
+    </div>
+}
+else
+{
+    <p>Hiç müşteri bulunamadı.</p>
+}
