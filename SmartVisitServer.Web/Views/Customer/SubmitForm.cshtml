@@ -1,0 +1,36 @@
+﻿@model CustomerModel
+@{
+    ViewData["Title"] = "SubmitForm";
+}
+
+<h1>SubmitForm</h1>
+<form method="post" action="/form/submit">
+    <input type="hidden" name="Id" value="@Model.Id" />
+
+    <div>
+        <label for="NameSurname">Ad Soyad:</label>
+        <input type="text" id="NameSurname" name="NameSurname" value="@Model.NameSurname" required />
+    </div>
+   
+    <div>
+        <label for="ProductName"> Ürün ismi:</label>
+        <input type="text" id="ProductName" name="ProductName" value="@Model.ProductName" required />
+    </div>
+    <div>
+        <label for="Phone">Telefon:</label>
+        <input type="text" id="Phone" name="Phone" value="@Model.Phone" required />
+    </div>
+    <div>
+        <label for="Description">Açıklama</label>
+        <input type="text" id="Description" name="Description" value="@Model.Description" required />
+    </div>
+    <div>
+       
+        <input type="hidden" id="UserId" name="UserId" value="@Model.Id" required />
+    </div>
+
+    <div>
+        <button type="submit">Gönder</button>
+    </div>
+</form>
+

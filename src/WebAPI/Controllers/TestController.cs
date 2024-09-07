@@ -1,11 +1,13 @@
 ﻿using Application.Services.Repositories;
 using Application.Services.SmsSettings;
+using Application.Services.UserService;
 using Domain.Entities;
 using Domain.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
+using Persistence.Repositories;
 
 namespace WebAPI.Controllers
 {
@@ -16,12 +18,15 @@ namespace WebAPI.Controllers
         readonly BaseDbContext _dbContext;
         readonly ISmsSettingsService _smsSettingsService;
         readonly ISmsDefaultTemplateRepository _defaultTemplateRepository;
+        readonly IUserRepository _userRepository;
 
-        public TestController(BaseDbContext dbContext, ISmsSettingsService smsSettingsService, ISmsDefaultTemplateRepository defaultTemplateRepository)
+        public TestController(BaseDbContext dbContext, ISmsSettingsService smsSettingsService, ISmsDefaultTemplateRepository defaultTemplateRepository, IUserRepository userRepository)
         {
             _dbContext = dbContext;
             _smsSettingsService = smsSettingsService;
             _defaultTemplateRepository = defaultTemplateRepository;
+            _userRepository = userRepository;
+
         }
         [HttpGet]
         public async Task<IActionResult> SmsGönder([FromQuery] SmsEventType smsEventType)
@@ -78,6 +83,7 @@ namespace WebAPI.Controllers
             return Ok("Veriler başarıyla eklendi.");
 
         }
+        
     }
 
 }

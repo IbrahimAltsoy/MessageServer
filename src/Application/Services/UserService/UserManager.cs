@@ -1,5 +1,9 @@
 ﻿using Application.Services.Repositories;
 using Domain.Entities;
+using QRCoder;
+using System.Drawing;
+using System.Drawing.Imaging;
+
 
 namespace Application.Services.UserService;
 
@@ -10,6 +14,15 @@ public class UserManager : IUserService
     public UserManager(IUserRepository userRepository)
     {
         _userRepository = userRepository;
+    }
+
+    public async Task<string> GenerateQrCodeAsync(string formUrl)
+    {
+        var qrGenerator = new QRCodeGenerator();
+        var qrCodeData = qrGenerator.CreateQrCode(formUrl, QRCodeGenerator.ECCLevel.Q);
+        var qrCode = new PngByteQRCode(qrCodeData);
+        byte[] qrCodeBytes = qrCode.GetGraphic(20);
+        return Convert.ToBase64String(qrCodeBytes); // Base64 string olarak döndür
     }
 
     public async Task<User?> GetByEmail(string email)

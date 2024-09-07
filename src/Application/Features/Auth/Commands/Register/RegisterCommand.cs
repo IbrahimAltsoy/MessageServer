@@ -1,6 +1,8 @@
-﻿using Application.Features.Auth.Rules;
+﻿using Application.Abstract.Common;
+using Application.Features.Auth.Rules;
 using Application.Services.MailSenderService;
 using Application.Services.Repositories;
+using Application.Services.UserService;
 using Core.Application.Dtos;
 using Core.Security.EmailAuthenticator;
 using Core.Security.Hashing;
@@ -23,13 +25,15 @@ public class RegisterCommand : IRequest
         private readonly IMailSenderService _mailSenderService;
         private readonly IEmailAuthenticatorHelper _emailAuthenticatorHelper;
         private readonly IEmailVerificationTokenRepository _emailVerificationTokenRepository;
+        private readonly IUserService _userService;
 
         public RegisterCommandHandler(
             IUserRepository userRepository,
             IMailSenderService mailSenderService,
             AuthBusinessRules authBusinessRules,
             IEmailVerificationTokenRepository emailVerificationTokenRepository,
-            IEmailAuthenticatorHelper emailAuthenticatorHelper
+            IEmailAuthenticatorHelper emailAuthenticatorHelper,
+            IUserService userService
             )
         {
             _userRepository = userRepository;
@@ -37,6 +41,7 @@ public class RegisterCommand : IRequest
             _mailSenderService = mailSenderService;
             _emailAuthenticatorHelper = emailAuthenticatorHelper;
             _emailVerificationTokenRepository = emailVerificationTokenRepository;
+            _userService = userService;
         }
 
         public async Task Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -46,19 +51,35 @@ public class RegisterCommand : IRequest
             byte[] passwordHash, passwordSalt;
 
             HashingHelper.CreatePasswordHash(request.UserForRegisterDto.Password, out passwordHash, out passwordSalt);
-            User newUser =
-                new()
-                {
-                    Email = request.UserForRegisterDto.Email,
-                    FirstName = request.UserForRegisterDto.FirstName,
-                    LastName = request.UserForRegisterDto.LastName,
-                    PasswordHash = passwordHash,
-                    PasswordSalt = passwordSalt,
-                    UserStatus = UserStatus.Passive,
-                };
 
+            // Kullanıcıyı geçici QR kodu ile oluştur
+            User newUser = new()
+            {
+                Email = request.UserForRegisterDto.Email,
+                FirstName = request.UserForRegisterDto.FirstName,
+                LastName = request.UserForRegisterDto.LastName,
+                QRCode = null, // Geçici QR kodu veya null
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                UserStatus = UserStatus.Passive,
+            };
+
+            // Kullanıcıyı veritabanına ekle
             User createdUser = await _userRepository.AddAsync(newUser);
 
+            // Kullanıcının Id'sini al
+            var userId = newUser.Id;
+
+            // QR kodunu oluşturun ve kullanıcıyı güncelleyin
+            var qrCodeUrl = $"http://localhost:7030/Customer/Form/{userId}";
+            var qrCode = await _userService.GenerateQrCodeAsync(qrCodeUrl);
+
+            createdUser.QRCode = qrCode;
+
+            // Kullanıcıyı QR koduyla güncelle
+            await _userRepository.UpdateAsync(createdUser);
+
+            // Email aktivasyon anahtarını oluşturun
             string verificationToken = await _emailAuthenticatorHelper.CreateEmailActivationKey();
 
             EmailVerificationToken token = new()
@@ -67,9 +88,11 @@ public class RegisterCommand : IRequest
                 Expires = DateTime.UtcNow.AddDays(7),
                 Token = verificationToken
             };
+
             EmailVerificationToken createdToken = await _emailVerificationTokenRepository.AddAsync(token);
 
             await _mailSenderService.NewUserMail(createdUser, createdToken);
         }
+
     }
 }

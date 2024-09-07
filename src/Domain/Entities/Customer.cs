@@ -10,6 +10,7 @@ namespace Domain.Entities
         public string ProductName { get; set; }
         public string Phone { get; set; }
         public string Description { get; set; }
+        //public string? QRCode { get; set; }
 
         public int? Pointed { get; set; } = 1;
        
