@@ -2,7 +2,9 @@
 using Application.Features.Auth.Commands.EnableEmailAuthenticator;
 using Application.Features.Auth.Commands.EnableOtpAuthenticator;
 using Application.Features.Auth.Commands.Login;
+using Application.Features.Auth.Commands.LoginPhone;
 using Application.Features.Auth.Commands.PasswordReset;
+using Application.Features.Auth.Commands.PhoneRegister;
 using Application.Features.Auth.Commands.RefleshToken;
 using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.RevokeToken;
@@ -37,6 +39,19 @@ public class AuthController : BaseController
             setRefreshTokenToCookie(result.AccessToken.RefreshToken);
 
         return Ok(result.ToHttpResponse());
+    }
+    [HttpPost("LoginPhone")]
+    public async Task<IActionResult> LoginPhone([FromBody] LoginPhoneRequest request)
+    {
+        request.IPAddress = getIpAddress();
+        LoginPhoneResponse response = await Mediator.Send(request);
+        return Ok(response);
+    }
+    [HttpPost("RegisterPhone")]
+    public async Task<IActionResult> RegisterPhone([FromBody]PhoneRegisterRequest request)
+    {
+        PhoneRegisterResponse response = await Mediator.Send(request);
+        return Ok(response);
     }
 
     /// <summary>

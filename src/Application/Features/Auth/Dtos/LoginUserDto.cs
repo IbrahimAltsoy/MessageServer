@@ -6,6 +6,7 @@ public class LoginUserDto
     public string Email { get; set; }
     public string Name { get; set; }
 
+
     public LoginUserDto(Guid id, string email, string name)
     {
         Id = id;

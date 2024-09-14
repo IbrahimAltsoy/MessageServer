@@ -37,6 +37,12 @@ public class UserManager : IUserService
         return user;
     }
 
+    public async Task<User> GetByPhone(string phone)
+    {
+        User? user = await _userRepository.GetAsync(u=>u.Phone== phone);
+        return user;
+    }
+
     public async Task<User> Update(User user)
     {
         User updatedUser = await _userRepository.UpdateAsync(user);
