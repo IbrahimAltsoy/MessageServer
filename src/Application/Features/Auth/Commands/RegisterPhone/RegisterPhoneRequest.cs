@@ -2,7 +2,7 @@
 
 namespace Application.Features.Auth.Commands.PhoneRegister
 {
-    public class PhoneRegisterRequest:IRequest<PhoneRegisterResponse>
+    public class RegisterPhoneRequest:IRequest<RegisterPhoneResponse>
     {
         public string Phone { get; set; }
         public string Password { get; set; }

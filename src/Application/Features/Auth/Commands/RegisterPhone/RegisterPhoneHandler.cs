@@ -12,7 +12,7 @@ using MediatR;
 
 namespace Application.Features.Auth.Commands.PhoneRegister
 {
-    public class PhoneRegisterHandler : IRequestHandler<PhoneRegisterRequest, PhoneRegisterResponse>
+    public class RegisterPhoneHandler : IRequestHandler<RegisterPhoneRequest, RegisterPhoneResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly AuthBusinessRules _authBusinessRules;
@@ -23,7 +23,7 @@ namespace Application.Features.Auth.Commands.PhoneRegister
         private readonly IPhoneVerificationTokenRepository _phoneVerificationTokenRepository;
         private readonly IUserService _userService;
 
-        public PhoneRegisterHandler(
+        public RegisterPhoneHandler(
             IUserRepository userRepository, 
             AuthBusinessRules authBusinessRules, 
             IMailSenderService mailSenderService, 
@@ -43,16 +43,10 @@ namespace Application.Features.Auth.Commands.PhoneRegister
             _userService = userService;
         }
 
-        public async Task<PhoneRegisterResponse> Handle(PhoneRegisterRequest request, CancellationToken cancellationToken)
+        public async Task<RegisterPhoneResponse> Handle(RegisterPhoneRequest request, CancellationToken cancellationToken)
         {
-            //await _authBusinessRules.UserEmailShouldBeNotExists(request.Email);
-            // buraya bir BusinessRole ekle telefon numarası olup olmadığını kontrol ettir.
-
             byte[] passwordHash, passwordSalt;
-
             HashingHelper.CreatePasswordHash(request.Password, out passwordHash, out passwordSalt);
-
-            // Kullanıcıyı geçici QR kodu ile oluştur
             User newUser = new()
             {
                 Phone = request.Phone,
@@ -79,13 +73,10 @@ namespace Application.Features.Auth.Commands.PhoneRegister
                 UserId = userId,
                 Expires = DateTime.UtcNow.AddDays(7),
                 Token = verificationToken
-
-
             };
             PhoneVerificationToken phoneVerificationToken = await _phoneVerificationTokenRepository.AddAsync(token);
 
-            //await _mailSenderService.NewUserMail(createdUser, createdToken);
-            return new PhoneRegisterResponse()
+            return new RegisterPhoneResponse()
             {
                 Code = verificationToken
             };

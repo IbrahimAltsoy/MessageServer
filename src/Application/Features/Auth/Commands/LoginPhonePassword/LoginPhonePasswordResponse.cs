@@ -4,7 +4,7 @@ using Domain.Enums;
 
 namespace Application.Features.Auth.Commands.LoginPhone
 {
-    public class LoginPhoneResponse
+    public class LoginPhonePasswordResponse
     {
         public AccessToken? AccessToken { get; set; }
         public LoginPhoneUserDto? User { get; set; }

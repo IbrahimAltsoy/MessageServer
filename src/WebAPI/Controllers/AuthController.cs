@@ -1,4 +1,5 @@
-﻿using Application.Features.Auth.Commands.EmailActivationCodeReSend;
+﻿using Application.Features.Auth.Commands.CreatePhoneCode;
+using Application.Features.Auth.Commands.EmailActivationCodeReSend;
 using Application.Features.Auth.Commands.EnableEmailAuthenticator;
 using Application.Features.Auth.Commands.EnableOtpAuthenticator;
 using Application.Features.Auth.Commands.Login;
@@ -7,6 +8,7 @@ using Application.Features.Auth.Commands.PasswordReset;
 using Application.Features.Auth.Commands.PhoneRegister;
 using Application.Features.Auth.Commands.RefleshToken;
 using Application.Features.Auth.Commands.Register;
+using Application.Features.Auth.Commands.RegisterPhoneCode;
 using Application.Features.Auth.Commands.RevokeToken;
 using Application.Features.Auth.Commands.VerifyEmail;
 using Application.Features.Auth.Commands.VerifyEmailAuthenticator;
@@ -40,17 +42,30 @@ public class AuthController : BaseController
 
         return Ok(result.ToHttpResponse());
     }
-    [HttpPost("LoginPhone")]
-    public async Task<IActionResult> LoginPhone([FromBody] LoginPhoneRequest request)
+    [HttpPost("LoginPhonePassword")]
+    public async Task<IActionResult> LoginPhonePassword([FromBody] LoginPhonePasswordRequest request)
     {
         request.IPAddress = getIpAddress();
-        LoginPhoneResponse response = await Mediator.Send(request);
+        LoginPhonePasswordResponse response = await Mediator.Send(request);
+        return Ok(response);
+    }
+    [HttpPost("CreatePhoneCode")]
+    public async Task<IActionResult> CreatePhoneCode([FromBody] CreatePhoneCodeRequest request)
+    {       
+        CreatePhoneCodeResponse response = await Mediator.Send(request);
+        return Ok(response);
+    }
+    [HttpPost("LoginPhoneCode")]
+    public async Task<IActionResult> LoginPhoneCode([FromBody] LoginPhoneCodeRequest request)
+    {
+        request.IPAddress = getIpAddress();
+        LoginPhoneCodeResponse response = await Mediator.Send(request);
         return Ok(response);
     }
     [HttpPost("RegisterPhone")]
-    public async Task<IActionResult> RegisterPhone([FromBody]PhoneRegisterRequest request)
+    public async Task<IActionResult> RegisterPhone([FromBody]RegisterPhoneRequest request)
     {
-        PhoneRegisterResponse response = await Mediator.Send(request);
+        RegisterPhoneResponse response = await Mediator.Send(request);
         return Ok(response);
     }
 

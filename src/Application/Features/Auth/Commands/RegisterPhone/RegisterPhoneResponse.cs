@@ -3,7 +3,7 @@ using Core.Security.JWT;
 
 namespace Application.Features.Auth.Commands.PhoneRegister
 {
-    public class PhoneRegisterResponse
+    public class RegisterPhoneResponse
     {
         public string Code { get; set; }
     }

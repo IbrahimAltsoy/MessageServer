@@ -11,7 +11,7 @@ public class MappingProfiles : Profile
     public MappingProfiles()
     {
         CreateMap<RefreshToken, RevokedTokenResponse>().ReverseMap();
-        CreateMap<User, PhoneRegisterRequest>().ReverseMap();
+        CreateMap<User, RegisterPhoneRequest>().ReverseMap();
         CreateMap<User, LoginPhoneUserDto>().ReverseMap();
     }
 }
