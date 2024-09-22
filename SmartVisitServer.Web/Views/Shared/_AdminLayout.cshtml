@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+@await Component.InvokeAsync("_Head")
+<body>
+
+    <div class="wrapper">
+        @await Component.InvokeAsync("_Sidebar")
+        <div class="main-panel">
+            @await Component.InvokeAsync("_Mainheader")
+            <div class="container">
+                <div class="page-inner">
+                    @await Component.InvokeAsync("_Mainpanel")
+                    @RenderBody()
+                    </div>
+                </div>
+            @await Component.InvokeAsync("_Footer")
+            </div>
+           
+        </div>
+   
+    @await Component.InvokeAsync("_Scripttemplate")
+    @*  <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script> *@
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
