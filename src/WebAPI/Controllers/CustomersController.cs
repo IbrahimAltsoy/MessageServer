@@ -12,7 +12,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomerController : BaseController
+    public class CustomersController : BaseController
     {
         [HttpGet("Customer")]
         public async Task<IActionResult> Customer([FromQuery] CustomerGetByIdQueryRequest request)

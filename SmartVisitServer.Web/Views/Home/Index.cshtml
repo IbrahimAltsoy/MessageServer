@@ -6,27 +6,7 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <h1>Customers</h1>
+    <h1>Dashboard</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <!-- Diğer sütunlar -->
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var customer in Model)
-            {
-                <tr>
-                    
-                    <td>@customer.NameSurname</td>
-                    <td>@customer.Phone</td>
-                    <!-- Diğer sütunlar -->
-                </tr>
-            }
-        </tbody>
-    </table>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+   
 </div>

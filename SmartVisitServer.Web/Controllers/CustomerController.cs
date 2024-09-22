@@ -15,7 +15,7 @@ namespace SmartVisitServer.Web.Controllers
     public class CustomerController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly string _apiUrl = "http://localhost:5011/api/Customer";
+        private readonly string _apiUrl = "http://localhost:5011/api/Customers";
         private readonly IUserRepository _userRepository; 
         private readonly ICustomerRepository _customerRepository;
 
@@ -100,9 +100,6 @@ namespace SmartVisitServer.Web.Controllers
                 UserId = user.Id,
             };
             await _customerRepository.AddAsync(customer);
-           
-
-
             return RedirectToAction("Home"); // Başarı sayfasına yönlendir
         }
 

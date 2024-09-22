@@ -3,7 +3,7 @@
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
             <a href="index.html" class="logo">
-                <img src="assets/img/kaiadmin/logo_light.svg"
+                <img src="~/assets/img/kaiadmin/logo_light.svg"
                      alt="navbar brand"
                      class="navbar-brand"
                      height="20" />
@@ -26,10 +26,10 @@
         <div class="sidebar-content">
             <ul class="nav nav-secondary">
                 <li class="nav-item active">
-                    <a data-bs-toggle="collapse"
-                       href="#dashboard"
-                       class="collapsed"
-                       aria-expanded="false">
+                    <a 
+                       href="/Home/Index"
+                       
+                       >
                         <i class="fas fa-home"></i>
                         <p>Anasayfa</p>
                         <span class="caret"></span>
@@ -44,31 +44,37 @@
                     </ul>
                     </div> *@
                 </li>
+                <li class="nav-item">
+                    <a href="/User/Index">
+                        <i class="fas fa-users"></i>
+                        <p>Şirket</p>
+                    </a>
 
+                </li>
 
                 <li class="nav-item">
-                    <a href="#base">
+                    <a href="/Customer/Customers">
                         <i class="fas fa-users"></i>
                         <p>Müşteri</p>
                     </a>
 
                 </li>
                 <li class="nav-item">
-                    <a href="#base">
+                    <a href="/Sms/Index">
                         <i class="fas fa-check-circle"></i>
                         <p>Sms</p>
                     </a>
 
                 </li>
                 <li class="nav-item">
-                    <a href="#base">
+                    <a href="/Report/Index">
                         <i class="fa fa-print"></i>
                         <p>Rapor</p>
                     </a>
 
                 </li>
                 <li class="nav-item">
-                    <a href="#base">
+                    <a href="/Setting/Index">
                         <i class="fas fa-pen-square"></i>
                         <p>Ayarlar</p>
                     </a>
