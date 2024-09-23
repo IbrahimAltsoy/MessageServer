@@ -31,6 +31,9 @@ public class BaseDbContext : DbContext
     public DbSet<S.SmsSettings> SmsSettingies { get; set; }
     public DbSet<SmsDefaultTemplate> SmsDefaultTemplates { get; set; }
     public DbSet<Report> Reports { get; set; }
+    public DbSet<Membership> Memberships { get; set; }
+    public DbSet<MembershipPackage> MembershipPackages { get; set; }
+    public DbSet<AppSetting> AppSettings { get; set; }
     #endregion
 
     public BaseDbContext(DbContextOptions<BaseDbContext> dbContextOptions, IConfiguration configuration) : base(dbContextOptions)
