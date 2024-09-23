@@ -22,9 +22,9 @@ namespace Application.Features.Panel.Queries
             if (users==null) return new();
             return new UserTotalPasifAndActiveQueryResponse()
             {
-                ActiveUser = users.Count,
-                PasifUser = users.Count,
-                TotalUser = users.Count,
+                ActiveUser = users.Where(x => x.Active != false).Count(),
+                PasifUser = users.Where(x=>x.Active==false).Count(),
+                TotalUser = users.Count(),
             };
 
 

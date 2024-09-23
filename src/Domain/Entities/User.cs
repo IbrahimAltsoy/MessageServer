@@ -13,6 +13,7 @@ public class User : Entity<Guid>
     public string? IbanNumber { get; set; }
     public string? Adress { get; set; }
     public string? LogoUrl { get; set; }
+    public bool? Active { get; set; }
     public int? AmountOfSms { get; set; }
     public DateTime? EmailVerified { get; set; }
     public string? Phone { get; set; }
@@ -25,7 +26,7 @@ public class User : Entity<Guid>
     public virtual ICollection<UserOperationClaim> UserOperationClaims { get; set; } = null!;
     public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = null!;
     public virtual ICollection<Notification> Notifications { get; set; } = null!;
-
+    public virtual Membership Membership { get; set; } = null!;
 
     public ICollection<Employee>? Visits { get; set; }
     public ICollection<Feedback>? Feedbacks { get; set; }

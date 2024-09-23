@@ -1,6 +1,7 @@
 ﻿using Application.Abstract.Common;
 using Application.Features.Auth.Rules;
 using Application.Services.MailSenderService;
+using Application.Services.MembershipServices;
 using Application.Services.Repositories;
 using Application.Services.UserService;
 using Core.Application.Dtos;
@@ -26,6 +27,8 @@ public class RegisterCommand : IRequest
         private readonly IEmailAuthenticatorHelper _emailAuthenticatorHelper;
         private readonly IEmailVerificationTokenRepository _emailVerificationTokenRepository;
         private readonly IUserService _userService;
+        private readonly IMembershipService _membershipService;
+        //private readonly IOperationClaimService _operationClaimService;
 
         public RegisterCommandHandler(
             IUserRepository userRepository,
@@ -33,7 +36,8 @@ public class RegisterCommand : IRequest
             AuthBusinessRules authBusinessRules,
             IEmailVerificationTokenRepository emailVerificationTokenRepository,
             IEmailAuthenticatorHelper emailAuthenticatorHelper,
-            IUserService userService
+            IUserService userService,
+            IMembershipService membershipService
             )
         {
             _userRepository = userRepository;
@@ -42,6 +46,7 @@ public class RegisterCommand : IRequest
             _emailAuthenticatorHelper = emailAuthenticatorHelper;
             _emailVerificationTokenRepository = emailVerificationTokenRepository;
             _userService = userService;
+            _membershipService = membershipService;
         }
 
         public async Task Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -66,6 +71,7 @@ public class RegisterCommand : IRequest
 
             // Kullanıcıyı veritabanına ekle
             User createdUser = await _userRepository.AddAsync(newUser);
+            await _membershipService.CreateMembershipAsync(createdUser.Id);// Register olduğunda üyelik eklesin
 
             // Kullanıcının Id'sini al
             var userId = newUser.Id;
