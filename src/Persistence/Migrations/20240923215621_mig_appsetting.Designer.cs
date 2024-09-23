@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Persistence.Contexts;
@@ -11,9 +12,11 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    partial class BaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240923215621_mig_appsetting")]
+    partial class mig_appsetting
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -323,21 +326,18 @@ namespace Persistence.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("LastDay")
-                        .IsRequired()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
                     b.Property<int?>("SmsCount")
-                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("UserId")
-                        .IsRequired()
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -354,7 +354,6 @@ namespace Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<int?>("AddDay")
-                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<int?>("CompanyCount")
@@ -385,14 +384,12 @@ namespace Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<decimal?>("Price")
                         .HasColumnType("numeric");
 
                     b.Property<int?>("SmsCount")
-                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedDate")
@@ -1008,9 +1005,7 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
