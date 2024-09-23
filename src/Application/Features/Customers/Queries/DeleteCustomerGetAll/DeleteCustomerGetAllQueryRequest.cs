@@ -9,5 +9,6 @@ namespace Application.Features.Customers.Queries.DeleteCustomerGetAll
     {
         public TimePeriodType? TimePeriod { get; set; } = TimePeriodType.Daily;
         public PageRequest PageRequest { get; set; }
+        
     }
 }

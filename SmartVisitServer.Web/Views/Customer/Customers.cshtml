@@ -11,9 +11,13 @@
 {
     <table class="table table-striped">
         <thead>
+           
             <tr>
                 <th>Ad Soyad</th>
                 <th>Telefon</th>
+                <th>Ekle</th>
+                <th>Güncelle</th>
+                <th>Sil</th>
             </tr>
         </thead>
         <tbody>
@@ -22,11 +26,15 @@
                 <tr>
                     <td>@customer.NameSurname</td>
                     <td>@customer.Phone</td>
+                    <td><btn class="btn btn-primary">+</btn></td>
+                    <td><btn class="btn btn-success">+</btn></td>
+                    <td><btn class="btn btn-warning">+</btn></td>
                 </tr>
             }
+           
         </tbody>
-    </table>
        
+    </table>
     <div class="pagination">
         @if (Model.CurrentPage > 1)
         {
