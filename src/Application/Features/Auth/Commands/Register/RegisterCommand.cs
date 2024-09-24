@@ -2,6 +2,7 @@
 using Application.Features.Auth.Rules;
 using Application.Services.MailSenderService;
 using Application.Services.MembershipServices;
+using Application.Services.OperationClaimService;
 using Application.Services.Repositories;
 using Application.Services.UserService;
 using Core.Application.Dtos;
@@ -28,7 +29,7 @@ public class RegisterCommand : IRequest
         private readonly IEmailVerificationTokenRepository _emailVerificationTokenRepository;
         private readonly IUserService _userService;
         private readonly IMembershipService _membershipService;
-        //private readonly IOperationClaimService _operationClaimService;
+        private readonly IOperationClaimServices _operationClaimServices;
 
         public RegisterCommandHandler(
             IUserRepository userRepository,
@@ -37,7 +38,8 @@ public class RegisterCommand : IRequest
             IEmailVerificationTokenRepository emailVerificationTokenRepository,
             IEmailAuthenticatorHelper emailAuthenticatorHelper,
             IUserService userService,
-            IMembershipService membershipService
+            IMembershipService membershipService,
+            IOperationClaimServices operationClaimServices
             )
         {
             _userRepository = userRepository;
@@ -47,6 +49,7 @@ public class RegisterCommand : IRequest
             _emailVerificationTokenRepository = emailVerificationTokenRepository;
             _userService = userService;
             _membershipService = membershipService;
+            _operationClaimServices = operationClaimServices;
         }
 
         public async Task Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -71,6 +74,7 @@ public class RegisterCommand : IRequest
 
             // Kullanıcıyı veritabanına ekle
             User createdUser = await _userRepository.AddAsync(newUser);
+            await _operationClaimServices.RegisterUserSetUserClaimAsync(createdUser);
             await _membershipService.CreateMembershipAsync(createdUser.Id);// Register olduğunda üyelik eklesin
 
             // Kullanıcının Id'sini al
