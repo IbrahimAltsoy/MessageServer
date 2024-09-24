@@ -2,6 +2,9 @@
 
 public static class GeneralOperationClaims
 {
-    public const string Admin = "admin";
-    public const string User = "user";
+    public const string SuperAdmin = "SuperAdmin";
+    public const string Admin = "Admin";   
+    public const string User = "User";
+    public const string TemporaryUser = "TemporaryUser";
+    
 }

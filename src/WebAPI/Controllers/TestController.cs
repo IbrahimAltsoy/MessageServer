@@ -1,4 +1,5 @@
-﻿using Application.Services.Repositories;
+﻿using Application.Services.OperationClaimService;
+using Application.Services.Repositories;
 using Application.Services.SmsSettings;
 using Application.Services.UserService;
 using Domain.Entities;
@@ -19,14 +20,25 @@ namespace WebAPI.Controllers
         readonly ISmsSettingsService _smsSettingsService;
         readonly ISmsDefaultTemplateRepository _defaultTemplateRepository;
         readonly IUserRepository _userRepository;
-
-        public TestController(BaseDbContext dbContext, ISmsSettingsService smsSettingsService, ISmsDefaultTemplateRepository defaultTemplateRepository, IUserRepository userRepository)
+        readonly IOperationClaimServices _operationClaimServices;
+        public TestController(BaseDbContext dbContext, ISmsSettingsService smsSettingsService, ISmsDefaultTemplateRepository defaultTemplateRepository, IUserRepository userRepository, IOperationClaimServices operationClaimServices)
         {
             _dbContext = dbContext;
             _smsSettingsService = smsSettingsService;
             _defaultTemplateRepository = defaultTemplateRepository;
             _userRepository = userRepository;
+            _operationClaimServices = operationClaimServices;
 
+
+        }
+        [HttpPost("CreateClaim")]
+        public async Task<IActionResult> CreateClaim(Guid id, string roleName)
+        {
+            User? user = await _userRepository.GetAsync(x=>x.Id==id);
+
+            var roles = await _dbContext.UserOperationClaims.ToListAsync();
+          var str=  await _operationClaimServices.AddUserRoleIfNotExistsAsync(user, roleName);
+            return Ok(str);
         }
         [HttpGet]
         public async Task<IActionResult> SmsGönder([FromQuery] SmsEventType smsEventType)
@@ -82,6 +94,29 @@ namespace WebAPI.Controllers
             }
             return Ok("Veriler başarıyla eklendi.");
 
+        }
+        [HttpPost("AppSetting")]
+        public async Task<IActionResult> AppSetting()
+        {
+          var appSettings = new List<AppSetting>()
+            {
+              new AppSetting { Key ="ServerUTC", Value="+3"},
+              new AppSetting { Key ="RegisterNewUser", Value="true"},
+              new AppSetting { Key ="RegisterNewUserEmailVerification", Value="true"},
+              new AppSetting { Key ="ProductStore", Value="false"},
+              new AppSetting { Key ="Subscribers", Value="true"},
+              new AppSetting { Key ="SendSms", Value="true"},
+              new AppSetting { Key ="SendMail", Value="true"},
+              new AppSetting { Key ="NewCompanySmsCount", Value="20"},
+              new AppSetting { Key ="NewCompanyDayCount", Value="7"},
+              new AppSetting { Key ="NewCompanyCompanyCount", Value="1"},
+              new AppSetting { Key ="SmsReceivingOrder", Value="Sayın {customerName}, ürünleriniz {day} gün içerisinde alınacaktır."},
+               
+
+            };
+            await _dbContext.AppSettings.AddRangeAsync(appSettings);
+          await  _dbContext.SaveChangesAsync(true);
+            return Ok(appSettings);
         }
         
     }

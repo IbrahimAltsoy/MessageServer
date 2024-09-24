@@ -16,6 +16,7 @@ namespace Persistence.Services.AppSettingServices
         public async Task<string> GetParameterAsync(string key)
         {
             AppSetting? appSetting = await _appSettingRepository.GetAsync(c => c.Key == key);
+            if (appSetting == null) return "Ayar bulunamadı";
             return appSetting!.Value;
         }
 
