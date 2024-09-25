@@ -1,0 +1,17 @@
+﻿@model ConfirmEmailViewModel
+
+@{
+    ViewData["Title"] = "E-posta Doğrulama";
+    Layout = null;
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-controller="Auth" asp-action="ConfirmedEmail" method="get">
+    <div class="form-group">
+        <label asp-for="ActivationKey"></label>
+        <input asp-for="ActivationKey" class="form-control" />
+        <span asp-validation-for="ActivationKey" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">E-postayı Doğrula</button>
+</form>

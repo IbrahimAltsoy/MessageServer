@@ -44,8 +44,9 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> SmsGönder([FromQuery] SmsEventType smsEventType)
         {
           var users =  await _dbContext.Users.ToListAsync();
-          await  _smsSettingsService.SMSSettingsControlAsync(Guid.Parse("0fa73515-bc2d-46da-93ca-efb61eaee7b0"), smsEventType);
-            return Ok(users);
+            var id = (Guid)getUserIdFromRequest();
+        bool statu=  await  _smsSettingsService.SMSSettingsControlAsync(id, smsEventType);
+            return Ok(statu);
         }
         [HttpGet("template")]
         public async Task<IActionResult> Template([FromQuery]SmsEventType smsEventType)
