@@ -2,7 +2,6 @@
 using Core.Security.Encryption;
 using Core.Security.JWT;
 using Core.WebAPI.Extensions.Swagger;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
@@ -10,7 +9,6 @@ using Microsoft.OpenApi.Models;
 using Persistence.Authentication;
 using System.Net.Http.Headers;
 using System.Reflection;
-using System.Text;
 
 namespace SmartVisitServer.Web
 {
@@ -18,9 +16,7 @@ namespace SmartVisitServer.Web
     {
         public static IServiceCollection AddWebMvcServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddControllersWithViews();
-            services.AddScoped<IUser, CurrentUser>();
-            services.AddHttpContextAccessor();
+           
 
             const string tokenOptionsConfigurationSection = "TokenOptions";
             TokenOptions tokenOptions =
@@ -39,10 +35,15 @@ namespace SmartVisitServer.Web
                         ValidIssuer = tokenOptions.Issuer,
                         ValidAudience = tokenOptions.Audience,
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
+                        IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey),
+                        NameClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name",
+                        RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
                     };
                 });
-            //services.AddAuthorization();
+  
+            services.AddScoped<IUser, CurrentUser>();
+            services.AddHttpContextAccessor();
+            services.AddAuthorization();
             services.AddControllersWithViews();
 
             services.AddSwaggerGen(opt =>
