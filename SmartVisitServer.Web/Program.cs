@@ -7,6 +7,7 @@ using Persistence.Authentication;
 using Core.Security;
 using SmartVisitServer.Web;
 using WebAPI;
+using SmartVisitServer.Web.Services.Customers;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -19,7 +20,7 @@ builder.Services.AddSecurityServices();
 builder.Services.AddWebMvcServices(builder.Configuration);
 
 //
-
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
