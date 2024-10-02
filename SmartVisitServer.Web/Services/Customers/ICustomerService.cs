@@ -1,11 +1,12 @@
 ﻿using Application.Features.Customers.Queries.CustomerGetAllByUser;
+using Core.Application.Responses;
 using Domain.Enums;
-using SmartVisitServer.Web.Models.Paginate;
+
 
 namespace SmartVisitServer.Web.Services.Customers
 {
     public interface ICustomerService
     {
-        Task<List<CustomerGetAllByUserQueryResponse>> GetCustomersAsync(int page, int pageSize, TimePeriodType? periodType);
+        Task<GetListResponse<CustomerGetAllByUserQueryResponse>> GetCustomersAsync(int page, int pageSize, TimePeriodType? periodType);
     }
 }

@@ -5,6 +5,7 @@ using Application.Features.Customers.Queries.CustomerGetAllByUser;
 using Application.Features.Customers.Queries.CustomerGetById;
 using Application.Features.Customers.Queries.DeleteCustomerById;
 using Application.Features.Customers.Queries.DeleteCustomerGetAll;
+using Core.Application.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +25,7 @@ namespace WebAPI.Controllers
         [HttpGet("Customers")]
         public async Task<IActionResult> Customers([FromQuery] CustomerGetAllByUserQueryRequest request)
         {
-            IList<CustomerGetAllByUserQueryResponse> response = await Mediator.Send(request);
+            GetListResponse<CustomerGetAllByUserQueryResponse> response = await Mediator.Send(request);
             return Ok(response);
         }
         [HttpGet("CustomerDelete")]

@@ -1,7 +1,7 @@
 ﻿using Application.Features.Customers.Queries.CustomerGetAllByUser;
+using Core.Application.Responses;
 using Domain.Enums;
 using Newtonsoft.Json;
-using SmartVisitServer.Web.Models.Paginate;
 
 namespace SmartVisitServer.Web.Services.Customers
 {
@@ -14,10 +14,12 @@ namespace SmartVisitServer.Web.Services.Customers
         {
             _httpClientFactory = httpClientFactory;
         }
-        public async Task<List<CustomerGetAllByUserQueryResponse>> GetCustomersAsync(int page, int pageSize, TimePeriodType? periodType)
+        public async Task<GetListResponse<CustomerGetAllByUserQueryResponse>> GetCustomersAsync(int page, int pageSize, TimePeriodType? periodType)
         {
             var client = _httpClientFactory.CreateClient("SmartVisit");
-            var apiUrl = $"{_apiUrl}/Customers?TimePeriod={periodType}&PageRequest.Page={page - 1}&PageRequest.PageSize={pageSize}";
+            //var apiUrl = $"{_apiUrl}/Customers?TimePeriod={periodType}&PageRequest.Page={page - 1}&PageRequest.PageSize={pageSize}";
+            var apiUrl = $"{_apiUrl}/Customers?TimePeriod={periodType}&PageRequest.Page={page}&PageRequest.PageSize={pageSize}";
+
 
             var response = await client.GetAsync(apiUrl);
 
@@ -28,13 +30,7 @@ namespace SmartVisitServer.Web.Services.Customers
             }
 
             var responseData = await response.Content.ReadAsStringAsync();
-            var pagedResponse = JsonConvert.DeserializeObject<List<CustomerGetAllByUserQueryResponse>>(responseData);
-
-            // Toplam müşteri sayısını API'den alın
-            var totalCount = pagedResponse.Count; // API'den gelen toplam müşteri sayısı
-
-            
-
+            var pagedResponse = JsonConvert.DeserializeObject<GetListResponse<CustomerGetAllByUserQueryResponse>>(responseData);
             return pagedResponse;
         }
 

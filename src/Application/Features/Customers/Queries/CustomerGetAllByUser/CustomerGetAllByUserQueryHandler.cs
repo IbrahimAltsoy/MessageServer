@@ -2,6 +2,7 @@
 using Application.Helpers;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Responses;
 using Core.Persistence.Paging;
 using Domain.Entities;
 using Domain.Enums;
@@ -11,7 +12,7 @@ using System.Linq.Expressions;
 
 namespace Application.Features.Customers.Queries.CustomerGetAllByUser
 {
-    public class CustomerGetAllByUserQueryHandler : IRequestHandler<CustomerGetAllByUserQueryRequest, IList<CustomerGetAllByUserQueryResponse>>
+    public class CustomerGetAllByUserQueryHandler : IRequestHandler<CustomerGetAllByUserQueryRequest, GetListResponse<CustomerGetAllByUserQueryResponse>>
     {
         readonly IUser _currentUser;
         readonly ICustomerRepository _customerRepository;
@@ -24,7 +25,7 @@ namespace Application.Features.Customers.Queries.CustomerGetAllByUser
             _mapper = mapper;
         }
 
-        public async Task<IList<CustomerGetAllByUserQueryResponse>> Handle(CustomerGetAllByUserQueryRequest request, CancellationToken cancellationToken)
+        public async Task<GetListResponse<CustomerGetAllByUserQueryResponse>> Handle(CustomerGetAllByUserQueryRequest request, CancellationToken cancellationToken)
         {
             if (!Guid.TryParse(_currentUser.Id, out Guid userId))
             {
@@ -38,8 +39,18 @@ namespace Application.Features.Customers.Queries.CustomerGetAllByUser
                 index: request.PageRequest.Page,
                 cancellationToken: cancellationToken
             );
-            IList<CustomerGetAllByUserQueryResponse> data = _mapper.Map<List<CustomerGetAllByUserQueryResponse>>(datas.Items).ToList();
-            return data;
+        IList<CustomerGetAllByUserQueryResponse> data = _mapper.Map<List<CustomerGetAllByUserQueryResponse>>(datas.Items).ToList();
+            GetListResponse<CustomerGetAllByUserQueryResponse> responses = new GetListResponse<CustomerGetAllByUserQueryResponse>()
+            {
+                Index = datas.Index,
+                Size = datas.Size,
+                Count = datas.Count,
+                Pages = datas.Pages,
+                HasPrevious = datas.HasPrevious,
+                HasNext = datas.HasNext,
+                Items = data,
+            };
+            return responses;
         }
     }
 }

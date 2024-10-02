@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using Persistence.Configurations;
 using SmartVisitServer.Web.Models;
-using SmartVisitServer.Web.Models.Paginate;
 using SmartVisitServer.Web.Services.Customers;
 using System.Drawing.Printing;
 
@@ -29,12 +28,9 @@ namespace SmartVisitServer.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Customers(int page=1, int pageSize=1, TimePeriodType timePeriod = TimePeriodType.Yearly)
+        public async Task<IActionResult> Customers(int page=0, int pageSize=1, TimePeriodType timePeriod = TimePeriodType.Yearly)
         {
             var pagedList = await _customerService.GetCustomersAsync(page, pageSize, timePeriod);
-
-            
-
             return View(pagedList);
         }
         //[HttpGet]
