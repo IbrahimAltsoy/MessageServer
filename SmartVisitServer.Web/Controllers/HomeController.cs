@@ -26,13 +26,6 @@ namespace SmartVisitServer.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            //var client = _httpClientFactory.CreateClient("SmartVisit");
-
-            //var apiUrl = "http://localhost:5011/api/Customer/Customers?TimePeriod=3&PageRequest.Page=0&PageRequest.PageSize=10";
-            //var response = await client.GetAsync(apiUrl);
-            //response.EnsureSuccessStatusCode();
-            //var responseData = await response.Content.ReadAsStringAsync();
-            //var customers = JsonConvert.DeserializeObject<List<CustomerModel>>(responseData);
             return View();
 
         }

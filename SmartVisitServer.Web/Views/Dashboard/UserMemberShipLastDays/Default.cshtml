@@ -1,0 +1,45 @@
+﻿@model GetListResponse<Application.Features.Panel.Queries.UserMemberShipLastDay.UserMemberShipLastDayQueryResponse>
+<h3 style="text-align: center; color: purple;">Üyelik Son Günü Yaklaşan Şirketler</h3>
+
+<div id="userMembershipContainer">
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Ad Soyad</th>
+                    <th>Telefon</th>
+                    <th>Şirket</th>
+                    <th>Aktif</th>
+                    <th>Durum</th>
+                    <th>Son Gün</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Items)
+                {
+                    <tr>
+                        <td>@user.FirstName @user.LastName</td>
+                        <td>@user.Phone</td>
+                        <td>@user.CompanyName</td>
+                        <td>@user.Active</td>
+                        <td>@user.UserStatus</td>
+                        <td>@user.LastDay?.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="rol-2">
+            @await Component.InvokeAsync("Pagination", new
+                {
+                    model = Model,
+                    actionName = "UserMemberShipLastDays",
+                    controllerName = "Panel",
+                    
+                })
+        </div>
+    </div>
+</div>
+
+
+

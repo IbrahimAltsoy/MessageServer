@@ -8,6 +8,7 @@ using Core.Security;
 using SmartVisitServer.Web;
 using WebAPI;
 using SmartVisitServer.Web.Services.Customers;
+using SmartVisitServer.Web.Services.Panels;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,6 +22,7 @@ builder.Services.AddWebMvcServices(builder.Configuration);
 
 //
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IPanelService, PanelService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -41,6 +43,13 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=privacy}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Panel}/{action=UserMemberShipLastDays}/{page?}/{pageSize?}");
+});
+
 
 app.UseCors();
 app.Run();

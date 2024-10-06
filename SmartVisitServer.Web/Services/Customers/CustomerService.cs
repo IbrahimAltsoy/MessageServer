@@ -16,8 +16,7 @@ namespace SmartVisitServer.Web.Services.Customers
         }
         public async Task<GetListResponse<CustomerGetAllByUserQueryResponse>> GetCustomersAsync(int page, int pageSize, TimePeriodType? periodType)
         {
-            var client = _httpClientFactory.CreateClient("SmartVisit");
-            //var apiUrl = $"{_apiUrl}/Customers?TimePeriod={periodType}&PageRequest.Page={page - 1}&PageRequest.PageSize={pageSize}";
+            var client = _httpClientFactory.CreateClient("SmartVisit");           
             var apiUrl = $"{_apiUrl}/Customers?TimePeriod={periodType}&PageRequest.Page={page}&PageRequest.PageSize={pageSize}";
 
 

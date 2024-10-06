@@ -1,5 +1,7 @@
-﻿using Application.Services.Repositories;
+﻿using Application.Features.Panel.Queries.UserStateUsersIstatic;
+using Application.Services.Repositories;
 using Domain.Entities;
+using Domain.Enums;
 using QRCoder;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -47,5 +49,36 @@ public class UserManager : IUserService
     {
         User updatedUser = await _userRepository.UpdateAsync(user);
         return updatedUser;
+    }
+
+    public async Task<UserStateUsersIstaticQueryResponse> UserStateUsersIstaticQueryResponseAsync()
+    {
+        var totalUsers = await _userRepository.GetListAsync();
+        var activeUsers = await _userRepository.GetListAsync(x => x.UserStatus == UserStatus.Active);
+        var passiveUsers = await _userRepository.GetListAsync(x => x.UserStatus == UserStatus.Passive);
+        var inactiveUsers = await _userRepository.GetListAsync(x => x.UserStatus == UserStatus.Inactive);
+        var blockedUsers = await _userRepository.GetListAsync(x => x.UserStatus == UserStatus.Blocked);
+        var deletedUsers = await _userRepository.GetListAsync(x => x.UserStatus == UserStatus.Deleted);
+        var totalCount = totalUsers.Count();
+
+        var model = new UserStateUsersIstaticQueryResponse
+        {
+            TotalUsers = totalCount,
+            ActiveUsers = activeUsers.Count(),
+            PassiveUsers = passiveUsers.Count(),
+            InactiveUsers = inactiveUsers.Count(),
+            BlockedUsers = blockedUsers.Count(),
+            DeletedUsers = deletedUsers.Count(),
+            ActiveUserPercentage = CalculatePercentage(activeUsers.Count(), totalCount),
+            PassiveUserPercentage = CalculatePercentage(passiveUsers.Count(), totalCount),
+            InactiveUserPercentage = CalculatePercentage(inactiveUsers.Count(), totalCount),
+            BlockedUserPercentage = CalculatePercentage(blockedUsers.Count(), totalCount),
+            DeletedUserPercentage = CalculatePercentage(deletedUsers.Count(), totalCount)
+        };
+        return model;
+    }
+    private double CalculatePercentage(int count, int total)
+    {
+        return total > 0 ? (double)count / total * 100 : 0;
     }
 }

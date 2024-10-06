@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Features.Panel.Queries.UserStateUsersIstatic;
+using Domain.Entities;
 
 namespace Application.Services.UserService;
 
@@ -9,4 +10,5 @@ public interface IUserService
     public Task<User> GetByPhone(string phone);
     public Task<User> Update(User user);
     Task<string> GenerateQrCodeAsync(string formUrl);
+    Task<UserStateUsersIstaticQueryResponse> UserStateUsersIstaticQueryResponseAsync();
 }

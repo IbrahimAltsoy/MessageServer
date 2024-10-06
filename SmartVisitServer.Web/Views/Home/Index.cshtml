@@ -4,11 +4,15 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <h1>Dashboard</h1>
-    @await Component.InvokeAsync("UserListChart")
+<div class="container">
+    <div class="content-wrapper" style="display: flex; flex-direction: column; align-items: center;">
+        <div id="userMembershipContainer" style="width: 100%; margin-bottom: 20px;">
+            @await Component.InvokeAsync("UserMemberShipLastDays", new { page = 0, pageSize = 2 })
 
+        </div>
 
-   
+        <div class="right-side" style="width: 100%;">
+            @await Component.InvokeAsync("UserStatistics")
+        </div>
+    </div>
 </div>

@@ -1,0 +1,37 @@
+﻿<h3 style="text-align: center; color: purple;">Kullanıcı İstatikleri</h3>
+<div class="user-statistics">
+    <!-- HTML içeriğiniz -->
+    <canvas id="userChart" width="200" height="200"></canvas>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var ctx = document.getElementById('userChart').getContext('2d');
+        var userChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Aktif', 'Pasif', 'Inaktif', 'Engellenen', 'Silinen'],
+                datasets: [{
+                    label: 'Kullanıcı Dağılımı',
+                    data: [
+    @Model.ActiveUsers,
+    @Model.PassiveUsers,
+    @Model.InactiveUsers,
+    @Model.BlockedUsers,
+    @Model.DeletedUsers
+                        ],
+                    backgroundColor: ['#36a2eb', '#ff6384', '#ffcd56', '#4bc0c0', '#9966ff']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    });
+</script>

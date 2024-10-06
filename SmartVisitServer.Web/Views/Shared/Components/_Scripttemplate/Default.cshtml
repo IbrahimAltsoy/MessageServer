@@ -1,6 +1,10 @@
-﻿<script src="~/assets/js/core/jquery-3.7.1.min.js"></script>
+﻿
+
+<script src="~/assets/js/core/jquery-3.7.1.min.js"></script>
 <script src="~/assets/js/core/popper.min.js"></script>
 <script src="~/assets/js/core/bootstrap.min.js"></script>
+<!-- jQuery Kütüphanesi -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- jQuery Scrollbar -->
 <script src="~/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
@@ -79,3 +83,26 @@
         },
     });
 </script>
+<script>
+    $(document).on('click', 'a[data-page]', function (e) {
+        e.preventDefault(); // Sayfanın yenilenmesini engelle
+        var page = $(this).data('page'); // data-page attribute'undan sayfa numarasını al
+        var pageSize = 2; // Sayfa boyutunu burada ayarlayın
+
+        $.ajax({
+            url: '@Url.Action("UserMemberShipLastDays", "Panel")?PageRequest.Page=' + page + '&PageRequest.PageSize=' + pageSize,
+            type: 'GET',
+            success: function (result) {
+                $('#userMembershipContainer').html(result); // Yeni veriyi ilgili alana yerleştir
+            },
+            error: function () {
+                alert('Veri yüklenirken bir hata oluştu.');
+            }
+        });
+    });
+</script>
+
+
+
+
+
