@@ -1,32 +1,29 @@
-using Application.Abstract.Common;
-using Application.Services.Repositories;
-using Domain.Entities;
+using Application.Features.Panel.Queries.UserMemberShipLastDay;
+using Core.Application.Responses;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using SmartVisitServer.Web.Models;
+using SmartVisitServer.Web.Services.Panels;
 using System.Diagnostics;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
 
 namespace SmartVisitServer.Web.Controllers
 {
 
     public class HomeController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory; 
+        private readonly IHttpClientFactory _httpClientFactory;
+        readonly IPanelService _panelService;
 
-        public HomeController(IHttpClientFactory httpClientFactory)
+        public HomeController(IHttpClientFactory httpClientFactory, IPanelService panelService)
         {
             _httpClientFactory = httpClientFactory;
+            _panelService = panelService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View();
+            var result = await _panelService.UserMemberShipLastDayGetAllAsync(0, 2);
+            return View(result);
 
         }
 
@@ -39,6 +36,18 @@ namespace SmartVisitServer.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        [HttpGet]
+        public async Task<IActionResult> UserMemberShipLastDays(int page, int pageSize)
+        {
+
+            return ViewComponent("UserMemberShipLastDays", new { page = page, pageSize = pageSize });
+        }
+     
+        public async Task<PartialViewResult> UserSon(int page=0, int pageSize=2)
+        {
+            GetListResponse<UserMemberShipLastDayQueryResponse> result = await _panelService.UserMemberShipLastDayGetAllAsync(page, pageSize);
+            return PartialView(result);
         }
     }
 

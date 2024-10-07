@@ -6,6 +6,6 @@ namespace SmartVisitServer.Web.Services.Panels
 {
     public interface IPanelService
     {
-        Task<GetListResponse<UserMemberShipLastDayQueryResponse>> UserMemberShipLastDayGetAllAsync(int page = 0, int pageSize = 2);
+        Task<GetListResponse<UserMemberShipLastDayQueryResponse>> UserMemberShipLastDayGetAllAsync(int page, int pageSize);
     }
 }

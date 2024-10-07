@@ -1,6 +1,8 @@
 ﻿@model GetListResponse<Application.Features.Panel.Queries.UserMemberShipLastDay.UserMemberShipLastDayQueryResponse>
-<h3 style="text-align: center; color: purple;">Üyelik Son Günü Yaklaşan Şirketler</h3>
+@{
+    Layout = null;
 
+}
 <div id="userMembershipContainer">
     <div class="row">
         <table class="table table-striped">
@@ -28,18 +30,7 @@
                 }
             </tbody>
         </table>
-@* 
-        <div class="rol-2">
-            @await Component.InvokeAsync("Pagination", new
-                {
-                    model = Model,
-                    actionName = "UserMemberShipLastDays",
-                    controllerName = "Home",
-                    
-                })
-        </div> *@
+
+       
     </div>
 </div>
-
-
-

@@ -14,8 +14,8 @@ namespace SmartVisitServer.Web.ViewComponents.Dashboard
         {
             _panelService = panelService;
         }
-
-        public async Task<IViewComponentResult> InvokeAsync(int page =0, int pagesize =2)
+        [HttpGet]
+        public async Task<IViewComponentResult> InvokeAsync(int page, int pagesize)
         {
             var results = await _panelService.UserMemberShipLastDayGetAllAsync(page, pagesize);
 

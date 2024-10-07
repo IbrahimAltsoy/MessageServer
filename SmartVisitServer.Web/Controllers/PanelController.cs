@@ -20,10 +20,10 @@ namespace SmartVisitServer.Web.Controllers
             return View();
         }
         [HttpGet]      
-        public async Task<IActionResult> UserMemberShipLastDays(PageRequest pageRequest)
+        public async Task<IActionResult> UserMemberShipLastDays(int page, int pageSize)
         {
             // Sayfa ve boyut bilgilerini kullanarak veriyi al
-            var result = await _panelService.UserMemberShipLastDayGetAllAsync(pageRequest.Page, pageRequest.PageSize);
+            var result = await _panelService.UserMemberShipLastDayGetAllAsync(page, pageSize);
 
             return ViewComponent("UserMemberShipLastDays", new { model = result });
         }

@@ -28,7 +28,7 @@ namespace SmartVisitServer.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Customers(int page=0, int pageSize=2, TimePeriodType timePeriod = TimePeriodType.Yearly)
+        public async Task<IActionResult> Customers(int page=0, int pageSize=1, TimePeriodType timePeriod = TimePeriodType.Yearly)
         {
             var pagedList = await _customerService.GetCustomersAsync(page, pageSize, timePeriod);
             return View(pagedList);
