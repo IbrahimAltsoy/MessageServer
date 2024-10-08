@@ -1,8 +1,10 @@
 ﻿@model GetListResponse<Application.Features.Panel.Queries.UserMemberShipLastDay.UserMemberShipLastDayQueryResponse>
 @{
     Layout = null;
-
+    var currentPage = Model.Index;
+    var totalPages = Model.Pages;
 }
+
 <div id="userMembershipContainer">
     <div class="row">
         <table class="table table-striped">
@@ -11,7 +13,7 @@
                     <th>Ad Soyad</th>
                     <th>Telefon</th>
                     <th>Şirket</th>
-                    <th>Aktif</th>
+                    <th>Karekod</th>
                     <th>Durum</th>
                     <th>Son Gün</th>
                 </tr>
@@ -23,14 +25,67 @@
                         <td>@user.FirstName @user.LastName</td>
                         <td>@user.Phone</td>
                         <td>@user.CompanyName</td>
-                        <td>@user.Active</td>
-                        <td>@user.UserStatus</td>
+                        <td> <img src="data:image/png;base64,@user.QRCode" alt="QR Code" style="width:60px;height:60px;" /></td>
+                        <td>
+                            @switch (user.UserStatus)
+                            {
+                                case Domain.Enums.UserStatus.Passive:
+                                    <span class="badge bg-secondary">Pasif</span>
+                                    break;
+                                case Domain.Enums.UserStatus.Active:
+                                    <span class="badge bg-success">Aktif</span>
+                                    break;
+                                case Domain.Enums.UserStatus.Inactive:
+                                    <span class="badge bg-warning">Etkisiz</span>
+                                    break;
+                                case Domain.Enums.UserStatus.Blocked:
+                                    <span class="badge bg-danger">Bloklanmış</span>
+                                    break;
+                                case Domain.Enums.UserStatus.Deleted:
+                                    <span class="badge bg-dark">Silinmiş</span>
+                                    break;
+                            }
+                        </td>
+
                         <td>@user.LastDay?.ToString("yyyy-MM-dd")</td>
                     </tr>
                 }
             </tbody>
         </table>
 
-       
+        <div class="pagination" style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+            <!-- Önceki Sayfa Butonu (Eğer ilk sayfada değilse gösterilir) -->
+            @if (currentPage > 0)
+            {
+                <a href="javascript:void(0);"
+                   class="btn btn-outline-primary"
+                   onclick="loadUserSon(@(currentPage - 1))">
+                    &laquo; Önceki
+                </a>
+            }
+
+            <!-- Sayfa Numaraları -->
+            @for (var i = 0; i < totalPages; i++)
+            {
+                <a href="javascript:void(0);"
+                   class="btn @(i == currentPage ? "btn-success active-page" : "btn-outline-primary")"
+                   style="margin: 0 5px; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;"
+                   onclick="loadUserSon(@i)">
+                    @(i + 1)
+                </a>
+            }
+
+            <!-- Sonraki Sayfa Butonu (Eğer son sayfada değilse gösterilir) -->
+            @if (currentPage < totalPages - 1)
+            {
+                <a href="javascript:void(0);"
+                   class="btn btn-outline-primary"
+                   onclick="loadUserSon(@(currentPage + 1))">
+                    Sonraki &raquo;
+                </a>
+            }
+        </div>
+
+
     </div>
 </div>

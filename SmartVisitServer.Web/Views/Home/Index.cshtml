@@ -6,104 +6,38 @@
 
 <div class="container">
     <div class="content-wrapper" style="display: flex; flex-direction: column; align-items: center;">
-        <div id="userMembershipInfo">
-            <!-- Değiştirildi -->
-            @await Component.InvokeAsync("UserMemberShipLastDays", new { page = 0, pageSize = 2 })
+       
+        <div id="userMembershipContainer" style="width: 100%;">
+            @await Html.PartialAsync("UserSon", Model)
         </div>
-
-        <!-- Pagination ViewComponent'in dinamik olarak AJAX ile yükleneceği kısım -->
-        <div id="membershipPaginationContainer">
-            <!-- Değiştirildi -->
-            @await Component.InvokeAsync("Pagination", new
-                {
-                    model = Model,
-                    actionName = "UserMemberShipLastDays",
-                    controllerName = "Home",
-                })
-        </div>
-
         <div class="right-side" style="width: 100%;">
             @await Component.InvokeAsync("UserStatistics")
         </div>
+       
     </div>
 </div>
 
-<script>
-    document.addEventListener('click', function (e) {
-        if (e.target.matches('a[data-page]')) {
-            e.preventDefault(); // Sayfanın yenilenmesini engelle
+@section Scripts {
+ 
+    <script>
+        function loadUserSon(page) {
+            if (page < 0 || page >= @Model.Pages) {
+                return; 
+            }
 
-            var page = e.target.getAttribute('data-page'); // data-page attribute'undan sayfa numarasını al
-            var pageSize = e.target.getAttribute('data-pagesize'); // data-pagesize attribute'undan sayfa boyutunu al
-
-            fetch('@Url.Action("UserMemberShipLastDays", "Home")?page=' + page + '&pageSize=' + pageSize)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text();
-                })
-                .then(result => {
-                    // Gelen sonucu doğru HTML elementine yerleştirdiğinizden emin olun
-                    document.getElementById('userMembershipInfo').innerHTML = result; // Değiştirildi
-                })
-                .catch(error => {
-                    alert('Veri yüklenirken bir hata oluştu: ' + error);
-                });
+            $.ajax({
+                url: '@Url.Action("UserSon", "Home")',
+                type: 'GET',
+                data: { page: page, pageSize: 5 },
+                success: function (result) {
+                    $('#userMembershipContainer').html(result); 
+                },
+                error: function () {
+                    alert("Veri yüklenirken bir hata oluştu.");
+                }
+            });
         }
-    });
-</script>
-
-
-@* 
- <script type="text/javascript">
-    $(document).on('click', '.pagination-link', function (e) {
-        e.preventDefault(); // Sayfanın yenilenmesini engelle
-
-        var page = $(this).data('page'); // Tıklanan sayfa numarasını al
-        var pageSize = 2; // Sabit sayfa boyutu
-
-        console.log('Pagination tıklandı! Sayfa: ' + page); // Kontrol için konsola log ekle
-
-        // UserMemberShipLastDays ViewComponent'ini güncellemek için AJAX
-        $.ajax({
-            url: '@Url.Action("Invoke", "ViewComponent", new { componentName = "UserMemberShipLastDays" })',
-            type: 'GET',
-            data: { page: page, pageSize: pageSize },
-            success: function (result) {
-                console.log('UserMemberShipLastDays başarıyla yüklendi.'); // Başarı mesajı
-                $('#userMembershipContainer').html(result); // İçeriği güncelle
-            },
-            error: function () {
-                console.error("UserMemberShipLastDays yüklenirken hata oluştu."); // Hata mesajı
-                alert("Bir hata oluştu.");
-            }
-        });
-
-        // Pagination ViewComponent'ini güncellemek için AJAX
-        $.ajax({
-            url: '@Url.Action("Invoke", "ViewComponent", new { componentName = "Pagination" })',
-            type: 'GET',
-            data: {
-                page: page,
-                pageSize: pageSize,
-                actionName: 'UserMemberShipLastDays',
-                controllerName: 'Home'
-            },
-            success: function (paginationResult) {
-                console.log('Pagination başarıyla yüklendi.'); // Başarı mesajı
-                $('#paginationContainer').html(paginationResult); // Pagination'ı güncelle
-            },
-            error: function () {
-                console.error("Pagination yüklenirken hata oluştu."); // Hata mesajı
-                alert("Pagination yüklenirken hata oluştu.");
-            }
-        });
-    });
-</script>  *@
-
-
-
-
+    </script>
+}
 
 

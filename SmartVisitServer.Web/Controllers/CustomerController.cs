@@ -18,12 +18,14 @@ namespace SmartVisitServer.Web.Controllers
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly string _apiUrl = "http://localhost:5011/api/Customers";
         readonly ICustomerService _customerService;
+        private readonly IUserRepository _userRepository;
         
 
-        public CustomerController(IHttpClientFactory httpClientFactory, ICustomerService customerService)
+        public CustomerController(IHttpClientFactory httpClientFactory, ICustomerService customerService, IUserRepository userRepository)
         {
             _httpClientFactory = httpClientFactory;
             _customerService = customerService;
+            _userRepository = userRepository;
            
         }
 
@@ -33,21 +35,21 @@ namespace SmartVisitServer.Web.Controllers
             var pagedList = await _customerService.GetCustomersAsync(page, pageSize, timePeriod);
             return View(pagedList);
         }
-        //[HttpGet]
-        //public async Task<IActionResult> ListUsersWithQrCodes()
-        //{
+        [HttpGet]
+        public async Task<IActionResult> ListUsersWithQrCodes()
+        {
 
-        //    var users = await _userRepository.GetListAsync();
-        //    List<UserQrCode> userQrCodeList = users.Select(user => new UserQrCode
-        //    {
-        //        FirstName = user.FirstName,
-        //        LastName = user.LastName,
-        //        Email = user.Email,
-        //        QRCode = user.QRCode
-        //    }).ToList();
+            var users = await _userRepository.GetListAsync();
+            List<UserQrCode> userQrCodeList = users.Select(user => new UserQrCode
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                QRCode = user.QRCode
+            }).ToList();
 
-        //    return View(userQrCodeList);
-        //}
+            return View(userQrCodeList);
+        }
         //[HttpGet]
         //public async Task<IActionResult> Form(Guid id)
         //{

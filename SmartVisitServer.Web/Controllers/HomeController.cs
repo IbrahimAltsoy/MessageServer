@@ -22,7 +22,7 @@ namespace SmartVisitServer.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var result = await _panelService.UserMemberShipLastDayGetAllAsync(0, 2);
+            var result = await _panelService.UserMemberShipLastDayGetAllAsync(0, 5);
             return View(result);
 
         }
@@ -44,7 +44,7 @@ namespace SmartVisitServer.Web.Controllers
             return ViewComponent("UserMemberShipLastDays", new { page = page, pageSize = pageSize });
         }
      
-        public async Task<PartialViewResult> UserSon(int page=0, int pageSize=2)
+        public async Task<PartialViewResult> UserSon(int page=0, int pageSize=5)
         {
             GetListResponse<UserMemberShipLastDayQueryResponse> result = await _panelService.UserMemberShipLastDayGetAllAsync(page, pageSize);
             return PartialView(result);
