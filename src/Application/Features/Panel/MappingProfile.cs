@@ -1,4 +1,5 @@
-﻿using Application.Features.Panel.Queries.UserMemberShipLastDay;
+﻿using Application.Features.Panel.Command.UpdateUserStatus;
+using Application.Features.Panel.Queries.UserMemberShipLastDay;
 using AutoMapper;
 using Domain.Entities;
 
@@ -12,6 +13,7 @@ namespace Application.Features.Panel
       .ForMember(dest => dest.LastDay, opt => opt.MapFrom(src => src.Membership.LastDay))
       .ReverseMap();
 
+            CreateMap<User, UpdateUserStateResponse>().ReverseMap();
         }
     }
 }

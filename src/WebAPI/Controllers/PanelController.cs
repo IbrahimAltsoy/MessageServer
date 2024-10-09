@@ -1,4 +1,5 @@
-﻿using Application.Features.Panel.Queries.ActiveOrPasifUsers;
+﻿using Application.Features.Panel.Command.UpdateUserStatus;
+using Application.Features.Panel.Queries.ActiveOrPasifUsers;
 using Application.Features.Panel.Queries.UserMemberShipLastDay;
 using Application.Features.Panel.Queries.UserStateUsersIstatic;
 using Core.Application.Responses;
@@ -27,6 +28,12 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> UserMemberShipLastDays([FromQuery] UserMemberShipLastDayQueryRequest request)
         {
            GetListResponse< UserMemberShipLastDayQueryResponse> response = await Mediator.Send(request);
+            return Ok(response);
+        }
+        [HttpPost("UpdateUserStatu")]
+        public async Task<IActionResult> UpdateUserStatu([FromBody] UpdateUserStateRequest request)
+        {
+            UpdateUserStateResponse response = await Mediator.Send(request);
             return Ok(response);
         }
     }

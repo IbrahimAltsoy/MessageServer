@@ -25,36 +25,37 @@
                         <td>@user.FirstName @user.LastName</td>
                         <td>@user.Phone</td>
                         <td>@user.CompanyName</td>
-                        <td> <img src="data:image/png;base64,@user.QRCode" alt="QR Code" style="width:60px;height:60px;" /></td>
+                        <td><img src="data:image/png;base64,@user.QRCode" alt="QR Code" style="width:60px;height:60px;" /></td>
                         <td>
-                            @switch (user.UserStatus)
-                            {
-                                case Domain.Enums.UserStatus.Passive:
-                                    <span class="badge bg-secondary">Pasif</span>
-                                    break;
-                                case Domain.Enums.UserStatus.Active:
-                                    <span class="badge bg-success">Aktif</span>
-                                    break;
-                                case Domain.Enums.UserStatus.Inactive:
-                                    <span class="badge bg-warning">Etkisiz</span>
-                                    break;
-                                case Domain.Enums.UserStatus.Blocked:
-                                    <span class="badge bg-danger">Bloklanmış</span>
-                                    break;
-                                case Domain.Enums.UserStatus.Deleted:
-                                    <span class="badge bg-dark">Silinmiş</span>
-                                    break;
-                            }
+                            <button class="btn btn-info" onclick="showStatusOptions('@user.Id')">
+                                @switch (user.UserStatus)
+                                {
+                                    case Domain.Enums.UserStatus.Passive:
+                                        <span class="badge bg-secondary">Pasif</span>
+                                        break;
+                                    case Domain.Enums.UserStatus.Active:
+                                        <span class="badge bg-success">Aktif</span>
+                                        break;
+                                    case Domain.Enums.UserStatus.Inactive:
+                                        <span class="badge bg-warning">Etkisiz</span>
+                                        break;
+                                    case Domain.Enums.UserStatus.Blocked:
+                                        <span class="badge bg-danger">Bloklanmış</span>
+                                        break;
+                                    case Domain.Enums.UserStatus.Deleted:
+                                        <span class="badge bg-dark">Silinmiş</span>
+                                        break;
+                                }
+                            </button>
                         </td>
-
                         <td>@user.LastDay?.ToString("yyyy-MM-dd")</td>
                     </tr>
                 }
             </tbody>
         </table>
 
+        <!-- Pagination -->
         <div class="pagination" style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
-            <!-- Önceki Sayfa Butonu (Eğer ilk sayfada değilse gösterilir) -->
             @if (currentPage > 0)
             {
                 <a href="javascript:void(0);"
@@ -64,7 +65,6 @@
                 </a>
             }
 
-            <!-- Sayfa Numaraları -->
             @for (var i = 0; i < totalPages; i++)
             {
                 <a href="javascript:void(0);"
@@ -75,7 +75,6 @@
                 </a>
             }
 
-            <!-- Sonraki Sayfa Butonu (Eğer son sayfada değilse gösterilir) -->
             @if (currentPage < totalPages - 1)
             {
                 <a href="javascript:void(0);"
@@ -85,7 +84,45 @@
                 </a>
             }
         </div>
-
-
     </div>
 </div>
+
+<!-- Modal for Status Update -->
+<div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateStatusModalLabel">Durum Güncelle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateStatusForm" method="post" action="/Panel/UpdateUserStatus">
+                    <input type="hidden" id="id" name="id" />
+                    <div class="mb-3">
+                        <label for="userStatus" class="form-label">Durum Seçiniz</label>
+                        <select id="userStatus" name="userStatus" class="form-select">
+                            <option value="Active">Aktif</option>
+                            <option value="Passive">Pasif</option>
+                            <option value="Inactive">Etkisiz</option>
+                            <option value="Blocked">Bloklanmış</option>
+                            <option value="Deleted">Silinmiş</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Güncelle</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showStatusOptions(id) {
+        // Kullanıcı ID'sini formdaki gizli inputa ekliyoruz
+        document.getElementById('id').value = id;
+        console.log(id); // ID'yi konsola yazdırıyoruz
+
+        // Modal'ı gösteriyoruz
+        var modal = new bootstrap.Modal(document.getElementById('updateStatusModal'));
+        modal.show();
+    }
+</script>
