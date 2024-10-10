@@ -42,14 +42,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=privacy}/{id?}");
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Panel}/{action=UserMemberShipLastDays}/{page?}/{pageSize?}");
-});
-
-
+    pattern: "{controller=Panel}/{action=Index}/{id?}");
 app.UseCors();
 app.Run();

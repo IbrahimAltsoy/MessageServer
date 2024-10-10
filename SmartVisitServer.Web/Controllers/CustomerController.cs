@@ -1,5 +1,6 @@
 ﻿using Application.Features.Customers.Queries.CustomerGetAllByUser;
 using Application.Services.Repositories;
+using Core.Application.Responses;
 using Domain.Entities;
 using Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
@@ -29,12 +30,12 @@ namespace SmartVisitServer.Web.Controllers
            
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Customers(int page=0, int pageSize=1, TimePeriodType timePeriod = TimePeriodType.Yearly)
-        {
-            var pagedList = await _customerService.GetCustomersAsync(page, pageSize, timePeriod);
-            return View(pagedList);
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> CustomerGetAllByUser(int page=0, int pageSize=8, TimePeriodType timePeriod = TimePeriodType.Yearly)
+        //{
+        //    var pagedList = await _customerService.GetCustomersAsync(page, pageSize, timePeriod);
+        //    return View(pagedList);
+        //}
         [HttpGet]
         public async Task<IActionResult> ListUsersWithQrCodes()
         {
@@ -50,44 +51,72 @@ namespace SmartVisitServer.Web.Controllers
 
             return View(userQrCodeList);
         }
-        //[HttpGet]
-        //public async Task<IActionResult> Form(Guid id)
-        //{
-        //    // Id'ye göre veriyi alın (örneğin, kullanıcı bilgilerini)
-        //    Domain.Entities.User? user =await _userRepository.GetAsync(x=>x.Id==id);
+        [HttpGet]
+        public async Task<IActionResult> CustomerGetAllByUser(int page = 0, int pageSize = 8, TimePeriodType? timePeriod = TimePeriodType.Yearly, string? searchTerm=null)
+        {           
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                //ViewBag.SelectedTimePeriod = timePeriod ?? TimePeriodType.Yearly;
+                var pagedList = await _customerService.GetCustomersAsync(page, pageSize, timePeriod);
+                ViewBag.SearchTerm = string.Empty;
+                ViewBag.CurrentPage = page;               
+                ViewBag.TimePeriod = timePeriod;
+                return View(pagedList);
+            }
+            else
+            {
+                var pagedList = await _customerService.CustomerSearchByPhoneOrNameSurnameAsync(searchTerm);
+                ViewBag.SearchTerm = searchTerm;
+                ViewBag.CurrentPage = page;              
+                ViewBag.TimePeriod ="";
+                return View(pagedList);
+            }
+           
+        }
+       
+            
 
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    CustomerModel customer = new CustomerModel()
-        //    {
-        //        Id = user.Id,
-        //    };
-        //    return View(customer); // Model ile formu döndürün
-        //}
-        //[HttpPost("form/submit")]
-        //public async Task<IActionResult> SubmitForm([FromForm] CustomerModel model)
-        //{
-        //    // Id'yi ve diğer form verilerini işleyin
-        //    var user = await _userRepository.GetAsync(x=>x.Id==model.Id);
+            //    return View(model);
+            //}
 
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
+            //[HttpGet]
+            //public async Task<IActionResult> Form(Guid id)
+            //{
+            //    // Id'ye göre veriyi alın (örneğin, kullanıcı bilgilerini)
+            //    Domain.Entities.User? user =await _userRepository.GetAsync(x=>x.Id==id);
 
-        //    Customer customer = new Customer()
-        //    {
-        //        NameSurname = model.NameSurname,
-        //        Phone = model.Phone,
-        //        ProductName = model.ProductName,
-        //        Description = model.Description,
-        //        UserId = user.Id,
-        //    };
-        //    await _customerRepository.AddAsync(customer);
-        //    return RedirectToAction("Home"); // Başarı sayfasına yönlendir
-        //}
+            //    if (user == null)
+            //    {
+            //        return NotFound();
+            //    }
+            //    CustomerModel customer = new CustomerModel()
+            //    {
+            //        Id = user.Id,
+            //    };
+            //    return View(customer); // Model ile formu döndürün
+            //}
+            //[HttpPost("form/submit")]
+            //public async Task<IActionResult> SubmitForm([FromForm] CustomerModel model)
+            //{
+            //    // Id'yi ve diğer form verilerini işleyin
+            //    var user = await _userRepository.GetAsync(x=>x.Id==model.Id);
 
-    }
+            //    if (user == null)
+            //    {
+            //        return NotFound();
+            //    }
+
+            //    Customer customer = new Customer()
+            //    {
+            //        NameSurname = model.NameSurname,
+            //        Phone = model.Phone,
+            //        ProductName = model.ProductName,
+            //        Description = model.Description,
+            //        UserId = user.Id,
+            //    };
+            //    await _customerRepository.AddAsync(customer);
+            //    return RedirectToAction("Home"); // Başarı sayfasına yönlendir
+            //}
+
+        }
 }

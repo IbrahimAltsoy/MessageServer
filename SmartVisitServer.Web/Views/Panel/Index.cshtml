@@ -1,0 +1,43 @@
+﻿@model GetListResponse<Application.Features.Panel.Queries.UserMemberShipLastDay.UserMemberShipLastDayQueryResponse>
+@{
+    ViewData["Title"] = "Panel Page";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container">
+    <div class="content-wrapper" style="display: flex; flex-direction: column; align-items: center;">
+
+        <div id="userMembershipContainer" style="width: 100%;">
+            @await Html.PartialAsync("UserUserMemberShipLastDaysSon", Model)
+        </div>
+        <div class="right-side" style="width: 100%;">
+            @await Component.InvokeAsync("UserStatistics")
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+        function loadUserSon(page) {
+            if (page < 0 || page >= @Model.Pages) {
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("UserUserMemberShipLastDaysSon", "Panel")',
+                type: 'GET',
+                data: { page: page, pageSize: 5 },
+                success: function (result) {
+                    $('#userMembershipContainer').html(result);
+                },
+                error: function () {
+                    alert("Veri yüklenirken bir hata oluştu.");
+                }
+            });
+        }
+    </script>
+}
+
+

@@ -10,5 +10,6 @@ public interface IUserService
     public Task<User> GetByPhone(string phone);
     public Task<User> Update(User user);
     Task<string> GenerateQrCodeAsync(string formUrl);
+    string SaveQRCodeImage(string base64QRCode);
     Task<UserStateUsersIstaticQueryResponse> UserStateUsersIstaticQueryResponseAsync();
 }

@@ -49,7 +49,7 @@
                                 };
                             }
 
-                            <button class="@buttonClass" onclick="showStatusOptions('@user.Id')" > 
+                            <button class="@buttonClass" onclick="showStatusOptions('@user.Id')">
                                 @buttonText
                             </button>
                         </td>
@@ -127,11 +127,7 @@
 
 <script>
     function showStatusOptions(id) {
-        // Kullanıcı ID'sini formdaki gizli inputa ekliyoruz
-        document.getElementById('id').value = id;
-        console.log(id); // ID'yi konsola yazdırıyoruz
-
-        // Modal'ı gösteriyoruz
+        document.getElementById('id').value = id;       
         var modal = new bootstrap.Modal(document.getElementById('updateStatusModal'));
         modal.show();
     }

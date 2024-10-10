@@ -3,4 +3,5 @@
 public interface ICodeGenerator
 {
     public Task<string> OtpCodeGenerator();
+    
 }

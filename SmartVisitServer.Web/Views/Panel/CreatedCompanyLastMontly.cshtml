@@ -1,62 +1,57 @@
-﻿@model GetListResponse<Application.Features.Panel.Queries.UserMemberShipLastDay.UserMemberShipLastDayQueryResponse>
+﻿@model GetListResponse<Application.Features.Panel.Queries.CreatedCompanyLastMontly.CreatedCompanyLastMontlyQueryResponse>
 @{
-    Layout = null;
+    ViewData["Title"] = "CreatedCompanyLastMontly";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
     var currentPage = Model.Index;
     var totalPages = Model.Pages;
 }
-
+<h3 style="text-align:center; font-weight:bold">KAYITLI ŞİRKET SAYISI: @Model.Count</h3>
 <div id="userMembershipContainer">
     <div class="row">
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Ad Soyad</th>
-                    <th>Telefon</th>
-                    <th>Şirket</th>
-                    <th>Karekod</th>
-                    <th>Durum</th>
-                    <th>Son Gün</th>
+                    <th style="width: 25%; background-color: blueviolet; color: white !important;">Şirket Adı</th>
+                    <th style="width: 25%; background-color: blueviolet; color: white !important;">Telefon</th>
+                    <th style="width: 25%; background-color: blueviolet; color: white !important;">Durum</th>
+                    <th style="width: 25%; background-color: blueviolet; color: white !important;">Paylaş</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var user in Model.Items)
                 {
                     <tr>
-                        <td>@user.FirstName @user.LastName</td>
+                        <td>@user.CompanyName</td>                       
                         <td>@user.Phone</td>
-                        <td>@user.CompanyName</td>
-                        <td><img src="data:image/png;base64,@user.QRCode" alt="QR Code" style="width:60px;height:60px;" /></td>
+                       
                         <td>
                             @{
                                 var buttonClass = user.UserStatus switch
                                 {
                                     Domain.Enums.UserStatus.Passive => "badge btn-sm bg-secondary",
-                                    Domain.Enums.UserStatus.Active => "badge btn-sm bg-success",
-                                    Domain.Enums.UserStatus.Inactive => "badge btn-sm bg-warning",
-                                    Domain.Enums.UserStatus.Blocked => "badge btn-sm bg-danger",
-                                    Domain.Enums.UserStatus.Deleted => "badge btn-sm bg-dark",
+                                    Domain.Enums.UserStatus.Active => "badge btn-sm bg-success",                                   
                                     _ => ""
                                 };
 
                                 var buttonText = user.UserStatus switch
                                 {
                                     Domain.Enums.UserStatus.Passive => "Pasif",
-                                    Domain.Enums.UserStatus.Active => "Aktif",
-                                    Domain.Enums.UserStatus.Inactive => "Etkisiz",
-                                    Domain.Enums.UserStatus.Blocked => "Bloklanmış",
-                                    Domain.Enums.UserStatus.Deleted => "Silinmiş",
+                                    Domain.Enums.UserStatus.Active => "Aktif",                                   
                                     _ => ""
                                 };
                             }
 
-                            <button class="@buttonClass" onclick="showStatusOptions('@user.Id')" > 
+                            <button class="@buttonClass" onclick="showStatusOptions('@user.Id')">
                                 @buttonText
                             </button>
                         </td>
+                        <td>
+                            <a href="https://wa.me/@user.Phone?text=Merhaba, işte QR kodunuz: @user.QRCode" target="_blank" class="btn btn-outline-success">
+                                <i class="bi bi-share" style="color: green;"></i>
+                            </a>
+                        </td>
 
-
-
-                        <td>@user.LastDay?.ToString("dd-MM-yyyy")</td>
+                      
                     </tr>
                 }
             </tbody>
@@ -110,10 +105,7 @@
                         <label for="userStatus" class="form-label">Durum Seçiniz</label>
                         <select id="userStatus" name="userStatus" class="form-select">
                             <option value="Active">Aktif</option>
-                            <option value="Passive">Pasif</option>
-                            <option value="Inactive">Etkisiz</option>
-                            <option value="Blocked">Bloklanmış</option>
-                            <option value="Deleted">Silinmiş</option>
+                            <option value="Passive">Pasif</option>                           
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Güncelle</button>
@@ -127,12 +119,9 @@
 
 <script>
     function showStatusOptions(id) {
-        // Kullanıcı ID'sini formdaki gizli inputa ekliyoruz
         document.getElementById('id').value = id;
-        console.log(id); // ID'yi konsola yazdırıyoruz
-
-        // Modal'ı gösteriyoruz
         var modal = new bootstrap.Modal(document.getElementById('updateStatusModal'));
         modal.show();
     }
 </script>
+

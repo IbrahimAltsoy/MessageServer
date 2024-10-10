@@ -1,4 +1,5 @@
 ﻿using Application.Features.Panel.Command.UpdateUserStatus;
+using Application.Features.Panel.Queries.CreatedCompanyLastMontly;
 using Application.Features.Panel.Queries.UserMemberShipLastDay;
 using AutoMapper;
 using Domain.Entities;
@@ -14,6 +15,8 @@ namespace Application.Features.Panel
       .ReverseMap();
 
             CreateMap<User, UpdateUserStateResponse>().ReverseMap();
+
+            CreateMap<User, CreatedCompanyLastMontlyQueryResponse>().ReverseMap();
         }
     }
 }

@@ -40,6 +40,7 @@ namespace Application.Features.Customers.Queries.CustomerGetAllByUser
                 cancellationToken: cancellationToken
             );
         IList<CustomerGetAllByUserQueryResponse> data = _mapper.Map<List<CustomerGetAllByUserQueryResponse>>(datas.Items).ToList();
+
             GetListResponse<CustomerGetAllByUserQueryResponse> responses = new GetListResponse<CustomerGetAllByUserQueryResponse>()
             {
                 Index = datas.Index,

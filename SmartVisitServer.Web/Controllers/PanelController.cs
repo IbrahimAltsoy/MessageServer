@@ -1,5 +1,8 @@
 ﻿using Application.Features.Panel.Command.UpdateUserStatus;
+using Application.Features.Panel.Queries.CreatedCompanyLastMontly;
+using Application.Features.Panel.Queries.UserMemberShipLastDay;
 using Core.Application.Requests;
+using Core.Application.Responses;
 using Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -17,17 +20,24 @@ namespace SmartVisitServer.Web.Controllers
             _panelService = panelService;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
-        [HttpGet]      
-        public async Task<IActionResult> UserMemberShipLastDays(int page, int pageSize)
-        {
-            // Sayfa ve boyut bilgilerini kullanarak veriyi al
-            var result = await _panelService.UserMemberShipLastDayGetAllAsync(page, pageSize);
+            var result = await _panelService.UserMemberShipLastDayGetAllAsync(0, 5);
+            return View(result);
 
-            return ViewComponent("UserMemberShipLastDays", new { model = result });
+        }
+        [HttpGet]
+        public async Task<PartialViewResult> UserUserMemberShipLastDaysSon(int page = 0, int pageSize = 5)
+        {
+            GetListResponse<UserMemberShipLastDayQueryResponse> result = await _panelService.UserMemberShipLastDayGetAllAsync(page, pageSize);
+            return PartialView(result);
+        }
+        [HttpGet]
+        public async Task<IActionResult> CreatedCompanyLastMontly(int page=0, int pageSize = 5)
+        {
+            GetListResponse< CreatedCompanyLastMontlyQueryResponse > responses = await _panelService.CreatedCompanyLastMontlyAsync(page, pageSize);
+            return View(responses);
         }
         [HttpPost]
         public async Task<IActionResult> UpdateUserStatus(Guid id, UserStatus userStatus)
@@ -35,22 +45,11 @@ namespace SmartVisitServer.Web.Controllers
             if (id == Guid.Empty)
             {
                 TempData["ErrorMessage"] = "Geçersiz kullanıcı ID'si.";
-                return RedirectToAction("UserList");
+                return RedirectToAction("Index", "Panel");
             }
-
-            // Servis katmanında kullanıcı durumunu güncelleme işlemi
             var result = await _panelService.UpdateUserStateAsync(id, userStatus);
 
-            //if (result.Success)
-            //{
-            //    TempData["SuccessMessage"] = "Kullanıcı durumu başarıyla güncellendi.";
-            //}
-            //else
-            //{
-            //    TempData["ErrorMessage"] = "Kullanıcı durumu güncellenemedi: " + result.Message;
-            //}
-
-            return RedirectToAction("UserList"); // Durum güncellendikten sonra kullanıcı listesine dön
+            return RedirectToAction("Index", "Panel"); 
         }
 
 

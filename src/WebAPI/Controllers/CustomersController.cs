@@ -3,6 +3,7 @@ using Application.Features.Customers.Commands.Delete;
 using Application.Features.Customers.Commands.Update;
 using Application.Features.Customers.Queries.CustomerGetAllByUser;
 using Application.Features.Customers.Queries.CustomerGetById;
+using Application.Features.Customers.Queries.CustomerSearchByPhoneOrName;
 using Application.Features.Customers.Queries.DeleteCustomerById;
 using Application.Features.Customers.Queries.DeleteCustomerGetAll;
 using Core.Application.Responses;
@@ -27,6 +28,12 @@ namespace WebAPI.Controllers
         {
             GetListResponse<CustomerGetAllByUserQueryResponse> response = await Mediator.Send(request);
             return Ok(response);
+        }
+        [HttpGet("CustomerSearchByPhoneOrNameSurname")]
+        public async Task<IActionResult> CustomerSearchByPhoneOrNameSurname([FromQuery] CustomerSearchByPhoneOrNameQueryRequest request)
+        {
+            GetListResponse< CustomerGetAllByUserQueryResponse > responses = await Mediator.Send(request);
+            return Ok(responses);
         }
         [HttpGet("CustomerDelete")]
         public async Task<IActionResult> CustomerDelete([FromQuery] DeleteCustomerByIdQueryRequest request)

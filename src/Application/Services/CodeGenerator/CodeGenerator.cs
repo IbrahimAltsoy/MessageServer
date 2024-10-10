@@ -13,4 +13,6 @@ public class CodeGenerator : ICodeGenerator
             .PadLeft(totalWidth: 6, paddingChar: '0');
         return code;
     }
+
+   
 }

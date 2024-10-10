@@ -45,6 +45,18 @@ public class UserManager : IUserService
         return user;
     }
 
+    public string SaveQRCodeImage(string base64QRCode)
+    {
+        var fileUrl = $"{Guid.NewGuid()}.png";
+        return fileUrl;
+        //var imageBytes = Convert.FromBase64String(base64QRCode);
+        //var fileName = $"QRCodeImage_{Guid.NewGuid()}.png";
+        //var filePath = Path.Combine("wwwroot", "images", fileName);
+        //System.IO.File.WriteAllBytes(filePath, imageBytes);
+        //var fileUrl = $"/images/{fileName}";
+        //return fileUrl;
+    }
+
     public async Task<User> Update(User user)
     {
         User updatedUser = await _userRepository.UpdateAsync(user);
