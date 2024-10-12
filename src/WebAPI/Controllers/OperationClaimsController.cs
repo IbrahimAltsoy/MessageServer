@@ -2,7 +2,9 @@
 using Application.Features.OperationClaims.Command.Delete;
 using Application.Features.OperationClaims.Command.Update;
 using Application.Features.OperationClaims.Queries.GetAll;
+using Application.Features.OperationClaims.Queries.GetAllUsersRole;
 using Application.Features.OperationClaims.Queries.GetById;
+using Core.Application.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Persistence.Contexts;
@@ -27,7 +29,13 @@ namespace WebAPI.Controllers
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll([FromQuery] OperationClaimGetAllQueryRequest request)
         {            
-            IList<OperationClaimGetAllQueryResponse> response = await Mediator.Send(request);
+            GetListResponse<OperationClaimGetAllQueryResponse> response = await Mediator.Send(request);
+            return Ok(response);
+        }
+        [HttpGet("GetAllUserRole")]
+        public async Task<IActionResult> GetAllUserRole([FromQuery] GetAllUsersRoleQueryRequest request)
+        {
+            GetListResponse<GetAllUsersRoleQueryResponse> response = await Mediator.Send(request);
             return Ok(response);
         }
         [HttpPost("Create")]

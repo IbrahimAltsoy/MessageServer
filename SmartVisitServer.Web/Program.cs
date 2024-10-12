@@ -9,6 +9,7 @@ using SmartVisitServer.Web;
 using WebAPI;
 using SmartVisitServer.Web.Services.Customers;
 using SmartVisitServer.Web.Services.Panels;
+using SmartVisitServer.Web.Services.OperationClaim;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -23,6 +24,7 @@ builder.Services.AddWebMvcServices(builder.Configuration);
 //
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IPanelService, PanelService>();
+builder.Services.AddScoped<IOperationClaimService, OperationClaimService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
