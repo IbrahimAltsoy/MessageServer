@@ -46,7 +46,11 @@ public class BaseDbContext : DbContext
         
 
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-        {            
+        {
+            var method = typeof(BaseDbContext)
+                .GetMethod(nameof(SetGlobalQueryFilter), BindingFlags.NonPublic | BindingFlags.Static)
+                .MakeGenericMethod(entityType.ClrType);
+            method.Invoke(null, new object[] { modelBuilder });
         }
 
 

@@ -13,14 +13,12 @@ namespace SmartVisitServer.Web.Services.Panels
     public class PanelService : IPanelService
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly string _apiUrl = "http://localhost:5011/api/Panel";      
+        private readonly string _apiUrl = "http://localhost:5011/api/Panel";
 
         public PanelService(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
-           
         }
-
         public async Task<GetListResponse<CreatedCompanyLastMontlyQueryResponse>> CreatedCompanyLastMontlyAsync(int page, int pageSize)
         {
             var client = _httpClientFactory.CreateClient("SmartVisit");
@@ -58,11 +56,8 @@ namespace SmartVisitServer.Web.Services.Panels
             var result = JsonConvert.DeserializeObject<UpdateUserStateResponse>(responseData);
             return result!;
         }
-
-
         public async Task<GetListResponse<UserMemberShipLastDayQueryResponse>> UserMemberShipLastDayGetAllAsync(int page=0, int pageSize=5)
         {
-
             var client = _httpClientFactory.CreateClient("SmartVisit");
             var apiUrl = $"{_apiUrl}/UserMemberShipLastDays?PageRequest.Page={page}&PageRequest.PageSize={pageSize}";
             var response = await client.GetAsync(apiUrl);
