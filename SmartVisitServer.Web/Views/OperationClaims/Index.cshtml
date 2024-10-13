@@ -1,0 +1,46 @@
+﻿@model GetListResponse<Application.Features.OperationClaims.Queries.GetAllUsersRole.GetAllUsersRoleQueryResponse>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <table class="table table-striped">
+        <thead>
+            <tr style="text-align: center;">
+                <th style="width:10%; background-color: blueviolet; color: white !important;">Ad Soyad</th>
+                <th style="width:20%; background-color: blueviolet; color: white !important;">Şirket</th>
+                <th style="width:10%; background-color: blueviolet; color: white !important;">Telefon</th>
+                <th style="width:10%; background-color: blueviolet; color: white !important;">Email</th>
+                <th style="width:10%; background-color: blueviolet; color: white !important;">Statu</th>
+                <th style="width:20%; background-color: blueviolet; color: white !important;">Rol</th>
+                <th style="width:20%; background-color: blueviolet; color: white !important;">Denetim</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var data in Model.Items)
+            {
+                <tr>
+                    <td>@data.FirstName @data.LastName </td>
+                    <td> @data.CompanyName </td>
+                    <td>@data.Phone </td>
+                    <td> @data.Email </td>
+                    <td> @data.UserStatus </td>
+                    <td>@data.RoleName </td>
+                    <td>
+                        <button class="btn btn-sm btn-primary"><i class="bi bi-file-earmark-plus"></i></button>
+                        <button class="btn btn-sm btn-info"><i class="bi bi-pencil-square"></i></button>
+                        <button class="btn btn-sm btn-danger"><i class="bi bi-x-circle"></i></button>
+                    </td>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    @await Component.InvokeAsync("Pagination", new { model = Model, actionName = "Index", controllerName = "Settings" })
+
+</div>

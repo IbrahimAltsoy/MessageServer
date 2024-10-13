@@ -30,7 +30,7 @@ namespace SmartVisitServer.Web.Services.Customers
             }
             var responseData = await response.Content.ReadAsStringAsync();
             var pagedResponse = JsonConvert.DeserializeObject<GetListResponse<CustomerGetAllByUserQueryResponse>>(responseData);
-            return pagedResponse;
+            return pagedResponse!;
         }
 
         public async Task<GetListResponse<CustomerGetAllByUserQueryResponse>> GetCustomersAsync(int page, int pageSize, TimePeriodType? periodType)
@@ -49,7 +49,7 @@ namespace SmartVisitServer.Web.Services.Customers
 
             var responseData = await response.Content.ReadAsStringAsync();
             var pagedResponse = JsonConvert.DeserializeObject<GetListResponse<CustomerGetAllByUserQueryResponse>>(responseData);
-            return pagedResponse;
+            return pagedResponse!;
         }
 
 

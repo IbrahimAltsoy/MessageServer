@@ -31,13 +31,13 @@ namespace WebAPI.Controllers
             CreateAppSettingCommandResponse response = await Mediator.Send(request);
             return Ok(response);
         }
-        [HttpPut]
+        [HttpPut("Update")]
         public async Task<IActionResult> Update([FromBody] UpdateAppSettingsCommandRequest request)
         {
             UpdateAppSettingsCommandResponse response = await Mediator.Send(request);
             return Ok(response);
         }
-        [HttpDelete]
+        [HttpDelete("Delete")]
         public async Task<IActionResult> Delete([FromQuery] DeleteAppSettingCommandRequest request)
         {
             DeleteAppSettingCommandResponse response = await Mediator.Send(request);
