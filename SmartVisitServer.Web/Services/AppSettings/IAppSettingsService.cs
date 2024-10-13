@@ -8,7 +8,7 @@ namespace SmartVisitServer.Web.Services.AppSettings
 {
     public interface IAppSettingsService
     {
-        Task<AppSettingGetAllQueryResponse> GetAllAppSettingGetAllQueryAsync();
+        Task<IList<AppSettingGetAllQueryResponse>> GetAllAppSettingGetAllQueryAsync();
         Task<AppSettingGetByIdQueryResponse> GetAppSettingGetByIdAsync(Guid id);
         Task<CreateAppSettingCommandResponse> AppSettingCreateAsync(CreateAppSettingCommandRequest request);
         Task<UpdateAppSettingsCommandResponse> AppSettingUpdateAsync(UpdateAppSettingsCommandRequest request);

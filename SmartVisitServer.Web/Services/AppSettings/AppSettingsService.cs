@@ -41,7 +41,7 @@ namespace SmartVisitServer.Web.Services.AppSettings
         public async Task<DeleteAppSettingCommandResponse> AppSettingDeleteAsync(Guid id)
         {
             var client = _httpClientFactory.CreateClient("SmartVisit");
-            var apiUrl = $"{_apiUrl}/Delete/{id}"; 
+            var apiUrl = $"{_apiUrl}/Delete?Id={id}"; 
             var response = await client.DeleteAsync(apiUrl);
             if (!response.IsSuccessStatusCode)
             {
@@ -73,7 +73,7 @@ namespace SmartVisitServer.Web.Services.AppSettings
             return updatedResponse!;
         }
 
-        public async Task<AppSettingGetAllQueryResponse> GetAllAppSettingGetAllQueryAsync()
+        public async Task<IList<AppSettingGetAllQueryResponse>> GetAllAppSettingGetAllQueryAsync()
         {
             var client = _httpClientFactory.CreateClient("SmartVisit");
             var apiUrl = $"{_apiUrl}/GetAll";
@@ -84,7 +84,7 @@ namespace SmartVisitServer.Web.Services.AppSettings
                 throw new Exception($"API'den veri alınırken hata oluştu: {response.StatusCode}, {errorContent}");
             }
             var responseData = await response.Content.ReadAsStringAsync();
-            var pagedResponse = JsonConvert.DeserializeObject<AppSettingGetAllQueryResponse>(responseData);
+            var pagedResponse = JsonConvert.DeserializeObject<IList<AppSettingGetAllQueryResponse>>(responseData);
             return pagedResponse!;
         }        
         public async Task<AppSettingGetByIdQueryResponse> GetAppSettingGetByIdAsync(Guid id)
