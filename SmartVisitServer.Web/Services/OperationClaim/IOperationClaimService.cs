@@ -8,7 +8,7 @@ namespace SmartVisitServer.Web.Services.OperationClaim
 {
     public interface IOperationClaimService
     {
-        Task<GetListResponse<OperationClaimGetAllQueryResponse>> GetAllOperationClaimsAsync(int page, int pageSize);
+        Task<IList<OperationClaimGetAllQueryResponse>> GetAllOperationClaimsAsync();
         Task<GetListResponse<GetAllUsersRoleQueryResponse>> GetAllUsersRoleAsync(int page, int pageSize);
 
     }

@@ -12,10 +12,19 @@ namespace SmartVisitServer.Web.Controllers
             _operationClaimService = operationClaimService;
         }
 
-        public async Task<IActionResult> Index(int page = 0, int pageSize = 10)
+        public async Task<IActionResult> Index(int page = 0, int pageSize = 5)
         {
             var result = await _operationClaimService.GetAllUsersRoleAsync(page, pageSize);
             return View(result);
+        }
+        public async Task<IActionResult> GetAllRols()
+        {
+            var result = await _operationClaimService.GetAllOperationClaimsAsync();
+            return View(result);
+        }
+        public async Task<IActionResult> UpdateRol()
+        {            
+            return RedirectToAction("Index");
         }
     }
 }

@@ -1,0 +1,78 @@
+﻿@model List<Application.Features.OperationClaims.Queries.GetAll.OperationClaimGetAllQueryResponse>
+@{
+    ViewData["Title"] = "GetAllRols";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h3 style="text-align:center; font-weight:bold">ROL EKRANI</h3>
+<div id="userMembershipContainer">
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+                <tr style="text-align: center;">
+                    <th style="background-color: blueviolet; color: white !important;">Rol Tipi</th>
+
+                    <th style="background-color: blueviolet; color: white !important;">Son Gün</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model)
+                {
+                    <tr>
+                        <td>@data.Name </td>
+
+                        <td>
+                            <button class="btn btn-secondary" onclick="showStatusOptions('@data.Id')">
+                                Ekle
+                            </button>
+                        </td>
+
+
+
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+
+    </div>
+</div>
+
+<!-- Modal for Status Update -->
+@* <div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateStatusModalLabel">Durum Güncelleme</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateStatusForm" method="post" action="/OperationClaims/UpdateRol">
+                    <input type="hidden" id="id" name="id" />
+                    <div class="mb-3">
+                        <label for="userStatus" class="form-label">Durum Seçiniz</label>
+                        <select id="userStatus" name="userStatus" class="form-select">
+                            <option value="Active">Aktif</option>
+                            <option value="Passive">Pasif</option>
+                            <option value="Inactive">Etkisiz</option>
+                            <option value="Blocked">Bloklanmış</option>
+                            <option value="Deleted">Silinmiş</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Güncelle</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">İptal</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function showStatusOptions(id) {
+        document.getElementById('id').value = id;
+        var modal = new bootstrap.Modal(document.getElementById('updateStatusModal'));
+        modal.show();
+    }
+</script> *@

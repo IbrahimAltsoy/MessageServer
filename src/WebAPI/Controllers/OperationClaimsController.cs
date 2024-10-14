@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll([FromQuery] OperationClaimGetAllQueryRequest request)
         {            
-            GetListResponse<OperationClaimGetAllQueryResponse> response = await Mediator.Send(request);
+            IList<OperationClaimGetAllQueryResponse> response = await Mediator.Send(request);
             return Ok(response);
         }
         [HttpGet("GetAllUserRole")]

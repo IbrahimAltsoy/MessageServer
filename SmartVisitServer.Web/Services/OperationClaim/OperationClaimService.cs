@@ -16,10 +16,10 @@ namespace SmartVisitServer.Web.Services.OperationClaim
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<GetListResponse<OperationClaimGetAllQueryResponse>> GetAllOperationClaimsAsync(int page, int pageSize)
+        public async Task<IList<OperationClaimGetAllQueryResponse>> GetAllOperationClaimsAsync()
         {
             var client = _httpClientFactory.CreateClient("SmartVisit");
-            var apiUrl = $"{_apiUrl}/GetAll?PageRequest.Page={page}&PageRequest.PageSize={pageSize}";
+            var apiUrl = $"{_apiUrl}/GetAll";
             var response = await client.GetAsync(apiUrl);
             if (!response.IsSuccessStatusCode)
             {
@@ -27,8 +27,8 @@ namespace SmartVisitServer.Web.Services.OperationClaim
                 throw new Exception($"API'den veri alınırken hata oluştu: {response.StatusCode}, {errorContent}");
             }
             var responseData = await response.Content.ReadAsStringAsync();
-            var pagedResponse = JsonConvert.DeserializeObject<GetListResponse<OperationClaimGetAllQueryResponse>>(responseData);
-            return pagedResponse;
+            var pagedResponse = JsonConvert.DeserializeObject<IList<OperationClaimGetAllQueryResponse>>(responseData);
+            return pagedResponse!;
         }
 
         public async Task<GetListResponse<GetAllUsersRoleQueryResponse>> GetAllUsersRoleAsync(int page, int pageSize)
@@ -43,7 +43,7 @@ namespace SmartVisitServer.Web.Services.OperationClaim
             }
             var responseData = await response.Content.ReadAsStringAsync();
             var pagedResponse = JsonConvert.DeserializeObject<GetListResponse<GetAllUsersRoleQueryResponse>>(responseData);
-            return pagedResponse;
+            return pagedResponse!;
         }
     }
 }

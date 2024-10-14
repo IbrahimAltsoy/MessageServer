@@ -1,17 +1,21 @@
 ﻿@model dynamic
 @{
- 
     Layout = null;
-
 }
+
 <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center">
-        <!-- Previous button -->
-        <li class="page-item @(Model.Index == 0 ? "disabled" : "")">
-            <a class="page-link" href="@Url.Action(ViewData["ActionName"].ToString(), ViewData["ControllerName"].ToString(), new { page = Model.Index - 1, pageSize = Model.Size })" aria-label="Önceki">
-                <span aria-hidden="true">&laquo; Önceki</span>
-            </a>
-        </li>
+        <!-- Previous button (only visible if not on the first page) -->
+        @if (Model.Index > 0)
+        {
+            <li class="page-item">
+                <a class="page-link" href="@Url.Action(ViewData["ActionName"].ToString(), ViewData["ControllerName"].ToString(), new { page = Model.Index - 1, pageSize = Model.Size })" aria-label="Önceki">
+                    <span aria-hidden="true" style="color:blueviolet; font-weight:bold;"><i class="bi bi-arrow-left-circle"></i>
+
+            </span>
+                </a>
+            </li>
+        }
 
         <!-- Page numbers -->
         @for (int i = 0; i <= Model.Pages; i++)
@@ -21,11 +25,14 @@
             </li>
         }
 
-        <!-- Next button -->
-        <li class="page-item @(Model.Index == Model.Pages ? "disabled" : "")">
-            <a class="page-link" href="@Url.Action(ViewData["ActionName"].ToString(), ViewData["ControllerName"].ToString(), new { page = Model.Index + 1, pageSize = Model.Size })" aria-label="Sonraki">
-                <span aria-hidden="true">Sonraki &raquo;</span>
-            </a>
-        </li>
+        <!-- Next button (only visible if not on the last page) -->
+        @if (Model.Index < Model.Pages)
+        {
+            <li class="page-item">
+                <a class="page-link" href="@Url.Action(ViewData["ActionName"].ToString(), ViewData["ControllerName"].ToString(), new { page = Model.Index + 1, pageSize = Model.Size })" aria-label="Sonraki">
+                    <span aria-hidden="true" style="color:blueviolet; font-weight:bold;"><i class="bi bi-arrow-right-circle"></i></span>
+                </a>
+            </li>
+        }
     </ul>
 </nav>

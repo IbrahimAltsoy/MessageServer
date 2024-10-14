@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var response = Model.Items;
 }
 
 <div class="row">
@@ -41,6 +42,6 @@
     </table>
 
     <!-- Pagination -->
-    @await Component.InvokeAsync("Pagination", new { model = Model, actionName = "Index", controllerName = "Settings" })
+    @await Component.InvokeAsync("Pagination", new { model = Model, actionName = "Index", controllerName = "OperationClaims" })
 
 </div>

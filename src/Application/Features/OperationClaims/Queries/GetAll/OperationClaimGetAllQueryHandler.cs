@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Application.Features.OperationClaims.Queries.GetAll
 {
-    public class OperationClaimGetAllQueryHandler : IRequestHandler<OperationClaimGetAllQueryRequest, GetListResponse<OperationClaimGetAllQueryResponse>>
+    public class OperationClaimGetAllQueryHandler : IRequestHandler<OperationClaimGetAllQueryRequest, IList<OperationClaimGetAllQueryResponse>>
     {
         readonly IMapper _mapper;
         readonly IOperationClaimRepository _repository;
@@ -18,23 +18,12 @@ namespace Application.Features.OperationClaims.Queries.GetAll
             _repository = repository;
         }
 
-        public async Task<GetListResponse<OperationClaimGetAllQueryResponse>> Handle(OperationClaimGetAllQueryRequest request, CancellationToken cancellationToken)
+        public async Task<IList<OperationClaimGetAllQueryResponse>> Handle(OperationClaimGetAllQueryRequest request, CancellationToken cancellationToken)
         {
-            IPaginate<OperationClaim> datas = await _repository.GetPaginateListAsync(
-                size: request.PageRequest.PageSize,
-                index: request.PageRequest.Page,                
+            ICollection<OperationClaim> datas = await _repository.GetListAsync(                               
                 cancellationToken: cancellationToken);
-            IList<OperationClaimGetAllQueryResponse> data = _mapper.Map<IList<OperationClaimGetAllQueryResponse>>(datas.Items).ToList();
-            GetListResponse<OperationClaimGetAllQueryResponse> responses = new GetListResponse<OperationClaimGetAllQueryResponse>
-            {
-                Index = datas.Index,
-                Size = datas.Size,
-                Count = datas.Count,
-                Pages = datas.Pages,
-                HasPrevious = datas.HasPrevious,
-                HasNext = datas.HasNext,
-                Items = data,
-            };
+            IList<OperationClaimGetAllQueryResponse> responses = _mapper.Map<IList<OperationClaimGetAllQueryResponse>>(datas).ToList();
+            
             return responses;
         }
     }
