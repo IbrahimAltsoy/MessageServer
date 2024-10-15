@@ -28,5 +28,12 @@ namespace SmartVisitServer.Web.Controllers
             var result = await _operationClaimService.UpdateRolAsync(request);
             return RedirectToAction("GetAllRols");
         }
+       
+        public async Task<IActionResult> GetRoles()
+        {
+            var roles = await _operationClaimService.GetAllOperationClaimsAsync(); // Roller hizmetini kullanarak al
+            var roleList = roles.Select(r => new { r.Name, r.Id });
+            return Json(roleList); // JSON formatında döndür
+        }
     }
 }

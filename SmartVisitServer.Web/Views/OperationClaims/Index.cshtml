@@ -9,13 +9,13 @@
     <table class="table table-striped">
         <thead>
             <tr style="text-align: center;">
-                <th style="width:10%; background-color: blueviolet; color: white !important;">Ad Soyad</th>
-                <th style="width:20%; background-color: blueviolet; color: white !important;">Şirket</th>
-                <th style="width:10%; background-color: blueviolet; color: white !important;">Telefon</th>
-                <th style="width:10%; background-color: blueviolet; color: white !important;">Email</th>
-                <th style="width:10%; background-color: blueviolet; color: white !important;">Statu</th>
-                <th style="width:20%; background-color: blueviolet; color: white !important;">Rol</th>
-                <th style="width:20%; background-color: blueviolet; color: white !important;">Denetim</th>
+                <th style=" background-color: blueviolet; color: white !important;">Ad Soyad</th>
+                <th style=" background-color: blueviolet; color: white !important;">Şirket</th>
+                <th style=" background-color: blueviolet; color: white !important;">Telefon</th>
+                <th style=" background-color: blueviolet; color: white !important;">Email</th>
+                <th style=" background-color: blueviolet; color: white !important;">Statu</th>
+                <th style=" background-color: blueviolet; color: white !important;">Rol</th>
+                <th style=" background-color: blueviolet; color: white !important;">İşlem</th>
 
             </tr>
         </thead>
@@ -31,8 +31,9 @@
                     <td>@data.RoleName </td>
                     <td>
                         <button class="btn btn-sm btn-primary"><i class="bi bi-file-earmark-plus"></i></button>
-                        <button class="btn btn-sm btn-info"><i class="bi bi-pencil-square"></i></button>
-                        <button class="btn btn-sm btn-danger"><i class="bi bi-x-circle"></i></button>
+                        <button class="btn btn-sm btn-danger" onclick="openUpdateModal('@data.Id', '@data.RoleName')">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
                     </td>
 
 
@@ -45,3 +46,87 @@
     @await Component.InvokeAsync("Pagination", new { model = Model, actionName = "Index", controllerName = "OperationClaims" })
 
 </div>
+
+<!-- Modul işlemi -->
+<div class="modal fade" id="updateRoleModal" tabindex="-1" aria-labelledby="updateRoleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateRoleModalLabel">Rol Güncelle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <strong>Mevcut Rol:</strong> <span id="currentRole"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="rolesSelect" class="form-label">Yeni Rol Seçin</label>
+                    <select id="rolesSelect" class="form-select">
+                                            
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-primary" id="saveChangesButton">Değişiklikleri Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function openUpdateModal(userId, currentRole) {
+            // Mevcut rolü güncelleniyor
+            document.getElementById("currentRole").innerText = currentRole;
+
+            // Rolleri yükleme (AJAX ile)
+            $.ajax({
+                url: '/OperationClaims/GetRoles',
+                method: 'GET',
+                success: function (roles) {
+                    console.log(roles); // Burada yanıtı kontrol edin
+                    var select = $('#rolesSelect');
+                    select.empty();
+
+                    // Eğer roller listesi boş değilse
+                    if (Array.isArray(roles) && roles.length > 0) {
+                        roles.forEach(function (role) {
+                            select.append(new Option(role.name, role.id)); // 'name' ve 'id' küçük harfle
+                            console.log(role); // Her rolü konsola yazdır
+                        });
+                    } else {
+                        select.append(new Option('Rol bulunamadı', ''));
+                    }
+
+                    // Modalı göster
+                    $('#updateRoleModal').modal('show');
+                },
+                error: function () {
+                    alert('Roller yüklenemedi.');
+                }
+            });
+
+
+            // Kaydet butonuna tıklandığında güncelleme yapma
+            $('#saveChangesButton').off('click').on('click', function () {
+                var newRoleId = $('#rolesSelect').val();
+
+                // Güncelleme işlemini yapacak olan AJAX çağrısı
+                $.ajax({
+                    url: '/OperationClaims/UpdateUserRole', // Güncelleme için bir endpoint oluşturun // buraya swartAlert eklettir bir de UserUpdatRol endpointini ekle projeye
+                    method: 'POST',
+                    data: { userId: userId, roleId: newRoleId },
+                    success: function () {
+                        alert('Rol başarıyla güncellendi.');
+                        location.reload(); // Sayfayı yenile
+                    },
+                    error: function () {
+                        alert('Rol güncellenirken bir hata oluştu.');
+                    }
+                });
+            });
+        }
+    </script>
+}
+
