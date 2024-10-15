@@ -44,7 +44,7 @@ namespace WebAPI.Controllers
             CreateOperationClaimsCommandResponse response = await Mediator.Send(request);
             return Ok(response);
         }
-        [HttpPost("Update")]
+        [HttpPut("Update")]
         public async Task<IActionResult> Update([FromBody] UpdateOperationClaimCommandRequest request)
         {
             UpdateOperationClaimCommandResponse response = await Mediator.Send(request);

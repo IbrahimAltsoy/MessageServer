@@ -3,76 +3,74 @@
     ViewData["Title"] = "GetAllRols";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<h3 style="text-align:center; font-weight:bold">ROL EKRANI</h3>
-<div id="userMembershipContainer">
-    <div class="row">
-        <table class="table table-striped">
-            <thead>
-                <tr style="text-align: center;">
-                    <th style="background-color: blueviolet; color: white !important;">Rol Tipi</th>
 
-                    <th style="background-color: blueviolet; color: white !important;">Son Gün</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var data in Model)
-                {
-                    <tr>
-                        <td>@data.Name </td>
-
-                        <td>
-                            <button class="btn btn-secondary" onclick="showStatusOptions('@data.Id')">
-                                Ekle
-                            </button>
-                        </td>
-
-
-
-
-                    </tr>
-                }
-            </tbody>
-        </table>
-
-        <!-- Pagination -->
-
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-dark text-white text-center">
+                    <h4>Roller Listesi</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th style="background-color: blueviolet; color: white;">Rol Tipi</th>
+                                <th style="background-color: blueviolet; color: white;">Sayısı</th>
+                                <th style="background-color: blueviolet; color: white;"><i class="bi bi-pencil-square"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var data in Model)
+                            {
+                                <tr>
+                                    <td>@data.Name</td>
+                                    <td>@data.UserCount</td> 
+                                    <td>
+                                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#updateModal" onclick="loadModalData('@data.Id', '@data.Name')">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- Modal for Status Update -->
-@* <div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
+<!-- Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="updateStatusModalLabel">Durum Güncelleme</h5>
+                <h5 class="modal-title" id="updateModalLabel">Rol Güncelle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="updateStatusForm" method="post" action="/OperationClaims/UpdateRol">
-                    <input type="hidden" id="id" name="id" />
+                <form id="updateForm" method="post" action="/OperationClaims/UpdateRol">
+                    <input type="hidden" id="id" name="Id" />
                     <div class="mb-3">
-                        <label for="userStatus" class="form-label">Durum Seçiniz</label>
-                        <select id="userStatus" name="userStatus" class="form-select">
-                            <option value="Active">Aktif</option>
-                            <option value="Passive">Pasif</option>
-                            <option value="Inactive">Etkisiz</option>
-                            <option value="Blocked">Bloklanmış</option>
-                            <option value="Deleted">Silinmiş</option>
-                        </select>
+                        <label for="name" class="form-label">Rol Adı</label>
+                        <input type="text" class="form-control" id="name" name="Name" />
                     </div>
-                    <button type="submit" class="btn btn-primary">Güncelle</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">İptal</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                        <button type="submit" class="btn btn-primary">Güncelle</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-
-<script>
-    function showStatusOptions(id) {
-        document.getElementById('id').value = id;
-        var modal = new bootstrap.Modal(document.getElementById('updateStatusModal'));
-        modal.show();
-    }
-</script> *@
+@section Scripts {
+    <script>
+        function loadModalData(id, name) {
+            document.getElementById('id').value = id;
+            document.getElementById('name').value = name;
+        }
+    </script>
+}

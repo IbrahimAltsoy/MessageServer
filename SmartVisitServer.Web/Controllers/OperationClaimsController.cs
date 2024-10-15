@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Application.Features.OperationClaims.Command.Update;
+using Microsoft.AspNetCore.Mvc;
 using SmartVisitServer.Web.Services.OperationClaim;
 
 namespace SmartVisitServer.Web.Controllers
@@ -22,9 +23,10 @@ namespace SmartVisitServer.Web.Controllers
             var result = await _operationClaimService.GetAllOperationClaimsAsync();
             return View(result);
         }
-        public async Task<IActionResult> UpdateRol()
-        {            
-            return RedirectToAction("Index");
+        public async Task<IActionResult> UpdateRol(UpdateOperationClaimCommandRequest request)
+        {   
+            var result = await _operationClaimService.UpdateRolAsync(request);
+            return RedirectToAction("GetAllRols");
         }
     }
 }

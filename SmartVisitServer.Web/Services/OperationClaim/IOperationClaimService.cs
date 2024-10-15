@@ -1,4 +1,5 @@
 ﻿using Application.Features.Customers.Queries.CustomerGetAllByUser;
+using Application.Features.OperationClaims.Command.Update;
 using Application.Features.OperationClaims.Queries.GetAll;
 using Application.Features.OperationClaims.Queries.GetAllUsersRole;
 using Core.Application.Responses;
@@ -10,6 +11,7 @@ namespace SmartVisitServer.Web.Services.OperationClaim
     {
         Task<IList<OperationClaimGetAllQueryResponse>> GetAllOperationClaimsAsync();
         Task<GetListResponse<GetAllUsersRoleQueryResponse>> GetAllUsersRoleAsync(int page, int pageSize);
+        Task<UpdateOperationClaimCommandResponse> UpdateRolAsync(UpdateOperationClaimCommandRequest request); 
 
     }
 }

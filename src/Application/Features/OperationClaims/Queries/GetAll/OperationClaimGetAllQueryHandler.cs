@@ -4,6 +4,7 @@ using Core.Application.Responses;
 using Core.Persistence.Paging;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.OperationClaims.Queries.GetAll
 {
@@ -20,10 +21,15 @@ namespace Application.Features.OperationClaims.Queries.GetAll
 
         public async Task<IList<OperationClaimGetAllQueryResponse>> Handle(OperationClaimGetAllQueryRequest request, CancellationToken cancellationToken)
         {
-            ICollection<OperationClaim> datas = await _repository.GetListAsync(                               
+            ICollection<OperationClaim> datas = await _repository.GetListAsync(include: x=>x.Include(x=>x.UserOperationClaims),                               
                 cancellationToken: cancellationToken);
-            IList<OperationClaimGetAllQueryResponse> responses = _mapper.Map<IList<OperationClaimGetAllQueryResponse>>(datas).ToList();
-            
+            var source = datas.Select(x => new OperationClaimGetAllQueryResponse()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                UserCount = x.UserOperationClaims.Count()
+            }).ToList();
+            IList<OperationClaimGetAllQueryResponse> responses = _mapper.Map<IList<OperationClaimGetAllQueryResponse>>(source).ToList();            
             return responses;
         }
     }

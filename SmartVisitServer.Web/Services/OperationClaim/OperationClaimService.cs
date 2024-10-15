@@ -1,9 +1,17 @@
-﻿using Application.Features.Customers.Queries.CustomerGetAllByUser;
+﻿using Application.Features.AppSettings.Commands.Create;
+using Application.Features.AppSettings.Commands.Update;
+using Application.Features.Customers.Queries.CustomerGetAllByUser;
+using Application.Features.OperationClaims.Command.Update;
 using Application.Features.OperationClaims.Queries.GetAll;
 using Application.Features.OperationClaims.Queries.GetAllUsersRole;
 using Core.Application.Responses;
 using MailKit.Search;
+using MediatR;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Asn1.Ocsp;
+using System.Drawing.Printing;
+using System.Text;
 
 namespace SmartVisitServer.Web.Services.OperationClaim
 {
@@ -44,6 +52,26 @@ namespace SmartVisitServer.Web.Services.OperationClaim
             var responseData = await response.Content.ReadAsStringAsync();
             var pagedResponse = JsonConvert.DeserializeObject<GetListResponse<GetAllUsersRoleQueryResponse>>(responseData);
             return pagedResponse!;
+        }
+
+        public async Task<UpdateOperationClaimCommandResponse> UpdateRolAsync( UpdateOperationClaimCommandRequest request)
+        {
+            var client = _httpClientFactory.CreateClient("SmartVisit");
+            var apiUrl = $"{_apiUrl}/Update";
+            var jsonContent = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            var response = await client.PutAsync(apiUrl, httpContent);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"API'den veri güncellenirken hata oluştu: {response.StatusCode}, {errorContent}");
+            }
+
+            var responseData = await response.Content.ReadAsStringAsync();
+            var updatedResponse = JsonConvert.DeserializeObject<UpdateOperationClaimCommandResponse>(responseData);
+
+            return updatedResponse!;
         }
     }
 }
