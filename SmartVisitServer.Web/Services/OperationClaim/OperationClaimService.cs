@@ -1,16 +1,8 @@
-﻿using Application.Features.AppSettings.Commands.Create;
-using Application.Features.AppSettings.Commands.Update;
-using Application.Features.Customers.Queries.CustomerGetAllByUser;
-using Application.Features.OperationClaims.Command.Update;
+﻿using Application.Features.OperationClaims.Command.Update;
 using Application.Features.OperationClaims.Queries.GetAll;
 using Application.Features.OperationClaims.Queries.GetAllUsersRole;
 using Core.Application.Responses;
-using MailKit.Search;
-using MediatR;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
-using Org.BouncyCastle.Asn1.Ocsp;
-using System.Drawing.Printing;
 using System.Text;
 
 namespace SmartVisitServer.Web.Services.OperationClaim
