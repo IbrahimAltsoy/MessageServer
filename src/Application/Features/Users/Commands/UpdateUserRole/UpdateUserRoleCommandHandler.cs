@@ -24,40 +24,44 @@ namespace Application.Features.Users.Commands.UpdateUserRole
 
         public async Task<UpdateUserRoleCommandResponse> Handle(UpdateUserRoleCommandRequest request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetAsync(u => u.Id == request.UserId);
+            var user = await _userRepository.GetAsync(u => u.Id == request.UserId, include: x => x.Include(x => x.UserOperationClaims));
             var userOperationClaims = await _repository.GetListAsync(x => x.UserId == user.Id);
-
             bool anyClaimUpdated = false;
 
             foreach (var claimUpdate in request.OperationClaimUpdates)
             {
-             
                 var userOperationClaim = userOperationClaims
-                    .FirstOrDefault(uoc => uoc.OperationClaimId == claimUpdate.OldOperationClaimId);
+                    .FirstOrDefault(uoc => uoc.OperationClaimId == claimUpdate.OperationClaimId);
 
-             
-                if (userOperationClaim != null)
+                if (claimUpdate.IsAssigned)
                 {
-                 
-                    bool isAlreadyAssigned = userOperationClaims
-                        .Any(uoc => uoc.OperationClaimId == claimUpdate.NewOperationClaimId);
-
-                   
-                    if (isAlreadyAssigned)
+                    if (userOperationClaim == null)
                     {
-                        continue;
+                        var newClaim = new UserOperationClaim(userId: request.UserId, operationClaimId: claimUpdate.OperationClaimId);
+                        
+                        await _repository.AddAsync(newClaim);
+                        user.UserOperationClaims.Add(newClaim);
+                        anyClaimUpdated = true;
                     }
-
-                  
-                    userOperationClaim.OperationClaimId = claimUpdate.NewOperationClaimId;
-                    anyClaimUpdated = true;
-
-                  
-                    await _repository.UpdateAsync(userOperationClaim);
+                }
+                else
+                {
+                   
+                    if (userOperationClaim != null)
+                    {
+                        user.UserOperationClaims.Remove(userOperationClaim);
+                        await _repository.DeleteAsync(userOperationClaim, true);
+                        anyClaimUpdated = true;
+                    }
                 }
             }
-            return null;
+            if (anyClaimUpdated)
+            {
+                await _userRepository.UpdateAsync(user);
+            }
+            return new UpdateUserRoleCommandResponse();
         }
+
 
     }
 }

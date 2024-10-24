@@ -11,7 +11,7 @@ namespace Application.Features.Users.Commands.UpdateUserRole
     }
     public class OperationClaimUpdate
     {
-        public Guid OldOperationClaimId { get; set; }
-        public Guid NewOperationClaimId { get; set; }
+        public Guid OperationClaimId { get; set; } // Tıklanan rolün ID'si
+        public bool IsAssigned { get; set; } // true: ekle, false: kaldır
     }
 }
