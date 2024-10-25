@@ -16,7 +16,6 @@
                 <th style=" background-color: blueviolet; color: white !important;">Statu</th>
                 <th style=" background-color: blueviolet; color: white !important;">Rol</th>
                 <th style=" background-color: blueviolet; color: white !important;">İşlem</th>
-
             </tr>
         </thead>
         <tbody>
@@ -24,10 +23,10 @@
             {
                 <tr>
                     <td>@data.FirstName @data.LastName </td>
-                    <td> @data.CompanyName </td>
+                    <td>@data.CompanyName </td>
                     <td>@data.Phone </td>
-                    <td> @data.Email </td>
-                    <td> @data.UserStatus </td>
+                    <td>@data.Email </td>
+                    <td>@data.UserStatus </td>
                     <td>@data.RoleName </td>
                     <td>
                         <button class="btn btn-sm btn-primary"><i class="bi bi-file-earmark-plus"></i></button>
@@ -35,8 +34,6 @@
                             <i class="bi bi-pencil-square"></i>
                         </button>
                     </td>
-
-
                 </tr>
             }
         </tbody>
@@ -44,26 +41,25 @@
 
     <!-- Pagination -->
     @await Component.InvokeAsync("Pagination", new { model = Model, actionName = "Index", controllerName = "OperationClaims" })
-
 </div>
 
-<!-- Modul işlemi -->
+<!-- Modal işlemi -->
 <div class="modal fade" id="updateRoleModal" tabindex="-1" aria-labelledby="updateRoleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="updateRoleModalLabel">Rol Güncelle</h5>
+                <h5 class="modal-title" id="updateRoleModalLabel">ROL GÜNCELLEME!</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div>
-                    <strong>Mevcut Rol:</strong> <span id="currentRole"></span>
+                    <strong style="color:blueviolet">Mevcut Roller:</strong> <span id="currentRoles" style="color:red; text-decoration:double"></span>
                 </div>
                 <div class="mb-3">
-                    <label for="rolesSelect" class="form-label">Yeni Rol Seçin</label>
-                    <select id="rolesSelect" class="form-select">
-                                            
-                    </select>
+                    <label for="rolesCheckboxList" class="form-label"></label>
+                    <div id="rolesCheckboxList">
+                        <!-- Rollerin checkbox olarak yükleneceği alan -->
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -76,57 +72,81 @@
 
 @section Scripts {
     <script>
-        function openUpdateModal(userId, currentRole) {
-            // Mevcut rolü güncelleniyor
-            document.getElementById("currentRole").innerText = currentRole;
+        function openUpdateModal(userId, currentRoles) {
 
-            // Rolleri yükleme (AJAX ile)
+            var roleArray = currentRoles.split(',').map(role => role.trim().toLowerCase());
+            document.getElementById("currentRoles").innerText = roleArray.join(', ').toUpperCase();
+
             $.ajax({
                 url: '/OperationClaims/GetRoles',
                 method: 'GET',
                 success: function (roles) {
-                    console.log(roles); // Burada yanıtı kontrol edin
-                    var select = $('#rolesSelect');
-                    select.empty();
+                    var checkboxList = $('#rolesCheckboxList');
+                    checkboxList.empty();
+                    roles.forEach(function (role) {
+                        var isChecked = roleArray.includes(role.name.trim().toLowerCase()) ? 'checked' : '';
 
-                    // Eğer roller listesi boş değilse
-                    if (Array.isArray(roles) && roles.length > 0) {
-                        roles.forEach(function (role) {
-                            select.append(new Option(role.name, role.id)); // 'name' ve 'id' küçük harfle
-                            console.log(role); // Her rolü konsola yazdır
-                        });
-                    } else {
-                        select.append(new Option('Rol bulunamadı', ''));
-                    }
-
-                    // Modalı göster
+                        checkboxList.append(`
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="${role.id}" id="role_${role.id}" ${isChecked}>
+                                <label class="form-check-label" for="role_${role.id}">
+                                    ${role.name}
+                                </label>
+                            </div>
+                        `);
+                    });
                     $('#updateRoleModal').modal('show');
                 },
                 error: function () {
                     alert('Roller yüklenemedi.');
                 }
             });
-
-
-            // Kaydet butonuna tıklandığında güncelleme yapma
+            
             $('#saveChangesButton').off('click').on('click', function () {
-                var newRoleId = $('#rolesSelect').val();
-
-                // Güncelleme işlemini yapacak olan AJAX çağrısı
+                var updates = [];                                
+                $('#rolesCheckboxList input[type="checkbox"]').each(function () {
+                    updates.push({
+                        OperationClaimId: $(this).val(),
+                        IsAssigned: $(this).is(':checked')
+                    });
+                });
+               
                 $.ajax({
-                    url: '/OperationClaims/UpdateUserRole', // Güncelleme için bir endpoint oluşturun // buraya swartAlert eklettir bir de UserUpdatRol endpointini ekle projeye
-                    method: 'POST',
-                    data: { userId: userId, roleId: newRoleId },
-                    success: function () {
-                        alert('Rol başarıyla güncellendi.');
-                        location.reload(); // Sayfayı yenile
+                    url: '/User/UpdateUserRole',
+                    type: 'POST',
+                    contentType: 'application/json', 
+                    data: JSON.stringify({
+                        UserId: userId,
+                        OperationClaimUpdates: updates
+                    }),
+                    success: function (response) {
+                        $('#updateRoleModal').modal('hide');
+
+                        // Modal kapandıktan sonra SweetAlert'i göster
+                        $('#updateRoleModal').on('hidden.bs.modal', function () {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Başarılı!',
+                                text: 'Rol başarıyla güncellendi.',
+                                timer: 2000,
+                                showConfirmButton: false,
+                                position: 'top-end',
+                                toast: true
+                            }).then(() => {
+                                location.reload(); // Sayfayı yenileyin
+                            });
+                        });
                     },
                     error: function () {
-                        alert('Rol güncellenirken bir hata oluştu.');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Hata!',
+                            text: 'Bir hata oluştu!',
+                        });
                     }
                 });
             });
         }
+
     </script>
 }
-

@@ -1,0 +1,22 @@
+﻿@* @model Application.Features.Users.Commands.UpdateUserRole.UpdateUserRoleCommandRequest
+
+<form asp-action="UpdateUserRole" method="post">
+    <input type="hidden" asp-for="UserId" />
+
+    <div>
+        <label for="roleId">Rol Seç:</label>
+        <select asp-for="OperationClaimUpdates[0].OperationClaimId" name="OperationClaimUpdates[0].OperationClaimId">
+            <!-- Roller burada listelenebilir -->
+            <option value="rol1">Rol 1</option>
+            <option value="rol2">Rol 2</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="isAssigned">Atama:</label>
+        <input type="checkbox" asp-for="OperationClaimUpdates[0].IsAssigned" name="OperationClaimUpdates[0].IsAssigned" value="true" />
+    </div>
+
+    <button type="submit">Güncelle</button>
+</form>
+ *@

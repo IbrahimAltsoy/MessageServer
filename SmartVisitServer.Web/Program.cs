@@ -11,6 +11,7 @@ using SmartVisitServer.Web.Services.Customers;
 using SmartVisitServer.Web.Services.Panels;
 using SmartVisitServer.Web.Services.OperationClaim;
 using SmartVisitServer.Web.Services.AppSettings;
+using SmartVisitServer.Web.Services.Users;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -27,6 +28,7 @@ builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IPanelService, PanelService>();
 builder.Services.AddScoped<IOperationClaimService, OperationClaimService>();
 builder.Services.AddScoped<IAppSettingsService, AppSettingsService>();
+builder.Services.AddScoped<IUserService, UserService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -35,5 +35,10 @@ namespace SmartVisitServer.Web.Controllers
             var roleList = roles.Select(r => new { r.Name, r.Id });
             return Json(roleList); // JSON formatında döndür
         }
+        public async Task<IActionResult> GetRole(Guid id)
+        {
+            var role = await _operationClaimService.GetByIdUserRoleAsync(id);
+            return Json(role); // JSON formatında döndür
+        }
     }
 }

@@ -1,8 +1,11 @@
 ﻿using Application.Features.OperationClaims.Command.Update;
 using Application.Features.OperationClaims.Queries.GetAll;
 using Application.Features.OperationClaims.Queries.GetAllUsersRole;
+using Application.Features.OperationClaims.Queries.GetById;
 using Core.Application.Responses;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
+using System.Drawing.Printing;
 using System.Text;
 
 namespace SmartVisitServer.Web.Services.OperationClaim
@@ -43,6 +46,22 @@ namespace SmartVisitServer.Web.Services.OperationClaim
             }
             var responseData = await response.Content.ReadAsStringAsync();
             var pagedResponse = JsonConvert.DeserializeObject<GetListResponse<GetAllUsersRoleQueryResponse>>(responseData);
+            return pagedResponse!;
+        }
+
+        public async Task<OperationClaimGetByIdQueryResponse> GetByIdUserRoleAsync(Guid id)
+        {
+            
+            var client = _httpClientFactory.CreateClient("SmartVisit");
+            var apiUrl = $"{_apiUrl}/GetById? Id ={id}";
+            var response = await client.GetAsync(apiUrl);
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"API'den veri alınırken hata oluştu: {response.StatusCode}, {errorContent}");
+            }
+            var responseData = await response.Content.ReadAsStringAsync();
+            var pagedResponse = JsonConvert.DeserializeObject<OperationClaimGetByIdQueryResponse>(responseData);
             return pagedResponse!;
         }
 
