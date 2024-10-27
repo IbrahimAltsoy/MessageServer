@@ -138,6 +138,7 @@ namespace SmartVisitServer.Web.Controllers
         {
             return View();
         }
+        
         [HttpPost]
         public IActionResult Logout()
         {            

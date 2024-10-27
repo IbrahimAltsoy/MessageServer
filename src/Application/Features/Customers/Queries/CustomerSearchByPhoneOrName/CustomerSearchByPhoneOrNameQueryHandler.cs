@@ -29,9 +29,7 @@ namespace Application.Features.Customers.Queries.CustomerSearchByPhoneOrName
             {
                 throw new ArgumentException("Current user ID is not a valid GUID.");
             }
-            var searchTerm = request.SearchTerm?.ToLower();
-
-            // Veritabanı sorgusunda filtreleme yapıyoruz
+            var searchTerm = request.SearchTerm?.ToLower();            
             IPaginate<Customer>? datas = await _customerRepository.GetPaginateListAsync(
                 x => x.UserId == userId &&
                     (string.IsNullOrEmpty(searchTerm) ||

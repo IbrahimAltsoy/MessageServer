@@ -3,6 +3,7 @@ using Application.Features.Users.Commands.Create;
 using Application.Features.Users.Commands.Delete;
 using Application.Features.Users.Commands.Update;
 using Application.Features.Users.Commands.UpdateFromAuth;
+using Application.Features.Users.Commands.UpdateProfile;
 using Application.Features.Users.Commands.UpdateUserRole;
 using Application.Features.Users.Queries.GetById;
 using Application.Features.Users.Queries.GetList;
@@ -28,6 +29,9 @@ public class MappingProfiles : Profile
         CreateMap<User, GetByIdUserResponse>().ReverseMap();
         CreateMap<User, GetListUserListItemDto>().ReverseMap();
         CreateMap<IPaginate<User>, GetListResponse<GetListUserListItemDto>>().ReverseMap();
+
+        CreateMap<User, UpdateProfileCommandRequest>().ReverseMap();
+        CreateMap<User, UpdateProfileCommandResponse>().ReverseMap();
 
         CreateMap<User, UpdateUserRoleCommandResponse>()
     .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => string.Join(", ", src.UserOperationClaims.Select(x => x.OperationClaim.Name))))

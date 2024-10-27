@@ -7,9 +7,9 @@ public class GetByIdUserResponse : IResponse
     public Guid? Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public string Email { get; set; }
-    public bool VerifyEmail { get; set; }
     public string Phone { get; set; }
-    public bool VerifyPhone { get; set; }
-    public bool Status { get; set; }
+    public string? CompanyName { get; set; }
+    public string? IbanNumber { get; set; }
+    public string? Adress { get; set; }
+    public string? LogoUrl { get; set; }
 }
