@@ -1,4 +1,6 @@
-﻿using Application.Features.OperationClaims.Command.Update;
+﻿using Application.Features.AppSettings.Commands.Create;
+using Application.Features.OperationClaims.Command.Create;
+using Application.Features.OperationClaims.Command.Update;
 using Application.Features.OperationClaims.Queries.GetAll;
 using Application.Features.OperationClaims.Queries.GetAllUsersRole;
 using Application.Features.OperationClaims.Queries.GetById;
@@ -84,5 +86,25 @@ namespace SmartVisitServer.Web.Services.OperationClaim
 
             return updatedResponse!;
         }
+        public async Task<object> AddRoleAsync(string name)
+        {
+            var client = _httpClientFactory.CreateClient("SmartVisit");
+            var apiUrl = $"{_apiUrl}/Create";
+            var requestData = new { Name = name };
+            var jsonContent = JsonConvert.SerializeObject(requestData);
+            var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(apiUrl, httpContent);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"API'den veri alınırken hata oluştu: {response.StatusCode}, {errorContent}");
+            }
+            var responseData = await response.Content.ReadAsStringAsync();
+            var pagedResponse = JsonConvert.DeserializeObject<object>(responseData);
+            return pagedResponse!;
+        }
+
+
     }
 }
