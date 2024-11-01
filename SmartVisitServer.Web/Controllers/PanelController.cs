@@ -30,13 +30,15 @@ namespace SmartVisitServer.Web.Controllers
         [HttpGet]
         public async Task<PartialViewResult> UserUserMemberShipLastDaysSon(int page = 0, int pageSize = 5)
         {
-            GetListResponse<UserMemberShipLastDayQueryResponse> result = await _panelService.UserMemberShipLastDayGetAllAsync(page, pageSize);
+           /* GetListResponse<UserMemberShipLastDayQueryResponse> */ 
+            var result = await _panelService.UserMemberShipLastDayGetAllAsync(page, pageSize);
             return PartialView(result);
         }
         [HttpGet]
         public async Task<IActionResult> CreatedCompanyLastMontly(int page=0, int pageSize = 5)
         {
-            GetListResponse< CreatedCompanyLastMontlyQueryResponse > responses = await _panelService.CreatedCompanyLastMontlyAsync(page, pageSize);
+            /*GetListResponse< CreatedCompanyLastMontlyQueryResponse >*/ 
+            var responses = await _panelService.CreatedCompanyLastMontlyAsync(page, pageSize);
             return View(responses);
         }
         [HttpPost]

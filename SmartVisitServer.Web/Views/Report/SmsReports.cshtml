@@ -1,0 +1,59 @@
+﻿@using Domain.Enums
+@model Application.Features.Reports.Queries.ReportSms.ReportSmsQueryResponse
+@{
+    string timePeriodText = "";
+    switch (ViewBag.TimePeriod)
+    {
+        case TimePeriodType.Daily:
+            timePeriodText = "Günlük";
+            break;
+        case TimePeriodType.Weekly:
+            timePeriodText = "Haftalık";
+            break;
+        case TimePeriodType.Monthly:
+            timePeriodText = "Aylık";
+            break;
+        case TimePeriodType.Yearly:
+            timePeriodText = "Yıllık";
+            break;
+        default:
+            timePeriodText = "";
+            break;
+    }
+}
+<h1>Sms Raporları</h1>
+<div class="row">
+    <div class="col-8">
+        <form method="get" asp-action="SmsReports" asp-controller="Report">
+            <div class="row">
+                <div class="col-md-4">
+                  
+                    <select id="timePeriod" name="timePeriod" class="form-select" style="color:blueviolet;">
+                        <option value="Daily">Günlük</option>
+                        <option value="Weekly">Haftalık</option>
+                        <option value="Monthly">Aylık</option>
+                        <option value="Yearly">Yıllık</option>
+                    </select>
+
+                </div>
+               
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-group-sm btn-black">Ara</button>
+                    <div class="input-group-append mt-4">
+                        @* <button type="submit" class="btn btn-group-sm btn-black">Ara</button> *@
+                    </div>
+                </div>
+            </div>
+        </form>
+        @if (Model is not null)
+        {
+            <spa>@Model.Message</spa>
+
+        }
+        else
+        {
+            <spa>Bulunamadı</spa>
+        }
+       
+    </div>
+</div>

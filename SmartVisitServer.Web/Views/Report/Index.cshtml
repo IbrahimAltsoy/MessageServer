@@ -4,5 +4,7 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1> Rapor sayfasına hoş geldiniz @ViewData["name"]</h1>
+<h1> Rapor sayfasına hoş geldiniz</h1>
 
+@await Html.PartialAsync("SmsReports")
+@* @await Html.PartialAsync("CustomerReports") *@
