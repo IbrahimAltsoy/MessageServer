@@ -36,7 +36,7 @@ namespace SmartVisitServer.Web.Services.Reports
             var pagedResponse = JsonConvert.DeserializeObject<ReportCustomerQueryResponse>(responseData);
             return pagedResponse!;
         }
-
+        //Raporlama kısmı oluşturulacaktır
         public async Task<ReportSmsQueryResponse> SmsReportsAsync(TimePeriodType? periodType)
         {
             var client = _httpClientFactory.CreateClient("SmartVisit");
