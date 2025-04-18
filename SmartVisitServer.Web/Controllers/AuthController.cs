@@ -134,10 +134,10 @@ namespace SmartVisitServer.Web.Controllers
 
 
 
-        public IActionResult EmailConfirmed()
-        {
-            return View();
-        }
+        //public IActionResult EmailConfirmed()
+        //{
+        //    return View();
+        //}
         
         [HttpPost]
         public IActionResult Logout()
