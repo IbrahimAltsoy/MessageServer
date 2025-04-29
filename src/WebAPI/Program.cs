@@ -19,6 +19,10 @@ using WebAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Listen(System.Net.IPAddress.Any, 5011); // Tüm IP'lerden dinle
+});
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -31,7 +35,7 @@ builder.Services.AddHttpClient();// Curent User için Eklendi
 builder.Services.AddHttpContextAccessor();
 
 //builder.Services.ConfigureVersioning();
-
+//builder.WebHost.UseUrls("https://0.0.0.0:5011");
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
@@ -55,6 +59,7 @@ builder.Services
             IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
         };
     });
+/*builder.WebHost.UseUrls("https://localhost:5011");*/ // Mobilden giriþ yapabilmek için eklendi.
 
 builder.Services.AddDistributedMemoryCache(); // InMemory
 //builder.Services.AddStackExchangeRedisCache(opt => opt.Configuration = "localhost:6379");

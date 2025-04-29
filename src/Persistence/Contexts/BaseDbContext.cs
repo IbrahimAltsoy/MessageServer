@@ -21,6 +21,7 @@ public class BaseDbContext : DbContext
     public DbSet<Notification> Nottifications { get; set; }
     public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
     public DbSet<PhoneVerificationToken> PhoneVerificationTokens { get; set; }
+    public DbSet<CustomerPhoto> CustomerPhotos { get; set; }
     #region
     
     public DbSet<Customer> Customers { get; set; }
@@ -60,7 +61,9 @@ public class BaseDbContext : DbContext
     }
     private static void SetGlobalQueryFilter<TEntity>(ModelBuilder modelBuilder) where TEntity : Entity<Guid>
     {
-        modelBuilder.Entity<TEntity>().HasQueryFilter(e => !e.DeletedDate.HasValue);
+        if (typeof(TEntity) == typeof(CustomerPhoto))
+            return; //
+            modelBuilder.Entity<TEntity>().HasQueryFilter(e => !e.DeletedDate.HasValue);
     }
 
 

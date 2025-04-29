@@ -17,13 +17,15 @@ namespace Application.Features.Customers.Commands.Create
         readonly ISmsSettingsService _settingsService;
         readonly ISmsService _smsService;
         readonly ISmsRepository _smsRepository;
+        readonly ICustomerPhotoRepository _customerPhotoRepository;
 
         public CreateCustomerHandler(
             ICustomerRepository customerRepository,
             IMapper mapper,IUser currentUser, 
             ISmsSettingsService settingsService, 
             ISmsService smsService, 
-            ISmsRepository smsRepository)
+            ISmsRepository smsRepository,
+            ICustomerPhotoRepository customerPhotoRepository)
         {
             _customerRepository = customerRepository;
             _currentUser = currentUser;
@@ -31,6 +33,7 @@ namespace Application.Features.Customers.Commands.Create
             _settingsService = settingsService;
             _smsService = smsService;
             _smsRepository = smsRepository;
+            _customerPhotoRepository = customerPhotoRepository;
         }
 
         public async Task<CreateCustomerResponse> Handle(CreateCustomerRequest request, CancellationToken cancellationToken)
@@ -49,7 +52,28 @@ namespace Application.Features.Customers.Commands.Create
                 existingCustomer.Phone = request.Phone;
                 existingCustomer.Description = request.Description;
                 existingCustomer.UserId = userId;
-                
+                var customerPhotos = await _customerPhotoRepository.GetListAsync(cp => cp.CustomerId == existingCustomer.Id);
+
+                if (customerPhotos.Any())
+                {
+                    await _customerPhotoRepository.DeleteRangeAsync(customerPhotos, permanent:true);
+                }
+
+
+                if (request.PhotoUrls != null && request.PhotoUrls.Any())
+                {
+                    var newPhotos = request.PhotoUrls.Select(url => new CustomerPhoto
+                    {
+                        CustomerId = existingCustomer.Id,
+                        PhotoUrl = url
+                    }).ToList();
+
+                    await _customerPhotoRepository.AddRangeAsync(newPhotos);
+                }
+
+
+
+
                 if (existingCustomer.Pointed==10)
                 {
                     existingCustomer.Pointed = 0;
@@ -101,8 +125,21 @@ namespace Application.Features.Customers.Commands.Create
                 var result = await _customerRepository.AddAsync(newCustomer);
                 newCustomer.AddDomainEvent(new CustomerCreatedEvent(newCustomer));
 
+                // BURAYA SONRA PhotoUrls ekleniyor
+                if (request.PhotoUrls != null && request.PhotoUrls.Any())
+                {
+                    var newPhotos = request.PhotoUrls.Select(url => new CustomerPhoto
+                    {
+                        CustomerId = result.Id,
+                        PhotoUrl = url
+                    }).ToList();
+
+                    await _customerPhotoRepository.AddRangeAsync(newPhotos);
+                }
+
+
                 // SMS Ayarlarını kontrol et ve SMS gönder
-              bool sendSms =  await _settingsService.SMSSettingsControlAsync(userId, Domain.Enums.SmsEventType.ProductReceived);
+                bool sendSms =  await _settingsService.SMSSettingsControlAsync(userId, Domain.Enums.SmsEventType.ProductReceived);
                 if(sendSms)
                 {
                     string message = $"{request.ProductName} ürünü teslim alınmıştır. {_currentUser.CompnanyName}";

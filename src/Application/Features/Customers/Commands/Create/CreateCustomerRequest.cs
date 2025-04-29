@@ -1,4 +1,6 @@
 ﻿using Application.Services.Repositories;
+using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 
 namespace Application.Features.Customers.Commands.Create
@@ -10,6 +12,8 @@ namespace Application.Features.Customers.Commands.Create
         public string ProductName { get; set; }
         public string Phone { get; set; }
         public string Description { get; set; }
-        
+        public CustomerStatus Status { get; set; }
+        public List<string> PhotoUrls { get; set; } = new();
+
     }
 }

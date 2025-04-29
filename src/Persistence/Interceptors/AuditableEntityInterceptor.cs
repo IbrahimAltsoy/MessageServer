@@ -51,7 +51,7 @@ namespace Persistence.Interceptors
             var authName = _currentUser.Name ?? "Unknown";
             
             var utcNow = _dateTime.GetUtcNow().UtcDateTime;
-           
+
             foreach (var entry in entries)
             {
                 if (entry.State == EntityState.Detached || entry.State == EntityState.Unchanged)
@@ -60,8 +60,7 @@ namespace Persistence.Interceptors
                 if (entry.State == EntityState.Added)
                 {
                     entry.Property(nameof(Entity<Guid>.CreatedDate)).CurrentValue = utcNow;
-                    entry.Property(nameof(Entity<Guid>.CreatedBy)).CurrentValue = userId +"-" + authName;
-                    
+                    entry.Property(nameof(Entity<Guid>.CreatedBy)).CurrentValue = userId + "-" + authName;
                 }
 
                 if (entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
@@ -69,7 +68,7 @@ namespace Persistence.Interceptors
                     if (!IsSoftDeleting(entry))
                     {
                         entry.Property(nameof(Entity<Guid>.UpdatedDate)).CurrentValue = utcNow;
-                        entry.Property(nameof(Entity<Guid>.LastModifiedBy)).CurrentValue = userId + "-" + authName;                      
+                        entry.Property(nameof(Entity<Guid>.LastModifiedBy)).CurrentValue = userId + "-" + authName;
                     }
 
                     entry.Property(nameof(Entity<Guid>.CreatedDate)).IsModified = false;
@@ -78,12 +77,23 @@ namespace Persistence.Interceptors
 
                 if (entry.State == EntityState.Deleted || IsSoftDeleting(entry))
                 {
+                    if (ShouldHardDelete(entry))
+                    {
+                        continue; // CustomerPhoto gerçekten silinecek, dokunma
+                    }
+
                     entry.Property(nameof(Entity<Guid>.DeletedDate)).CurrentValue = utcNow;
                     entry.Property(nameof(Entity<Guid>.DeletedBy)).CurrentValue = userId + "-" + authName;
                     entry.State = EntityState.Modified;
                 }
             }
+
         }
+        private static bool ShouldHardDelete(EntityEntry entry)
+        {
+            return entry.Entity.GetType() == typeof(CustomerPhoto);
+        }
+
 
         private bool IsSoftDeleting(EntityEntry entry)
         {
