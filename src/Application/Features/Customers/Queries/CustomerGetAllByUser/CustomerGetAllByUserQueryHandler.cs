@@ -8,6 +8,7 @@ using Domain.Entities;
 using Domain.Enums;
 using MailKit.Search;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Application.Features.Customers.Queries.CustomerGetAllByUser
@@ -35,6 +36,7 @@ namespace Application.Features.Customers.Queries.CustomerGetAllByUser
             IPaginate<Customer> datas = await _customerRepository.GetPaginateListAsync(
                 predicate: s => s.CreatedDate >= startDate && s.CreatedDate <= endDate && s.UserId == userId,
                 orderBy: c=>c.OrderBy(c=>c.CreatedDate),
+                include: c => c.Include(x => x.CustomerPhotos!),
                 size: request.PageRequest.PageSize,
                 index: request.PageRequest.Page,
                 cancellationToken: cancellationToken

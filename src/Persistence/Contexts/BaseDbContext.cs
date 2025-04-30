@@ -3,27 +3,29 @@ using Core.Security.Entities;
 using Domain.Entities;
 using S=Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore.Metadata;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Persistence.Contexts;
 
 public class BaseDbContext : DbContext
 {
-    public IConfiguration Configuration { get; set; }
+    private static readonly Type[] HardDeleteEntities = { typeof(CustomerPhoto) };
+    private static readonly MethodInfo SetQueryFilterMethod =
+        typeof(BaseDbContext).GetMethod(nameof(SetQueryFilter), BindingFlags.NonPublic | BindingFlags.Static)!;
 
+    #region Security DbSets
     public DbSet<OperationClaim> OperationClaims { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<User> Users { get; set; }
-    public DbSet<UserOperationClaim> UserOperationClaims { get; set; }   
+    public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
     public DbSet<EmailAuthenticator> EmailAuthenticators { get; set; }
     public DbSet<EmailVerificationToken> EmailVerificationTokens { get; set; }
     public DbSet<Notification> Nottifications { get; set; }
     public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
     public DbSet<PhoneVerificationToken> PhoneVerificationTokens { get; set; }
     public DbSet<CustomerPhoto> CustomerPhotos { get; set; }
-    #region
-    
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Feedback> Feedbacks { get; set; }
@@ -36,36 +38,72 @@ public class BaseDbContext : DbContext
     public DbSet<MembershipPackage> MembershipPackages { get; set; }
     public DbSet<AppSetting> AppSettings { get; set; }
     #endregion
+   
 
-    public BaseDbContext(DbContextOptions<BaseDbContext> dbContextOptions, IConfiguration configuration) : base(dbContextOptions)
+    public BaseDbContext(DbContextOptions<BaseDbContext> options) : base(options)
     {
-        Configuration = configuration;
+        // Database.EnsureCreated(); // Gerekiyorsa açın (sadece development'ta)
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
-
-        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-        {
-            var method = typeof(BaseDbContext)
-                .GetMethod(nameof(SetGlobalQueryFilter), BindingFlags.NonPublic | BindingFlags.Static)
-                .MakeGenericMethod(entityType.ClrType);
-            method.Invoke(null, new object[] { modelBuilder });
-        }
-
-
-
+        base.OnModelCreating(modelBuilder);
 
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        ApplyGlobalQueryFilters(modelBuilder);
+        ConfigureCustomRelationships(modelBuilder);
     }
-    private static void SetGlobalQueryFilter<TEntity>(ModelBuilder modelBuilder) where TEntity : Entity<Guid>
+
+    private static void ApplyGlobalQueryFilters(ModelBuilder modelBuilder)
     {
-        if (typeof(TEntity) == typeof(CustomerPhoto))
-            return; //
-            modelBuilder.Entity<TEntity>().HasQueryFilter(e => !e.DeletedDate.HasValue);
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            if (ShouldApplyQueryFilter(entityType))
+            {
+                SetQueryFilterMethod
+                    .MakeGenericMethod(entityType.ClrType)
+                    .Invoke(null, new object[] { modelBuilder });
+            }
+        }
     }
 
+    private static bool ShouldApplyQueryFilter(IMutableEntityType entityType) =>
+        typeof(Entity<Guid>).IsAssignableFrom(entityType.ClrType) &&
+        !HardDeleteEntities.Contains(entityType.ClrType);
 
+    private static void SetQueryFilter<TEntity>(ModelBuilder modelBuilder)
+        where TEntity : Entity<Guid> =>
+        modelBuilder.Entity<TEntity>().HasQueryFilter(e => e.DeletedDate == null);
+
+    private static void ConfigureCustomRelationships(ModelBuilder modelBuilder)
+    {
+        // Örnek ilişki konfigürasyonları
+        modelBuilder.Entity<Customer>()
+            .HasMany(c => c.Feedbacks)
+            .WithOne(f => f.Customer)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+
+    #region Transaction Helper
+    public async Task ExecuteInTransactionAsync(Func<Task> action)
+    {
+        if (Database.CurrentTransaction != null)
+        {
+            await action();
+            return;
+        }
+
+        await using var transaction = await Database.BeginTransactionAsync();
+        try
+        {
+            await action();
+            await transaction.CommitAsync();
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
+    }
+    #endregion
 }
-

@@ -18,7 +18,7 @@ namespace Application.Features.Customers.Commands.Delete
         public async Task<CustomerDeleteCommandResponse> Handle(CustomerDeleteCommandRequest request, CancellationToken cancellationToken)
         {
             var customer = await _repository.GetAsync(x => x.Id == request.Id);
-            await _repository.DeleteAsync(customer);
+            await _repository.DeleteAsync(customer!);
             var mappedData = _mapper.Map<CustomerDeleteCommandResponse>(customer);
             return mappedData;
 

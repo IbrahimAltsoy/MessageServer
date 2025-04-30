@@ -8,6 +8,6 @@ namespace Application.Features.Customers.Commands.Create
 {
     public class CreateCustomerResponse
     {
-        public string Message { get; set; }
+        public string Message { get; set; } = string.Empty;
     }
 }
