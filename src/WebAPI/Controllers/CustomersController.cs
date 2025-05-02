@@ -6,6 +6,7 @@ using Application.Features.Customers.Queries.CustomerGetById;
 using Application.Features.Customers.Queries.CustomerSearchByPhoneOrName;
 using Application.Features.Customers.Queries.DeleteCustomerById;
 using Application.Features.Customers.Queries.DeleteCustomerGetAll;
+using Application.Features.Customers.Queries.Summary;
 using Core.Application.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,12 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Customers([FromQuery] CustomerGetAllByUserQueryRequest request)
         {
             GetListResponse<CustomerGetAllByUserQueryResponse> response = await Mediator.Send(request);
+            return Ok(response);
+        }
+        [HttpGet("summary")]
+        public async Task<IActionResult> GetCustomerSummary([FromQuery] CustomerSummaryQueryRequest request)
+        {
+            CustomerSummaryQueryResponse response = await Mediator.Send(request);
             return Ok(response);
         }
         [HttpGet("CustomerSearchByPhoneOrNameSurname")]

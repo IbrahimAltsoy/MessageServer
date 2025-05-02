@@ -8,8 +8,23 @@ using Domain.Entities;
 using Domain.Enums;
 using MailKit.Search;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SkiaSharp;
 using System.Linq.Expressions;
+//[HttpGet("summary")]
+//public async Task<IActionResult> GetCustomerSummary([FromQuery] int timePeriod)
+//{
+//    var query = _context.Customers.Where(c => c.CreatedDate >= TarihAralığınaGöreFiltrele(timePeriod));
+
+//    var total = await query.CountAsync();
+//    var delivered = await query.CountAsync(c => c.Status == 1);
+//    var waiting = await query.CountAsync(c => c.Status == 0);
+//    var canceled = await query.CountAsync(c => c.Status == 2 || c.Status == 3);
+
+//    return Ok(new { total, delivered, waiting, canceled });
+//}
+
 
 namespace Application.Features.Customers.Queries.CustomerGetAllByUser
 {
