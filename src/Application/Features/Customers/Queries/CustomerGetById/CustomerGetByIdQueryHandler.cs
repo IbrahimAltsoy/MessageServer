@@ -2,6 +2,7 @@
 using Application.Services.Repositories;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Customers.Queries.CustomerGetById
 {
@@ -24,7 +25,7 @@ namespace Application.Features.Customers.Queries.CustomerGetById
             {
                 throw new ArgumentException("Current user ID is not a valid GUID.");
             }
-            var customer =await _customerRepository.GetAsync(x =>x.UserId==userId && x.Id == request.Id);
+            var customer =await _customerRepository.GetAsync(x =>x.UserId==userId && x.Id == request.Id, include: c => c.Include(x => x.CustomerPhotos!));
             var mappedData = _mapper.Map<CustomerGetByIdQueryResponse>(customer);
             return mappedData;
            

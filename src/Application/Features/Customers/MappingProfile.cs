@@ -13,9 +13,9 @@ namespace Application.Features.Customers
     {
         public MappingProfile()
         {
-            CreateMap<Customer, CustomerGetByIdQueryResponse>().ReverseMap();
+            CreateMap<Customer, CustomerGetByIdQueryResponse>().ForMember(dest => dest.PhotoUrls, opt => opt.MapFrom(src => src.CustomerPhotos!.Select(p => p.PhotoUrl).ToList())).ReverseMap();
             CreateMap<Customer, CustomerGetAllByUserQueryResponse>()
-     .ForMember(dest => dest.PhotoUrls, opt => opt.MapFrom(src => src.CustomerPhotos!.Select(p => p.PhotoUrl).ToList()));
+     .ForMember(dest => dest.PhotoUrls, opt => opt.MapFrom(src => src.CustomerPhotos!.Select(p => p.PhotoUrl).ToList())).ReverseMap();
 
             CreateMap<Customer, CreateCustomerRequest>().ReverseMap();
             CreateMap<Customer, CustomerUpdateCommandRequest>().ReverseMap();
